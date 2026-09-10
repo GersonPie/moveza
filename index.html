@@ -1214,16 +1214,55 @@
       .logo-mark { width:42px; height:42px; flex-basis:42px; }
       .logo-copy strong { font-size:.92rem; }
       .logo-copy small { font-size:.34rem; }
-      .nav > nav { position:absolute; display:flex; top:64px; left:0; right:0; padding:14px 18px 22px; flex-direction:column; align-items:stretch; gap:2px; background:rgba(255,255,255,.98); border-bottom:1px solid var(--border); box-shadow:0 24px 45px rgba(0,0,0,.12); opacity:0; visibility:hidden; transform:translateY(-10px); transition:var(--transition); }
-      .nav.open > nav { opacity:1; visibility:visible; transform:none; }
-      .nav > nav a { padding:12px 10px; border-radius:10px; color:var(--text); }
-      .nav > nav a:hover { background:var(--bg-soft); }
+      .nav > nav {
+        position:fixed;
+        display:flex;
+        inset:64px 0 0;
+        min-height:calc(100dvh - 64px);
+        padding:clamp(32px,8vh,72px) 24px 28px;
+        flex-direction:column;
+        align-items:stretch;
+        justify-content:flex-start;
+        gap:0;
+        background:rgba(250,249,246,.985);
+        border-top:1px solid var(--border);
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+        transform:translateY(-14px);
+        transition:opacity .28s ease, transform .35s cubic-bezier(.22,1,.36,1), visibility .28s;
+      }
+      .nav.open > nav { opacity:1; visibility:visible; pointer-events:auto; transform:none; }
+      .nav > nav a {
+        width:100%;
+        padding:15px 4px;
+        border-bottom:1px solid var(--border);
+        border-radius:0;
+        color:var(--text);
+        font-size:clamp(1.45rem,7vw,2.15rem);
+        font-weight:500;
+        letter-spacing:-.045em;
+        opacity:0;
+        transform:translateY(12px);
+        transition:opacity .25s ease, transform .35s ease, color .2s;
+      }
+      .nav.open > nav a { opacity:1; transform:none; }
+      .nav.open > nav a:nth-child(2){transition-delay:.04s}
+      .nav.open > nav a:nth-child(3){transition-delay:.08s}
+      .nav.open > nav a:nth-child(4){transition-delay:.12s}
+      .nav.open > nav a:nth-child(5){transition-delay:.16s}
+      .nav > nav a:hover { background:transparent; color:var(--gold); }
+      .nav > nav a:last-child { margin-top:auto; border:0; border-radius:999px; background:var(--text); color:#fff; padding:15px 20px; text-align:center; font-size:.9rem; letter-spacing:0; }
+      .nav > nav a:last-child:hover { background:var(--gold); color:#111; }
 
       .menu {
         display:inline-flex;
         align-items:center;
         grid-column:2;
         grid-row:1;
+        position:relative;
+        z-index:2;
+        padding:10px 0 10px 12px;
       }
 
       .nav > .btn.dark { display:none; }
@@ -1375,9 +1414,10 @@
         <a href="#servicos">Serviços</a>
         <a href="#portfolio">Projectos</a>
         <a href="#processo">Processo</a>
+        <a href="#contacto">Contacto</a>
       </nav>
       <a class="btn dark" href="#contacto">Pedir orçamento <span>↗</span></a>
-      <button class="menu" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false">Menu <span class="menu-bars" aria-hidden="true"><i></i><i></i></span></button>
+      <button class="menu" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false"> <span class="menu-bars" aria-hidden="true"><i></i><i></i></span></button>
     </div>
   </header>
 
@@ -1860,14 +1900,6 @@
         ticker.innerHTML = content + ' ' + content;
       }
 
-      // ----- MOBILE MENU TOGGLE (placeholder) -----
-      const menuBtn = document.querySelector('.menu');
-      if (menuBtn) {
-        menuBtn.addEventListener('click', () => {
-          alert('Menu: Sobre, Serviços, Projectos, Processo, Contacto');
-        });
-      }
-
       // ----- FORM SUBMIT (prevent default + feedback) -----
       const form = document.getElementById('form');
       if (form) {
@@ -1900,5 +1932,6 @@
 
     })();
   </script>
+  <script src="mobile-menu.js"></script>
 </body>
 </html>
