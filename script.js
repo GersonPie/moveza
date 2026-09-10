@@ -1,19 +1,125 @@
-const contact=document.querySelector('.contact');contact.insertAdjacentHTML('beforebegin',`
-<section class="marquee"><div>IMÓVEIS EXCECIONAIS — INTERIORES AUTÊNTICOS — INVESTIMENTOS INTELIGENTES — IMÓVEIS EXCECIONAIS — INTERIORES AUTÊNTICOS — </div></section>
-<section class="curation container reveal-up"><div class="curation-copy"><small>CURADORIA MOVEZA / 04</small><h2>Não mostramos tudo.<br>Mostramos <i>o que importa.</i></h2><p>Cada imóvel entra na nossa seleção após uma análise cuidada de localização, arquitetura, qualidade, documentação e potencial de valorização.</p><a href="#contacto" class="line-link">conhecer a nossa abordagem ↗</a></div><div class="curation-cards"><article><span>01</span><h3>Localização</h3><p>Contexto, acessos e qualidade de vida.</p></article><article><span>02</span><h3>Potencial</h3><p>Valor presente e perspetiva futura.</p></article><article><span>03</span><h3>Identidade</h3><p>Arquitetura com presença e propósito.</p></article><article><span>04</span><h3>Segurança</h3><p>Verificação e acompanhamento profissional.</p></article></div></section>
-<section class="immersive"><img src="assets/interior-wide.png" alt="Interior MOVEZA"><div class="immersive-copy reveal-up"><small>MOVEZA INTERIORES</small><h2>Design não é decoração.<br>É a forma como <i>se vive.</i></h2><p>Projetamos ambientes onde beleza, função e identidade coexistem naturalmente.</p><a class="pill light" href="#projetos">explorar projetos ↗</a></div><div class="frame-label">RESIDÊNCIA KATEMBE / 2026</div></section>
-<section class="journey container reveal-up"><small>UMA EXPERIÊNCIA COMPLETA</small><h2>Da primeira conversa<br>ao último <i>detalhe.</i></h2><div class="journey-grid"><article><b>01</b><h3>Escutamos</h3><p>Percebemos o seu estilo de vida e objetivos.</p></article><article><b>02</b><h3>Procuramos</h3><p>Selecionamos apenas as opções relevantes.</p></article><article><b>03</b><h3>Aconselhamos</h3><p>Comparamos e apoiamos uma decisão informada.</p></article><article><b>04</b><h3>Concretizamos</h3><p>Negócio, projeto e entrega acompanhados.</p></article></div></section>
-<section class="investment-block"><div class="container reveal-up"><div><small>INVESTIMENTO IMOBILIÁRIO</small><h2>Visão para reconhecer valor.<br>Estratégia para o <i>multiplicar.</i></h2></div><div><p>Analisamos localização, procura, rendimento e potencial de transformação.</p><div class="investment-stats"><span><b>360°</b>análise integrada</span><span><b>1:1</b>consultoria pessoal</span><span><b>100%</b>foco no cliente</span></div><a class="pill gold" href="#contacto">quero investir ↗</a></div></div></section>
-<section class="testimonials container reveal-up"><small>RELAÇÕES DE CONFIANÇA</small><h2>O que queremos que<br>cada cliente <i>sinta.</i></h2><div class="quote"><span>“</span><blockquote>Clareza em cada decisão, atenção em cada detalhe e tranquilidade durante todo o processo.</blockquote><p>Os testemunhos reais serão apresentados após autorização dos clientes.</p></div></section>
-<section class="faq container reveal-up"><div><small>PERGUNTAS FREQUENTES</small><h2>Antes de<br>começarmos.</h2></div><div class="accordion"><details open><summary>Em que zonas trabalham?<span>+</span></summary><p>Atuamos em Maputo e avaliamos projetos noutras regiões.</p></details><details><summary>Acompanham toda a compra?<span>+</span></summary><p>Sim. Pesquisa, visitas, negociação e documentação.</p></details><details><summary>Posso contratar apenas interiores?<span>+</span></summary><p>Sim, para espaços residenciais e comerciais.</p></details><details><summary>Trabalham com investidores?<span>+</span></summary><p>Sim. Fazemos pesquisa, análise e valorização.</p></details></div></section>`);
-const heroImg=document.querySelector('.hero-media img');addEventListener('scroll',()=>{let p=Math.min(scrollY/innerHeight,1);heroImg.style.transform=`scale(${1.04+p*.06}) translateY(${p*20}px)`;document.querySelector('.navshell').classList.toggle('compact',scrollY>50);document.querySelector('.immersive>img').style.transform=`translateY(${document.querySelector('.immersive').getBoundingClientRect().top*.04}px)`},{passive:true});
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});document.querySelectorAll('.reveal-up,.services article,.projects figure').forEach(e=>{e.classList.add('reveal-up');io.observe(e)});
-document.querySelector('form').addEventListener('submit',e=>{e.preventDefault();alert('Obrigado. A MOVEZA entrará em contacto brevemente.');e.target.reset()});
-const count=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;let n=+e.target.dataset.n,i=0,t=setInterval(()=>{e.target.textContent=++i;if(i>=n)clearInterval(t)},20);count.unobserve(e.target)}));document.querySelectorAll('[data-n]').forEach(e=>count.observe(e));
-const headerStyles=document.createElement('link');headerStyles.rel='stylesheet';headerStyles.href='header.css';document.head.appendChild(headerStyles);
-const navShell=document.querySelector('.navshell'),menuButton=document.querySelector('.menubtn');
-menuButton.setAttribute('aria-label','Abrir menu');menuButton.setAttribute('aria-expanded','false');
-menuButton.addEventListener('click',()=>{const open=navShell.classList.toggle('menu-open');menuButton.setAttribute('aria-expanded',String(open));menuButton.textContent=open?'fechar':'menu'});
-navShell.querySelectorAll('nav a').forEach(link=>link.addEventListener('click',()=>{navShell.classList.remove('menu-open');menuButton.setAttribute('aria-expanded','false');menuButton.textContent='menu'}));
-document.addEventListener('click',event=>{if(!navShell.contains(event.target)&&navShell.classList.contains('menu-open')){navShell.classList.remove('menu-open');menuButton.setAttribute('aria-expanded','false');menuButton.textContent='menu'}});
-addEventListener('resize',()=>{if(innerWidth>760){navShell.classList.remove('menu-open');menuButton.setAttribute('aria-expanded','false');menuButton.textContent='menu'}},{passive:true});
+// MOVEZA UI interactions
+
+const mobileMenuButton = document.querySelector(".menu");
+const mobileNav = document.querySelector(".nav");
+
+function closeMobileMenu() {
+  mobileNav?.classList.remove("open");
+  mobileMenuButton?.setAttribute("aria-expanded", "false");
+  mobileMenuButton?.setAttribute("aria-label", "Abrir menu");
+  document.body.style.overflow = "";
+}
+
+mobileMenuButton?.addEventListener("click", () => {
+  const open = mobileNav.classList.toggle("open");
+  mobileMenuButton.setAttribute("aria-expanded", String(open));
+  mobileMenuButton.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+  document.body.style.overflow = open ? "hidden" : "";
+});
+
+mobileNav?.querySelectorAll("nav a").forEach((link) => {
+  link.addEventListener("click", closeMobileMenu);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMobileMenu();
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) closeMobileMenu();
+});
+
+const revealElements = document.querySelectorAll(".reveal");
+
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  {
+    threshold: 0.12,
+  }
+);
+
+revealElements.forEach((element) => {
+  revealObserver.observe(element);
+});
+
+
+// Soft parallax for hero
+const heroImage = document.querySelector(".hero-img");
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!heroImage) return;
+
+    const scroll = window.scrollY;
+
+    if (scroll < window.innerHeight) {
+      heroImage.style.transform =
+        `scale(1.015) translateY(${scroll * 0.06}px)`;
+    }
+  },
+  { passive: true }
+);
+
+
+// Smooth internal navigation
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const target = document.querySelector(link.getAttribute("href"));
+
+    if (!target) return;
+
+    event.preventDefault();
+
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+});
+
+
+// Header transparency response
+const headerNav = document.querySelector(".nav");
+
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!headerNav) return;
+
+    if (window.scrollY > 100) {
+      headerNav.style.background = "rgba(255,255,255,.86)";
+    } else {
+      headerNav.style.background = "rgba(255,255,255,.72)";
+    }
+  },
+  { passive: true }
+);
+
+
+// Demo form handling
+const form = document.querySelector("#form");
+
+form?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const button = form.querySelector("button");
+
+  const previousText = button.textContent;
+
+  button.textContent = "Pedido enviado ✓";
+  button.disabled = true;
+
+  setTimeout(() => {
+    button.textContent = previousText;
+    button.disabled = false;
+    form.reset();
+  }, 3000);
+});
