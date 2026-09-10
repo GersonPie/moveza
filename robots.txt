@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://moveza.co.mz/sitemap.xml
