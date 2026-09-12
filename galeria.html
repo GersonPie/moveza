@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Galeria de Obras — MOVEZA</title>
+  <meta name="description" content="Galeria de projectos MOVEZA: mobiliário por medida, cozinhas, interiores residenciais, comerciais e hotelaria em Matola, Moçambique.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        screens: {
+          'xs': '420px', 'sm': '640px', 'md': '768px',
+          'lg': '1024px', 'xl': '1280px', '2xl': '1536px',
+        },
+        extend: {
+          colors: {
+            ink: {
+              50:'#fbfbfd', 100:'#f5f5f7', 200:'#e8e8ed', 300:'#d2d2d7',
+              400:'#86868b', 500:'#6e6e73', 600:'#424245', 700:'#1d1d1f',
+              800:'#161617', 900:'#0a0a0b',
+            },
+            gold: { 400:'#d4a03c', 500:'#b8860b', 600:'#96690a' },
+          },
+          fontFamily: {
+            sans: ['Inter','-apple-system','BlinkMacSystemFont','SF Pro Display','system-ui','sans-serif'],
+          },
+          letterSpacing: {
+            'apple':'-0.022em', 'apple-tight':'-0.03em',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+    body { font-feature-settings: 'ss01','cv11'; background: #0a0a0b; }
+
+    a, button { -webkit-tap-highlight-color: transparent; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 50%; bottom: -3px; height: 1px; width: 0;
+      background: currentColor; transition: width .35s cubic-bezier(.22,1,.36,1), left .35s cubic-bezier(.22,1,.36,1);
+    }
+    .nav-link:hover::after { width: 100%; left: 0; }
+
+    ::selection { background: #b8860b; color: #fff; }
+
+    .glass-dark {
+      background: rgba(10,10,11,0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    .noise { position: relative; }
+    .noise::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.03; pointer-events: none; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .text-balance { text-wrap: balance; }
+
+    .gradient-text-gold {
+      background: linear-gradient(180deg, #e5b855 0%, #b8860b 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* Gallery item reveal */
+    .gallery-item {
+      opacity: 0;
+      transform: translateY(28px) scale(0.98);
+      transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+    }
+    .gallery-item.visible { opacity: 1; transform: none; }
+
+    /* Filter pills */
+    .filter-pill { transition: all .35s cubic-bezier(.22,1,.36,1); }
+
+    /* Lightbox */
+    .lightbox { opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility .4s ease; }
+    .lightbox.open { opacity: 1; visibility: visible; }
+    .lightbox-img {
+      transform: scale(0.94); opacity: 0;
+      transition: transform .55s cubic-bezier(.22,1,.36,1), opacity .45s ease;
+    }
+    .lightbox.open .lightbox-img { transform: scale(1); opacity: 1; }
+    .lightbox-caption {
+      transform: translateY(14px); opacity: 0;
+      transition: transform .55s cubic-bezier(.22,1,.36,1) .1s, opacity .5s ease .1s;
+    }
+    .lightbox.open .lightbox-caption { transform: translateY(0); opacity: 1; }
+
+    body.no-scroll { overflow: hidden; }
+
+    .safe-bottom { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    :root { --header-h: 52px; }
+    @media (max-width: 768px) { :root { --header-h: 48px; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal, .gallery-item { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body class="font-sans text-white antialiased overflow-x-hidden bg-ink-900">
+
+  <!-- ============ HEADER ============ -->
+  <header class="fixed top-0 left-0 w-full z-50 glass-dark border-b border-white/[0.06]">
+    <div class="max-w-[1200px] mx-auto px-4 xs:px-5 sm:px-6 h-12 md:h-[52px] flex items-center justify-between">
+
+      <a href="index.html" class="flex items-center gap-2 xs:gap-2.5 group min-w-0 flex-shrink-0">
+        <span class="w-7 h-7 xs:w-[30px] xs:h-[30px] md:w-8 md:h-8 rounded-[7px] overflow-hidden bg-white/5 flex-shrink-0 ring-1 ring-white/10">
+          <img src="assets/moveza-logo.png" alt="" class="w-full h-full object-cover">
+        </span>
+        <span class="text-[14px] xs:text-[15px] md:text-[15px] font-semibold tracking-tight text-white truncate">MOVEZA</span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
+        <a href="index.html#quem-somos" class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Quem Somos</a>
+        <a href="index.html#servicos"   class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Serviços</a>
+        <a href="galeria.html"          class="nav-link text-[13px] text-white font-medium transition-colors">Obras</a>
+        <a href="index.html#testemunhos" class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Testemunhos</a>
+        <a href="index.html#contacto"   class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Contacto</a>
+      </nav>
+
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <a href="index.html#contacto" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-white text-ink-900 text-[12px] sm:text-[13px] font-medium hover:bg-white/90 transition-colors">
+          Orçamento <span class="text-gold-500 text-xs">↗</span>
+        </a>
+        <button id="menuBtn" class="lg:hidden flex items-center justify-center w-9 h-9 -mr-1 text-white active:scale-95 transition-transform" aria-label="Menu" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" id="menuIcon">
+            <path id="menuIconTop" d="M2 5h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path id="menuIconBottom" d="M2 13h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <nav id="mobileNav" class="mobile-nav lg:hidden px-4 xs:px-5 sm:px-6 glass-dark border-t border-white/[0.06]" style="max-height:0;overflow:hidden;opacity:0;transform:translateY(-8px);transition:max-height .45s cubic-bezier(.22,1,.36,1), opacity .3s ease, transform .35s cubic-bezier(.22,1,.36,1);">
+      <div class="py-3">
+        <a href="index.html#quem-somos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85 border-b border-white/[0.06] active:text-gold-400">Quem Somos</a>
+        <a href="index.html#servicos"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85 border-b border-white/[0.06] active:text-gold-400">Serviços</a>
+        <a href="galeria.html"          class="block py-3.5 text-[17px] sm:text-[18px] font-semibold tracking-tight text-white border-b border-white/[0.06]">Obras</a>
+        <a href="index.html#testemunhos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85 border-b border-white/[0.06] active:text-gold-400">Testemunhos</a>
+        <a href="index.html#contacto"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85">Contacto</a>
+        <a href="index.html#contacto" class="sm:hidden mt-3 block text-center py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium active:scale-[0.98] transition-transform">Pedir orçamento</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="pt-12 md:pt-[52px] bg-ink-900">
+
+    <!-- ============ HERO (SIMPLES) ============ -->
+    <section class="relative bg-ink-900 noise border-b border-white/[0.06] pt-14 md:pt-20 pb-10 md:pb-14">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-2 text-[12px] md:text-[13px] text-white/40 mb-6 md:mb-8 reveal" aria-label="Navegação">
+          <a href="index.html" class="hover:text-white transition-colors">Início</a>
+          <span class="text-white/20">/</span>
+          <span class="text-white font-medium">Obras</span>
+        </nav>
+
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-12 reveal">
+          <div class="max-w-3xl">
+            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-gold-400 mb-4 md:mb-5">Galeria de Projectos</p>
+            <p class="text-[15px] md:text-[17px] text-white/55 leading-[1.6] tracking-apple max-w-2xl">
+              Uma selecção de obras que executámos para residências, escritórios, hotelaria e espaços comerciais em Moçambique. Clique para ver em detalhe.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-6 lg:gap-8 pt-4 lg:pt-0 lg:pb-2">
+            <div class="flex items-baseline gap-2">
+              <span id="visibleCount" class="text-[clamp(2rem,4vw,3rem)] font-semibold tracking-apple-tight text-white leading-none">0</span>
+              <span class="text-[13px] text-white/40 font-medium">obras</span>
+            </div>
+            <div class="w-px h-10 bg-white/10"></div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-[clamp(2rem,4vw,3rem)] font-semibold tracking-apple-tight gradient-text-gold leading-none">5</span>
+              <span class="text-[13px] text-white/40 font-medium">categorias</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FILTERS ============ -->
+    <section class="sticky top-12 md:top-[52px] z-40 glass-dark border-b border-white/[0.06]">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-3.5 md:py-4">
+        <div class="flex items-center gap-2 md:gap-2.5 overflow-x-auto no-scrollbar -mx-5 xs:-mx-6 sm:-mx-8 lg:mx-0 px-5 xs:px-6 sm:px-8 lg:px-0">
+          <button data-filter="all" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white text-ink-900 text-[13px] md:text-[13.5px] font-medium active:scale-95">
+            Todas
+          </button>
+          <button data-filter="residencial" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
+            Residencial
+          </button>
+          <button data-filter="comercial" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
+            Comercial
+          </button>
+          <button data-filter="hotelaria" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
+            Hotelaria
+          </button>
+          <button data-filter="cozinhas" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
+            Cozinhas
+          </button>
+          <button data-filter="carpintaria" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
+            Carpintaria
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY GRID ============ -->
+    <section class="bg-ink-900" style="padding-top: clamp(3rem, 5vw, 4.5rem); padding-bottom: clamp(4rem, 7vw, 6.5rem);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+
+        <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"></div>
+
+        <div id="emptyState" class="hidden text-center py-20">
+          <div class="w-16 h-16 rounded-full bg-white/[0.05] mx-auto mb-5 flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="text-white/40">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 15l5-5 4 4 6-6 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="text-[17px] font-medium tracking-tight text-white mb-1.5">Sem obras nesta categoria</p>
+          <p class="text-[14px] text-white/50">Experimente outro filtro acima.</p>
+        </div>
+
+        <div id="loadMoreWrap" class="flex justify-center mt-12 md:mt-14">
+          <button id="loadMoreBtn" class="btn-primary group inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-white/15 hover:border-white/40 text-white text-[14px] md:text-[15px] font-medium transition-colors">
+            <span id="loadMoreText">Ver mais obras</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="transition-transform group-hover:translate-y-0.5">
+              <path d="M7 2v10M3 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA STRIP ============ -->
+    <section class="relative bg-ink-800 border-t border-white/[0.06] noise overflow-hidden">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-16 md:py-20 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <div class="max-w-2xl">
+            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-white/40 mb-4 reveal">Pronto para começar?</p>
+            <h2 class="text-[clamp(1.5rem,4vw,2.75rem)] font-semibold leading-[1.1] tracking-apple-tight text-white mb-0 text-balance reveal" style="transition-delay:.1s">
+              Tem um espaço para <span class="gradient-text-gold">transformar?</span>
+            </h2>
+          </div>
+          <a href="index.html#contacto" class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.3)] self-start md:self-auto reveal" style="transition-delay:.2s">
+            Pedir orçamento <span class="text-gold-500 text-xs">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-ink-900 text-white/55 pt-14 md:pt-16 pb-8 md:pb-10 border-t border-white/[0.06] safe-bottom">
+    <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 md:gap-12 mb-10 md:mb-12">
+      <div class="sm:col-span-2 lg:col-span-5">
+        <div class="flex items-center gap-2.5 mb-4 md:mb-5">
+          <span class="w-7 h-7 rounded-[7px] overflow-hidden bg-white/5 ring-1 ring-white/10 flex-shrink-0">
+            <img src="assets/moveza-logo.png" alt="MOVEZA" class="w-full h-full object-cover">
+          </span>
+          <strong class="text-white font-semibold tracking-tight text-[15px]">MOVEZA</strong>
+        </div>
+        <p class="text-[14px] leading-[1.55] max-w-sm tracking-apple">
+          Mobiliário, interiores e serviços criados à medida. Da matéria-prima ao espaço pronto.
+        </p>
+      </div>
+
+      <div class="lg:col-span-3">
+        <h4 class="text-[13px] font-medium tracking-tight text-white mb-3.5 md:mb-4">Navegar</h4>
+        <nav class="flex flex-col gap-2.5">
+          <a href="index.html#quem-somos" class="text-[14px] hover:text-white active:text-gold-400 transition-colors tracking-apple py-0.5">Quem Somos</a>
+          <a href="index.html#servicos"   class="text-[14px] hover:text-white active:text-gold-400 transition-colors tracking-apple py-0.5">Serviços</a>
+          <a href="galeria.html"          class="text-[14px] text-white font-medium tracking-apple py-0.5">Obras</a>
+          <a href="index.html#testemunhos" class="text-[14px] hover:text-white active:text-gold-400 transition-colors tracking-apple py-0.5">Testemunhos</a>
+          <a href="index.html#contacto"   class="text-[14px] hover:text-white active:text-gold-400 transition-colors tracking-apple py-0.5">Contacto</a>
+        </nav>
+      </div>
+
+      <div class="lg:col-span-4">
+        <h4 class="text-[13px] font-medium tracking-tight text-white mb-3.5 md:mb-4">Contacto</h4>
+        <div class="flex flex-col gap-2.5 text-[14px] tracking-apple">
+          <span>Matola, Província de Maputo</span>
+          <a href="tel:+258879236274" class="hover:text-white active:text-gold-400 transition-colors py-0.5">+258 87 923 6274</a>
+          <a href="mailto:geral@movezainteriores.co.mz" class="hover:text-white active:text-gold-400 transition-colors py-0.5 break-all">geral@movezainteriores.co.mz</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 pt-6 md:pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row justify-between gap-2 md:gap-3 text-[11px] md:text-[12px] text-white/35 tracking-apple">
+      <span>© 2026 MOVEZA INTERIORES-DESIGN & SERVIÇOS, LDA · NUEL 105076061</span>
+      <span>Feito com rigor em Matola, Moçambique.</span>
+    </div>
+  </footer>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <div id="lightbox" class="lightbox fixed inset-0 z-[2000] flex items-center justify-center bg-ink-900/98 backdrop-blur-2xl" role="dialog" aria-modal="true" aria-label="Visualizador de imagens">
+    <button id="lightboxClose" class="absolute top-4 right-4 md:top-6 md:right-6 z-20 w-10 h-10 md:w-11 md:h-11 rounded-full bg-white/[0.08] hover:bg-white/[0.15] active:bg-white/20 flex items-center justify-center text-white transition-colors" aria-label="Fechar">
+      <svg width="16" height="16" viewBox="0 0 11 11" fill="none">
+        <path d="M1 1l9 9M10 1l-9 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="absolute top-4 left-4 md:top-6 md:left-6 z-20 px-3.5 py-1.5 rounded-full bg-white/[0.08] text-white text-[12px] md:text-[13px] font-medium tracking-tight backdrop-blur-sm">
+      <span id="lbCurrent">1</span> <span class="opacity-50">/</span> <span id="lbTotal">1</span>
+    </div>
+
+    <button id="lightboxPrev" class="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/[0.08] hover:bg-white/[0.15] active:bg-white/20 flex items-center justify-center text-white transition-colors" aria-label="Anterior">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M11 4l-5 5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button id="lightboxNext" class="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white/[0.08] hover:bg-white/[0.15] active:bg-white/20 flex items-center justify-center text-white transition-colors" aria-label="Seguinte">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M7 4l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="relative w-full h-full flex items-center justify-center p-4 md:p-16 safe-bottom" id="lightboxBackdrop">
+      <figure class="lightbox-img relative max-w-full max-h-full flex flex-col items-center pointer-events-none">
+        <img id="lightboxImg" src="" alt="" class="max-w-[90vw] md:max-w-[85vw] max-h-[72vh] md:max-h-[78vh] object-contain rounded-lg md:rounded-xl shadow-[0_20px_80px_rgba(0,0,0,0.8)] pointer-events-auto">
+        <figcaption id="lightboxCaption" class="lightbox-caption absolute bottom-0 left-0 right-0 -mt-20 translate-y-[calc(100%+1.5rem)] md:translate-y-[calc(100%+1.25rem)] text-center text-white">
+          <div class="inline-flex flex-col items-center gap-1 px-5 py-3 rounded-2xl bg-white/[0.06] backdrop-blur-md border border-white/[0.08]">
+            <span id="lbTitle" class="text-[15px] md:text-[16px] font-medium tracking-tight">Título do projecto</span>
+            <span id="lbMeta" class="text-[11px] md:text-[12px] text-white/55 tracking-[0.02em]">Categoria · Local</span>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===== MOBILE MENU =====
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      const menuIconTop = document.getElementById('menuIconTop');
+      const menuIconBottom = document.getElementById('menuIconBottom');
+
+      function closeMobileNav() {
+        mobileNav.style.maxHeight = '0';
+        mobileNav.style.opacity = '0';
+        mobileNav.style.transform = 'translateY(-8px)';
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuIconTop.setAttribute('d', 'M2 5h14');
+        menuIconBottom.setAttribute('d', 'M2 13h14');
+      }
+
+      menuBtn?.addEventListener('click', () => {
+        const isOpen = menuBtn.getAttribute('aria-expanded') === 'true';
+        const nextOpen = !isOpen;
+        menuBtn.setAttribute('aria-expanded', nextOpen);
+        if (nextOpen) {
+          mobileNav.style.maxHeight = '500px';
+          mobileNav.style.opacity = '1';
+          mobileNav.style.transform = 'translateY(0)';
+          menuIconTop.setAttribute('d', 'M4 4l10 10');
+          menuIconBottom.setAttribute('d', 'M14 4L4 14');
+        } else {
+          closeMobileNav();
+        }
+      });
+
+      mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
+      window.addEventListener('resize', () => { if (window.innerWidth >= 1024) closeMobileNav(); });
+
+      // ==========================================================
+      // ============ GALLERY DATA ============
+      // ==========================================================
+      const projects = [
+        { src: "assets/hero-interiors-v3.png",    title: "Sala Contemporânea",        category: "residencial",  categoryLabel: "Residencial",  meta: "Interiores",   location: "Maputo" },
+        { src: "assets/interior-wide.png",        title: "Residência KaTembe",        category: "residencial",  categoryLabel: "Residencial",  meta: "Interiores",   location: "KaTembe" },
+        { src: "assets/interior-editorial.png",   title: "Casa Ponta D'Ouro",         category: "residencial",  categoryLabel: "Residencial",  meta: "Mobiliário",   location: "Ponta D'Ouro" },
+        { src: "assets/hero-room.png",            title: "Suite Privada",             category: "residencial",  categoryLabel: "Residencial",  meta: "Quarto",       location: "Matola" },
+        { src: "assets/hero-sofa.png",            title: "Sala de Estar",             category: "residencial",  categoryLabel: "Residencial",  meta: "Mobiliário",   location: "Sommerschield" },
+        { src: "assets/hero-estate-v2.png",       title: "Vivenda Privada",           category: "residencial",  categoryLabel: "Residencial",  meta: "Interiores",   location: "Matola Rio" },
+
+        { src: "assets/commercial-v3.png",        title: "Lobby de Hotel",            category: "hotelaria",    categoryLabel: "Hotelaria",    meta: "Mobiliário",   location: "Maputo" },
+        { src: "assets/hero-room.png",            title: "Quarto de Hóspedes",        category: "hotelaria",    categoryLabel: "Hotelaria",    meta: "Interiores",   location: "Bilene" },
+
+        { src: "assets/commercial-v3.png",        title: "Espaço Comercial",          category: "comercial",    categoryLabel: "Comercial",    meta: "Design",       location: "Polana" },
+        { src: "assets/hero-moveza.png",          title: "Recepção Corporativa",      category: "comercial",    categoryLabel: "Comercial",    meta: "Mobiliário",   location: "Baixa, Maputo" },
+
+        { src: "assets/craftsmanship-v3.png",     title: "Cozinha por Medida",        category: "cozinhas",     categoryLabel: "Cozinhas",     meta: "Cozinha",      location: "Matola C" },
+        { src: "assets/craftsmanship-v3.png",     title: "Carpintaria Fina",          category: "carpintaria",  categoryLabel: "Carpintaria",  meta: "Marcenaria",   location: "Matola" },
+      ];
+
+      const INITIAL_COUNT = 8;
+      const LOAD_STEP = 4;
+
+      let currentFilter = 'all';
+      let visibleLimit = INITIAL_COUNT;
+
+      const galleryGrid = document.getElementById('galleryGrid');
+      const emptyState = document.getElementById('emptyState');
+      const loadMoreWrap = document.getElementById('loadMoreWrap');
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      const loadMoreText = document.getElementById('loadMoreText');
+      const visibleCount = document.getElementById('visibleCount');
+
+      const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23161617'/%3E%3Ccircle cx='200' cy='135' r='34' fill='%23424245'/%3E%3Crect x='90' y='195' width='220' height='14' rx='7' fill='%23424245'/%3E%3Crect x='130' y='222' width='140' height='10' rx='5' fill='%23424245'/%3E%3C/svg%3E";
+
+      // ===== Render =====
+      function render() {
+        const filtered = currentFilter === 'all'
+          ? projects
+          : projects.filter(p => p.category === currentFilter);
+
+        const visible = filtered.slice(0, visibleLimit);
+
+        galleryGrid.innerHTML = '';
+
+        if (visible.length === 0) {
+          emptyState.classList.remove('hidden');
+          loadMoreWrap.classList.add('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+
+          visible.forEach((p, i) => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'gallery-item group relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-800 aspect-[4/3] text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900';
+            item.dataset.index = i;
+            item.style.transitionDelay = `${Math.min(i * 50, 500)}ms`;
+            item.setAttribute('aria-label', `Ver ${p.title} em detalhe`);
+
+            item.innerHTML = `
+              <img
+                src="${p.src}"
+                alt="${p.title}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='${PLACEHOLDER}'"
+                class="w-full h-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06] group-active:scale-[1.02]">
+              <div class="absolute inset-0 bg-gradient-to-t from-ink-900/95 via-ink-900/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+
+              <div class="absolute top-3 right-3 md:top-4 md:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <span class="inline-flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white">
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                    <path d="M5 3h6v6M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+
+              <div class="absolute bottom-0 left-0 right-0 p-3.5 md:p-5 text-white">
+                <span class="inline-block text-[9px] md:text-[10px] font-semibold tracking-[0.08em] uppercase text-gold-400 mb-1.5 md:mb-2">${p.categoryLabel}</span>
+                <b class="block text-[14px] md:text-[17px] font-semibold tracking-tight leading-tight mb-0.5 md:mb-1">${p.title}</b>
+                <span class="text-[10px] md:text-[12px] tracking-[0.02em] text-white/60 font-medium">${p.meta} · ${p.location}</span>
+              </div>
+            `;
+
+            galleryGrid.appendChild(item);
+          });
+        }
+
+        if (filtered.length > visibleLimit) {
+          loadMoreWrap.classList.remove('hidden');
+          const remaining = filtered.length - visibleLimit;
+          const step = Math.min(LOAD_STEP, remaining);
+          loadMoreText.textContent = `Ver mais ${step} obra${step > 1 ? 's' : ''}`;
+        } else {
+          loadMoreWrap.classList.add('hidden');
+        }
+
+        visibleCount.textContent = projects.length;
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            document.querySelectorAll('.gallery-item').forEach(el => el.classList.add('visible'));
+          });
+        });
+      }
+
+      // ===== Filter pills =====
+      const filterPills = document.querySelectorAll('.filter-pill');
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          const newFilter = pill.dataset.filter;
+          if (newFilter === currentFilter) return;
+
+          currentFilter = newFilter;
+          visibleLimit = INITIAL_COUNT;
+
+          filterPills.forEach(p => {
+            if (p.dataset.filter === currentFilter) {
+              p.classList.remove('bg-white/[0.06]','border','border-white/[0.08]','text-white/70','hover:text-white','hover:bg-white/[0.1]');
+              p.classList.add('bg-white','text-ink-900');
+            } else {
+              p.classList.add('bg-white/[0.06]','border','border-white/[0.08]','text-white/70','hover:text-white','hover:bg-white/[0.1]');
+              p.classList.remove('bg-white','text-ink-900');
+            }
+          });
+
+          render();
+        });
+      });
+
+      // ===== Load more =====
+      loadMoreBtn?.addEventListener('click', () => {
+        visibleLimit += LOAD_STEP;
+        render();
+        setTimeout(() => {
+          const items = document.querySelectorAll('.gallery-item');
+          const target = items[Math.max(0, visibleLimit - LOAD_STEP - 1)];
+          if (target) {
+            const y = target.getBoundingClientRect().top + window.pageYOffset - 100;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 80);
+      });
+
+      // ==========================================================
+      // ============ LIGHTBOX ============
+      // ==========================================================
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lbTitle = document.getElementById('lbTitle');
+      const lbMeta = document.getElementById('lbMeta');
+      const lbCurrent = document.getElementById('lbCurrent');
+      const lbTotal = document.getElementById('lbTotal');
+      const lightboxClose = document.getElementById('lightboxClose');
+      const lightboxPrev = document.getElementById('lightboxPrev');
+      const lightboxNext = document.getElementById('lightboxNext');
+      const lightboxBackdrop = document.getElementById('lightboxBackdrop');
+
+      let currentIndex = 0;
+      let currentList = [];
+
+      function openLightbox(index) {
+        const filtered = currentFilter === 'all'
+          ? projects
+          : projects.filter(p => p.category === currentFilter);
+        currentList = filtered.slice(0, visibleLimit);
+        if (currentList.length === 0) return;
+
+        currentIndex = Math.max(0, Math.min(index, currentList.length - 1));
+        updateLightboxContent();
+        lightbox.classList.add('open');
+        document.body.classList.add('no-scroll');
+        setTimeout(() => lightboxClose.focus(), 100);
+      }
+
+      function updateLightboxContent() {
+        const p = currentList[currentIndex];
+        if (!p) return;
+
+        lightboxImg.style.opacity = '0';
+        lightboxImg.style.transform = 'scale(0.96)';
+
+        const img = new Image();
+        img.onload = () => {
+          lightboxImg.src = p.src;
+          requestAnimationFrame(() => {
+            lightboxImg.style.opacity = '1';
+            lightboxImg.style.transform = 'scale(1)';
+          });
+        };
+        img.onerror = () => {
+          lightboxImg.src = PLACEHOLDER;
+          requestAnimationFrame(() => {
+            lightboxImg.style.opacity = '1';
+            lightboxImg.style.transform = 'scale(1)';
+          });
+        };
+        img.src = p.src;
+
+        lightboxImg.alt = p.title;
+        lbTitle.textContent = p.title;
+        lbMeta.textContent = `${p.meta} · ${p.location}`;
+        lbCurrent.textContent = String(currentIndex + 1);
+        lbTotal.textContent = String(currentList.length);
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.classList.remove('no-scroll');
+      }
+
+      function lightboxPrevFn() {
+        if (currentList.length < 2) return;
+        currentIndex = (currentIndex - 1 + currentList.length) % currentList.length;
+        updateLightboxContent();
+      }
+
+      function lightboxNextFn() {
+        if (currentList.length < 2) return;
+        currentIndex = (currentIndex + 1) % currentList.length;
+        updateLightboxContent();
+      }
+
+      galleryGrid.addEventListener('click', (e) => {
+        const item = e.target.closest('.gallery-item');
+        if (!item) return;
+        const idx = parseInt(item.dataset.index, 10);
+        if (!isNaN(idx)) openLightbox(idx);
+      });
+
+      lightboxClose?.addEventListener('click', closeLightbox);
+      lightboxPrev?.addEventListener('click', (e) => { e.stopPropagation(); lightboxPrevFn(); });
+      lightboxNext?.addEventListener('click', (e) => { e.stopPropagation(); lightboxNextFn(); });
+
+      lightboxBackdrop?.addEventListener('click', (e) => {
+        if (e.target === lightboxBackdrop) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') lightboxPrevFn();
+        if (e.key === 'ArrowRight') lightboxNextFn();
+      });
+
+      // Swipe
+      let touchStartX = 0, touchStartY = 0, touchEndX = 0, touchEndY = 0;
+      lightboxBackdrop?.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      lightboxBackdrop?.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        const dx = touchEndX - touchStartX;
+        const dy = touchEndY - touchStartY;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+        if (dx > 0) lightboxPrevFn();
+        else lightboxNextFn();
+      }, { passive: true });
+
+      // Reveal generic
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // Init
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,1619 +1,605 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt" class="scroll-smooth">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbfbfd">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>MOVEZA — Mobiliário & Interiores por Medida</title>
   <meta name="description" content="Fabricação de mobiliário, cozinhas, carpintaria, design de interiores e remodelação em Matola, Moçambique.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        screens: {
+          'xs': '420px',
+          'sm': '640px',
+          'md': '768px',
+          'lg': '1024px',
+          'xl': '1280px',
+          '2xl': '1536px',
+        },
+        extend: {
+          colors: {
+            ink: {
+              50:  '#fbfbfd',
+              100: '#f5f5f7',
+              200: '#e8e8ed',
+              300: '#d2d2d7',
+              400: '#86868b',
+              500: '#6e6e73',
+              600: '#424245',
+              700: '#1d1d1f',
+              800: '#161617',
+              900: '#0a0a0b',
+            },
+            gold: {
+              400: '#d4a03c',
+              500: '#b8860b',
+              600: '#96690a',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'system-ui', 'sans-serif'],
+          },
+          letterSpacing: {
+            'apple': '-0.022em',
+            'apple-tight': '-0.03em',
+          },
+          animation: {
+            'ticker': 'ticker 40s linear infinite',
+          },
+          keyframes: {
+            ticker: {
+              '0%': { transform: 'translateX(0)' },
+              '100%': { transform: 'translateX(-50%)' },
+            },
+          },
+        },
+      },
+    };
+  </script>
   <style>
-    /* ---------- RESET & BASE ---------- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; }
+    body { font-feature-settings: 'ss01','cv11'; }
+
+    input, select, textarea { font-size: 16px !important; }
+
+    a, button { -webkit-tap-highlight-color: transparent; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-stagger > * { opacity: 0; transform: translateY(20px); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+    .reveal-stagger.visible > * { opacity: 1; transform: none; }
+    .reveal-stagger.visible > *:nth-child(1) { transition-delay: .05s; }
+    .reveal-stagger.visible > *:nth-child(2) { transition-delay: .12s; }
+    .reveal-stagger.visible > *:nth-child(3) { transition-delay: .19s; }
+    .reveal-stagger.visible > *:nth-child(4) { transition-delay: .26s; }
+    .reveal-stagger.visible > *:nth-child(5) { transition-delay: .33s; }
+    .reveal-stagger.visible > *:nth-child(6) { transition-delay: .40s; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 50%; bottom: -3px; height: 1px; width: 0;
+      background: currentColor; transition: width .35s cubic-bezier(.22,1,.36,1), left .35s cubic-bezier(.22,1,.36,1);
+    }
+    .nav-link:hover::after { width: 100%; left: 0; }
+
+    ::selection { background: #b8860b; color: #fff; }
+
+    .glass { background: rgba(251,251,253,0.72); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+
+    .noise { position: relative; }
+    .noise::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.025; pointer-events: none; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    :root {
-      --bg: #ffffff;
-      --bg-soft: #f5f5f7;
-      --text: #1d1d1f;
-      --text-soft: #6e6e73;
-      --border: #d2d2d7;
-      --gold: #b8860b;
-      --gold-soft: #c49a2b;
-      --radius: 20px;
-      --radius-sm: 14px;
-      --shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
-      --transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    .text-balance { text-wrap: balance; }
+
+    .gradient-text-gold {
+      background: linear-gradient(180deg, #d4a03c 0%, #96690a 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+    .mask-fade { mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 
-    body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      font-weight: 400;
-      overflow-x: hidden;
-    }
+    .btn-primary { transition: all .4s cubic-bezier(.22,1,.36,1); }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0) scale(.98); }
 
-    img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font-family: inherit;
-      font-size: inherit;
-      border: none;
-      outline: none;
-      background: none;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* ---------- TYPOGRAPHY ---------- */
-    h1, h2, h3 {
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      line-height: 1.1;
-    }
-
-    h1 {
-      font-size: clamp(2.6rem, 7vw, 5.2rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-    }
-
-    h2 {
-      font-size: clamp(1.9rem, 4.5vw, 3.4rem);
-      font-weight: 600;
-      letter-spacing: -0.025em;
-    }
-
-    h3 {
-      font-size: 1.15rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    em {
-      font-style: normal;
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .eyebrow {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      margin-bottom: 12px;
-    }
-
-    .big {
-      font-size: 1.3rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-    }
-
-    p {
-      color: var(--text-soft);
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
-
-    /* ---------- BUTTONS ---------- */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 12px 24px;
-      border-radius: 100px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      transition: var(--transition);
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn.dark {
-      background: var(--text);
-      color: #fff;
-    }
-
-    .btn.dark:hover {
-      background: #3a3a3c;
-    }
-
-    .btn.gold {
-      background: var(--gold);
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(184, 134, 11, 0.2);
-    }
-
-    .btn.gold:hover {
-      background: #a0740a;
-      box-shadow: 0 8px 24px rgba(184, 134, 11, 0.3);
-      transform: translateY(-1px);
-    }
-
-    .under {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--gold);
-      border-bottom: 1.5px solid transparent;
-      transition: var(--transition);
-      padding-bottom: 2px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .under:hover {
-      border-bottom-color: var(--gold);
-    }
-
-    /* ---------- HEADER ---------- */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .nav { display:grid; grid-template-columns:minmax(220px,1fr) auto minmax(220px,1fr); align-items:center; max-width:1280px; margin:0 auto; padding:0 24px; height:72px; gap:24px; }
-    .logo { display:inline-flex; align-items:center; gap:12px; width:max-content; min-width:0; }
-    .logo-mark { width:48px; height:48px; flex:0 0 48px; overflow:hidden; border-radius:4px; }
-    .logo-mark img { width:100%; height:100%; object-fit:cover; object-position:center 9%; transform:scale(1); transform-origin:center 18%; }
-    .logo-copy { display:flex; flex-direction:column; line-height:1; }
-    .logo-copy strong { font-size:1.08rem; letter-spacing:.2em; font-weight:700; }
-    .logo-copy small { margin-top:6px; font-size:.4rem; letter-spacing:.1em; color:var(--text-soft); white-space:nowrap; }
-
-    .nav > nav {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    nav a {
-      font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--text-soft);
-      transition: var(--transition);
-      letter-spacing: -0.01em;
-    }
-
-    nav a:hover {
-      color: var(--text);
-    }
-
-    .nav > .btn { justify-self:end; }
-    .menu {
-      display: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text);
-      cursor: pointer;
-    }
-    .menu-bars { display:inline-grid; gap:4px; width:18px; margin-left:8px; }
-    .menu-bars i { display:block; height:1px; background:currentColor; transition:var(--transition); }
-
-    /* ---------- HERO ---------- */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
+    .mobile-nav {
+      max-height: 0;
       overflow: hidden;
-      background: #000;
-      margin-top: 0;
-    }
-
-    .hero-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.7;
-    }
-
-    .shade {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.6) 100%);
-      z-index: 1;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      color: #fff;
-      padding: 120px 0 80px;
-    }
-
-    .hero-content .eyebrow {
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 16px;
-    }
-
-    .hero-content h1 {
-      color: #fff;
-      margin-bottom: 24px;
-      max-width: 780px;
-    }
-
-    .hero-content h1 em {
-      color: #e8c84a;
-    }
-
-    .hero-content > p {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 1.15rem;
-      max-width: 560px;
-      margin-bottom: 36px;
-      font-weight: 300;
-      letter-spacing: -0.01em;
-    }
-
-    .hero-content > div {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .hero-content .under {
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    .hero-content .under:hover {
-      color: #fff;
-      border-bottom-color: #fff;
-    }
-
-    .hero-note {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      white-space: nowrap;
-    }
-
-    .hero-note i {
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* ---------- TICKER ---------- */
-    .ticker {
-      background: var(--bg-soft);
-      padding: 18px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .ticker div {
-      display: inline-block;
-      animation: ticker 28s linear infinite;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--text-soft);
-      text-transform: uppercase;
-    }
-
-    @keyframes ticker {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ---------- REVEAL ANIMATIONS ---------- */
-    .reveal {
+      transition: max-height .45s cubic-bezier(.22,1,.36,1), opacity .3s ease, transform .35s cubic-bezier(.22,1,.36,1);
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transform: translateY(-8px);
     }
-
-    .reveal.visible {
+    .mobile-nav.open {
+      max-height: 500px;
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* ---------- INTRO ---------- */
-    .intro {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      padding: 120px 24px;
-    }
+    .safe-bottom { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
 
-    .intro h2 {
-      margin-bottom: 0;
-    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .intro > div:last-child p {
-      margin-bottom: 20px;
-    }
-
-    .intro > div:last-child .big {
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    /* ---------- CRAFT ---------- */
-    .craft {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 80vh;
-      background: var(--bg-soft);
-    }
-
-    .craft-img {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .craft-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .craft-img span {
-      position: absolute;
-      bottom: 32px;
-      left: 32px;
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .craft-copy {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 80px 64px;
-    }
-
-    .craft-copy h2 {
-      margin-bottom: 20px;
-    }
-
-    .craft-copy > p {
-      margin-bottom: 36px;
-      max-width: 420px;
-    }
-
-    .craft-copy ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .craft-copy ul li {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 0.95rem;
-      color: var(--text);
-      font-weight: 400;
-    }
-
-    .craft-copy ul li b {
-      font-weight: 600;
-      color: var(--text-soft);
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
-      min-width: 24px;
-    }
-
-    /* ---------- SERVICES (CLICKABLE CARDS) ---------- */
-    .services {
-      padding: 120px 24px;
-    }
-
-    .services h2 {
-      margin-bottom: 64px;
-      max-width: 600px;
-    }
-
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .service-card {
-      background: var(--bg);
-      padding: 40px 32px;
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      cursor: pointer;
-      text-align: left;
-      width: 100%;
-      border: none;
-      font-family: inherit;
-      color: inherit;
-    }
-
-    .service-card:hover {
-      background: #fafafa;
-    }
-
-    .service-card:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: -2px;
-    }
-
-    .service-card b {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-soft);
-      letter-spacing: 0.06em;
-      margin-bottom: 20px;
-      display: block;
-    }
-
-    .service-card h3 {
-      margin-bottom: 10px;
-      font-size: 1.05rem;
-    }
-
-    .service-card p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--text-soft);
-      flex: 1;
-    }
-
-    .service-card .card-arrow {
-      display: inline-block;
-      margin-top: 20px;
-      font-size: 1rem;
-      color: var(--gold);
-      transition: var(--transition);
+    /* ============ GALLERY POPUP ============ */
+    .gallery-popup {
+      transform: translateY(120%) scale(0.96);
       opacity: 0;
-      transform: translateX(-4px);
+      transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s ease;
+      will-change: transform, opacity;
     }
-
-    .service-card:hover .card-arrow {
+    .gallery-popup.show {
+      transform: translateY(0) scale(1);
       opacity: 1;
-      transform: translateX(0);
     }
-
-    /* ---------- MODAL / POPUP ---------- */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+    .gallery-popup.hide-down {
+      transform: translateY(120%) scale(0.96);
       opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
+    .popup-shimmer {
+      position: absolute; inset: 0;
+      background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.08) 55%, transparent 70%);
+      background-size: 250% 100%;
+      animation: shimmer 3.5s ease-in-out infinite;
+      pointer-events: none;
+      border-radius: inherit;
     }
+    @keyframes shimmer { 0% { background-position: 100% 0; } 60%, 100% { background-position: -100% 0; } }
 
-    .modal {
-      background: #fff;
-      border-radius: 28px;
-      max-width: 640px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 48px 44px 44px;
-      position: relative;
-      transform: scale(0.95) translateY(10px);
-      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      box-shadow: var(--shadow-lg);
+    :root {
+      --section-py: clamp(4rem, 8vw, 10rem);
+      --header-h: 52px;
     }
+    @media (max-width: 768px) { :root { --header-h: 48px; } }
 
-    .modal-overlay.active .modal {
-      transform: scale(1) translateY(0);
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--bg-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.1rem;
-      color: var(--text-soft);
-      transition: var(--transition);
-      border: none;
-      line-height: 1;
-    }
-
-    .modal-close:hover {
-      background: #e8e8ed;
-      color: var(--text);
-    }
-
-    .modal .modal-eyebrow {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 12px;
-    }
-
-    .modal h3 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      margin-bottom: 16px;
-      padding-right: 32px;
-    }
-
-    .modal p {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--text-soft);
-      margin-bottom: 24px;
-    }
-
-    .modal ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-
-    .modal ul li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.95rem;
-      color: var(--text);
-      line-height: 1.5;
-    }
-
-    .modal ul li::before {
-      content: "—";
-      color: var(--gold);
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    .modal .btn {
-      width: 100%;
-      justify-content: center;
-    }
-
-    /* ---------- IMMERSIVE ---------- */
-    .immersive {
-      position: relative;
-      min-height: 70vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .immersive img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.65;
-    }
-
-    .immersive .shade {
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.15) 100%);
-    }
-
-    .immersive .container {
-      position: relative;
-      z-index: 2;
-      color: #fff;
-    }
-
-    .immersive .eyebrow {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .immersive h2 {
-      color: #fff;
-      margin-bottom: 36px;
-      max-width: 700px;
-    }
-
-    .immersive h2 em {
-      color: #e8c84a;
-    }
-
-    /* ---------- PORTFOLIO ---------- */
-    .portfolio {
-      padding: 120px 24px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 56px;
-      gap: 40px;
-    }
-
-    .section-head h2 {
-      margin-bottom: 0;
-    }
-
-    .section-head > p {
-      max-width: 340px;
-      font-size: 0.95rem;
-      text-align: right;
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 24px;
-    }
-
-    .project-grid figure {
-      border-radius: var(--radius);
-      overflow: hidden;
-      position: relative;
-      background: var(--bg-soft);
-      transition: var(--transition);
-    }
-
-    .project-grid figure:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-    }
-
-    .project-grid figure.wide {
-      grid-column: 1 / 2;
-      grid-row: 1 / 3;
-    }
-
-    .project-grid figure img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      aspect-ratio: 16 / 11;
-    }
-
-    .project-grid figure.wide img {
-      aspect-ratio: auto;
-      min-height: 500px;
-    }
-
-    .project-grid figcaption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 28px 28px 24px;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .project-grid figcaption b {
-      font-size: 1.05rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .project-grid figcaption span {
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 500;
-    }
-
-    /* ---------- SECTORS (DROPDOWNS) ---------- */
-    .sectors {
-      padding: 100px 0;
-      background: var(--bg-soft);
-    }
-
-    .sectors .container {
-      padding: 0 24px;
-    }
-
-    .sectors h2 {
-      margin-bottom: 56px;
-    }
-
-    .sector-list {
-      display: flex;
-      flex-direction: column;
-      border-top: 1px solid var(--border);
-    }
-
-    .sector-item {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .sector-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 0;
-      cursor: pointer;
-      transition: var(--transition);
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      font-family: inherit;
-      color: inherit;
-    }
-
-    .sector-header:hover {
-      padding-left: 8px;
-      color: var(--gold);
-    }
-
-    .sector-header .sector-label {
-      font-size: 1.05rem;
-      font-weight: 400;
-      color: var(--text);
-      transition: var(--transition);
-    }
-
-    .sector-header:hover .sector-label {
-      color: var(--gold);
-    }
-
-    .sector-header .sector-meta {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .sector-header .sector-num {
-      font-weight: 400;
-      color: var(--text-soft);
-      font-size: 0.8rem;
-      letter-spacing: 0.06em;
-    }
-
-    .sector-header .sector-chevron {
-      font-size: 0.9rem;
-      color: var(--text-soft);
-      transition: transform 0.3s ease;
-      display: inline-block;
-      line-height: 1;
-    }
-
-    .sector-item.open .sector-chevron {
-      transform: rotate(180deg);
-    }
-
-    .sector-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.3s ease;
-      padding: 0 0 0 0;
-    }
-
-    .sector-item.open .sector-body {
-      max-height: 200px;
-      padding: 0 0 24px 0;
-    }
-
-    .sector-body p {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--text-soft);
-      max-width: 720px;
-    }
-
-    /* ---------- PROCESS ---------- */
-    .process {
-      padding: 120px 24px;
-    }
-
-    .process h2 {
-      margin-bottom: 64px;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
-    }
-
-    .steps article b {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 0.06em;
-      margin-bottom: 16px;
-    }
-
-    .steps article h3 {
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-
-    .steps article p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    /* ---------- COMPANY ---------- */
-    .company {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      padding: 120px 24px;
-      background: var(--bg-soft);
-      max-width: 100%;
-    }
-
-    .company .eyebrow {
-      margin-bottom: 12px;
-    }
-
-    .company h2 {
-      margin-bottom: 0;
-    }
-
-    .company-data dl {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .company-data dl > div {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .company-data dt {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-soft);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding-top: 2px;
-    }
-
-    .company-data dd {
-      font-size: 0.95rem;
-      color: var(--text);
-      font-weight: 400;
-      line-height: 1.5;
-    }
-
-    /* ---------- CONTACT ---------- */
-    .contact {
-      padding: 120px 0;
-    }
-
-    .contact .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      padding: 0 24px;
-    }
-
-    .contact h2 {
-      margin-bottom: 20px;
-    }
-
-    .contact > .container > div > p {
-      margin-bottom: 40px;
-      max-width: 400px;
-    }
-
-    .contact-data {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .contact-data a,
-    .contact-data span {
-      font-size: 0.95rem;
-      color: var(--text-soft);
-      transition: var(--transition);
-      line-height: 1.5;
-    }
-
-    .contact-data a:hover {
-      color: var(--gold);
-    }
-
-    .contact-data span {
-      margin-top: 8px;
-    }
-
-    #form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    #form label {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-soft);
-      letter-spacing: 0.02em;
-    }
-
-    #form input,
-    #form select,
-    #form textarea {
-      padding: 14px 0;
-      border-bottom: 1.5px solid var(--border);
-      font-size: 0.95rem;
-      color: var(--text);
-      transition: var(--transition);
-      background: transparent;
-      border-radius: 0;
-      font-weight: 400;
-    }
-
-    #form input:focus,
-    #form select:focus,
-    #form textarea:focus {
-      border-bottom-color: var(--text);
-    }
-
-    #form input::placeholder,
-    #form textarea::placeholder {
-      color: #b0b0b5;
-      font-weight: 300;
-    }
-
-    #form select {
-      cursor: pointer;
-      color: var(--text);
-      appearance: none;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236e6e73' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 8px center;
-      background-size: 10px;
-    }
-
-    #form textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-
-    #form .btn {
-      align-self: flex-start;
-      margin-top: 8px;
-      border: none;
-    }
-
-    /* ---------- FOOTER ---------- */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 60px 0 40px;
-    }
-
-    footer .container {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      padding: 0 24px;
-    }
-
-    footer .container > img {
-      height: 100px;
-      width: max-content;
-      opacity: 0.8;
-    }
-
-    footer .container > p {
-      font-size: 0.85rem;
-      color: var(--text-soft);
-      max-width: 300px;
-    }
-
-    footer nav {
-      display: flex;
-      gap: 28px;
-      flex-wrap: wrap;
-      margin: 8px 0;
-    }
-
-    footer nav a {
-      font-size: 0.85rem;
-      color: var(--text-soft);
-      transition: var(--transition);
-    }
-
-    footer nav a:hover {
-      color: var(--text);
-    }
-
-    .foot-contact {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.85rem;
-      color: var(--text-soft);
-    }
-
-    .foot-contact a {
-      transition: var(--transition);
-    }
-
-    .foot-contact a:hover {
-      color: var(--gold);
-    }
-
-    footer small {
-      font-size: 0.7rem;
-      color: #b0b0b5;
-      margin-top: 16px;
-      letter-spacing: 0.02em;
-    }
-
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 1024px) {
-      .nav { grid-template-columns: minmax(205px,1fr) auto auto; gap:16px; }
-      .nav > nav { gap:18px; }
-      .logo-mark { width:44px; height:44px; flex-basis:44px; }
-      .logo-copy strong { font-size:.98rem; }
-      .logo-copy small { font-size:.36rem; }
-      .nav > .btn { padding:10px 14px; font-size:.75rem; }
-      .intro {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 80px 24px;
-      }
-
-      .craft {
-        grid-template-columns: 1fr;
-      }
-
-      .craft-img {
-        min-height: 400px;
-      }
-
-      .craft-copy {
-        padding: 60px 40px;
-      }
-
-      .service-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .project-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .project-grid figure.wide {
-        grid-column: 1 / 2;
-        grid-row: auto;
-      }
-
-      .project-grid figure.wide img {
-        min-height: 400px;
-      }
-
-      .steps {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 32px;
-      }
-
-      .company {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 80px 24px;
-      }
-
-      .contact .container {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-
-      .section-head {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-
-      .section-head > p {
-        text-align: left;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .nav {
-        height:64px;
-        grid-template-columns:1fr auto;
-        padding:0 18px;
-        gap:12px;
-      }
-
-      .logo-mark { width:42px; height:42px; flex-basis:42px; }
-      .logo-copy strong { font-size:.92rem; }
-      .logo-copy small { font-size:.34rem; }
-      .nav > nav {
-        position:fixed;
-        display:flex;
-        inset:64px 0 0;
-        min-height:calc(100dvh - 64px);
-        padding:clamp(32px,8vh,72px) 24px 28px;
-        flex-direction:column;
-        align-items:stretch;
-        justify-content:flex-start;
-        gap:0;
-        background:rgba(250,249,246,.985);
-        border-top:1px solid var(--border);
-        opacity:0;
-        visibility:hidden;
-        pointer-events:none;
-        transform:translateY(-14px);
-        transition:opacity .28s ease, transform .35s cubic-bezier(.22,1,.36,1), visibility .28s;
-      }
-      .nav.open > nav { opacity:1; visibility:visible; pointer-events:auto; transform:none; }
-      .nav > nav a {
-        width:100%;
-        padding:15px 4px;
-        border-bottom:1px solid var(--border);
-        border-radius:0;
-        color:var(--text);
-        font-size:clamp(1.45rem,7vw,2.15rem);
-        font-weight:500;
-        letter-spacing:-.045em;
-        opacity:0;
-        transform:translateY(12px);
-        transition:opacity .25s ease, transform .35s ease, color .2s;
-      }
-      .nav.open > nav a { opacity:1; transform:none; }
-      .nav.open > nav a:nth-child(2){transition-delay:.04s}
-      .nav.open > nav a:nth-child(3){transition-delay:.08s}
-      .nav.open > nav a:nth-child(4){transition-delay:.12s}
-      .nav.open > nav a:nth-child(5){transition-delay:.16s}
-      .nav > nav a:hover { background:transparent; color:var(--gold); }
-      .nav > nav a:last-child { margin-top:auto; border:0; border-radius:999px; background:var(--text); color:#fff; padding:15px 20px; text-align:center; font-size:.9rem; letter-spacing:0; }
-      .nav > nav a:last-child:hover { background:var(--gold); color:#111; }
-
-      .menu {
-        display:inline-flex;
-        align-items:center;
-        grid-column:2;
-        grid-row:1;
-        position:relative;
-        z-index:2;
-        padding:10px 0 10px 12px;
-      }
-
-      .nav > .btn.dark { display:none; }
-      .nav.open .menu-bars i:first-child { transform:translateY(2.5px) rotate(45deg); }
-      .nav.open .menu-bars i:last-child { transform:translateY(-2.5px) rotate(-45deg); }
-
-      .hero-content h1 {
-        font-size: 2.2rem;
-      }
-
-      .hero-content > p {
-        font-size: 1rem;
-      }
-
-      .hero-note {
-        font-size: 0.6rem;
-        bottom: 20px;
-      }
-
-      .service-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .service-card {
-        padding: 32px 24px;
-      }
-
-      .steps {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-
-      .company-data dl > div {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
-
-      .company-data dt {
-        font-size: 0.7rem;
-      }
-
-      .modal {
-        padding: 36px 24px 32px;
-        border-radius: 20px;
-      }
-
-      .modal h3 {
-        font-size: 1.4rem;
-      }
-
-      footer .container {
-        gap: 24px;
-      }
-
-      footer nav {
-        gap: 20px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .nav { padding:0 14px; }
-      .logo { gap:9px; }
-      .logo-mark { width:38px; height:38px; flex-basis:38px; }
-      .logo-copy strong { font-size:.82rem; letter-spacing:.17em; }
-      .logo-copy small { font-size:.29rem; letter-spacing:.07em; }
-      .menu { font-size:.75rem; }
-      .container {
-        padding: 0 18px;
-      }
-
-      .intro {
-        padding: 60px 18px;
-      }
-
-      .services {
-        padding: 60px 18px;
-      }
-
-      .portfolio {
-        padding: 60px 18px;
-      }
-
-      .process {
-        padding: 60px 18px;
-      }
-
-      .contact {
-        padding: 60px 0;
-      }
-
-      .contact .container {
-        padding: 0 18px;
-      }
-
-      .company {
-        padding: 60px 18px;
-      }
-
-      .hero-content > div {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px;
-      }
-
-      .hero-content .btn.gold {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .immersive h2 {
-        font-size: 1.6rem;
-      }
-
-      .project-grid figure.wide img {
-        min-height: 280px;
-      }
-
-      .sector-header .sector-label {
-        font-size: 0.95rem;
-      }
-    }
+    section[id] { scroll-margin-top: calc(var(--header-h) + 12px); }
 
-    /* prefers-reduced-motion */
     @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-
-      .reveal {
-        opacity: 1;
-        transform: none;
-      }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal, .reveal-stagger > * { opacity: 1; transform: none; }
     }
   </style>
 </head>
-<body>
+<body class="font-sans bg-ink-50 text-ink-700 antialiased overflow-x-hidden">
 
-  <!-- HEADER -->
-  <header>
-    <div class="nav">
-      <a class="logo" href="#inicio" aria-label="MOVEZA — início">
-        <span class="logo-mark"><img src="assets/moveza-logo.png" alt=""></span>
-        <span class="logo-copy"><strong>MOVEZA</strong><small>INTERIORES · DESIGN & SERVIÇOS</small></span>
+  <!-- ============ HEADER ============ -->
+  <header class="fixed top-0 left-0 w-full z-50 glass border-b border-ink-900/[0.06]">
+    <div class="max-w-[1200px] mx-auto px-4 xs:px-5 sm:px-6 h-12 md:h-[52px] flex items-center justify-between">
+
+      <a href="#inicio" class="flex items-center gap-2 ">
+        <span class=" flex-shrink-0 ring-1 ring-ink-900/5">
+          <img src="assets/moveza-logo.png" alt="" class="w-[3.5rem] h-[3rem] ">
+        </span>
+        <span class="text-[14px] xs:text-[15px] md:text-[15px] font-semibold tracking-tight text-ink-700 truncate">MOVEZA</span>
       </a>
-      <nav id="main-navigation">
-        <a href="#sobre">Sobre</a>
-        <a href="#servicos">Serviços</a>
-        <a href="#portfolio">Projectos</a>
-        <a href="#processo">Processo</a>
-        <a href="#contacto">Contacto</a>
+
+      <nav class="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
+        <a href="#quem-somos" class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Quem Somos</a>
+        <a href="#servicos"   class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Serviços</a>
+        <a href="#obras"      class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Obras</a>
+        <a href="#testemunhos" class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Testemunhos</a>
+        <a href="#contacto"   class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Contacto</a>
       </nav>
-      <a class="btn dark" href="#contacto">Pedir orçamento <span>↗</span></a>
-      <button class="menu" type="button" aria-label="Abrir menu" aria-controls="main-navigation" aria-expanded="false"> <span class="menu-bars" aria-hidden="true"><i></i><i></i></span></button>
+
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <a href="#contacto" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-ink-700 text-white text-[12px] sm:text-[13px] font-medium hover:bg-ink-800 transition-colors">
+          Orçamento <span class="text-gold-400 text-xs">↗</span>
+        </a>
+        <button id="menuBtn" class="lg:hidden flex items-center justify-center w-9 h-9 -mr-1 text-ink-700 active:scale-95 transition-transform" aria-label="Menu" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" id="menuIcon">
+            <path id="menuIconTop" d="M2 5h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path id="menuIconBottom" d="M2 13h14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
+
+    <nav id="mobileNav" class="mobile-nav lg:hidden px-4 xs:px-5 sm:px-6 glass border-t border-ink-900/5">
+      <div class="py-3 space-y-0">
+        <a href="#quem-somos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Quem Somos</a>
+        <a href="#servicos"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Serviços</a>
+        <a href="#obras"      class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Obras</a>
+        <a href="#testemunhos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Testemunhos</a>
+        <a href="#contacto"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 active:text-gold-500 transition-colors">Contacto</a>
+        <a href="#contacto" class="sm:hidden mt-3 block text-center py-3 rounded-full bg-ink-700 text-white text-[15px] font-medium active:scale-[0.98] transition-transform">Pedir orçamento</a>
+      </div>
+    </nav>
   </header>
 
-  <main>
+  <main class="pt-12 md:pt-[52px]">
 
-    <!-- HERO -->
-    <section class="hero" id="inicio">
-      <img class="hero-img" src="assets/hero-interiors-v3.png" alt="Cozinha e sala contemporâneas com mobiliário por medida">
-      <div class="shade"></div>
-      <div class="container hero-content">
-        <p class="eyebrow">MOBILIÁRIO · INTERIORES · EXECUÇÃO</p>
-        <h1>Desenhamos espaços.<br><em>Construímos identidade.</em></h1>
-        <p>Da primeira ideia à montagem final, criamos mobiliário e interiores por medida para residências, empresas e hotelaria.</p>
-        <div>
-          <a class="btn gold" href="#portfolio">Ver projectos ↗</a>
-          <a class="under" href="#contacto">Falar com a equipa</a>
+    <!-- ============ HERO ============ -->
+    <section id="inicio" class="relative min-h-[100svh] md:min-h-[92vh] flex items-center overflow-hidden bg-ink-900 noise">
+      <!-- Substituir por imagem estática em conexões lentas ou mobile -->
+<picture>
+  <source media="(max-width: 640px)" srcset="assets/hero-interiors-v3.png">
+  <video class="absolute inset-0 w-full h-full object-cover opacity-70 md:opacity-75"
+         src="assets/video-hero.mp4"
+         autoplay muted loop playsinline preload="metadata"
+         poster="assets/hero-interiors-v3.png"></video>
+</picture>
+      <div class="absolute inset-0 bg-gradient-to-b from-ink-900/60 via-ink-900/25 to-ink-900/80 md:from-ink-900/50 md:via-ink-900/20 md:to-ink-900/75"></div>
+
+      <div class="relative z-10 max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-24 xs:py-28 md:py-32 lg:py-40 text-white w-full">
+        <p class="text-[11px] xs:text-[12px] md:text-[13px] font-medium tracking-[0.02em] text-white/70 mb-4 md:mb-5 reveal">Mobiliário · Interiores · Execução</p>
+        <h1 class="text-[clamp(2.1rem,9vw,6rem)] font-semibold leading-[1.05] md:leading-[1.03] tracking-apple-tight max-w-5xl mb-5 md:mb-6 text-balance reveal" style="transition-delay:.1s">
+          Desenhamos espaços.<br>
+          <span class="gradient-text-gold">Construímos identidade.</span>
+        </h1>
+        <p class="text-[clamp(1rem,1.6vw,1.35rem)] text-white/75 font-normal max-w-xl mb-8 md:mb-10 leading-[1.45] md:leading-[1.4] tracking-apple reveal" style="transition-delay:.2s">
+          Da primeira ideia à montagem final, criamos mobiliário e interiores por medida para residências, empresas e hotelaria.
+        </p>
+        <div class="flex flex-col xs:flex-row xs:flex-wrap items-stretch xs:items-center gap-3 xs:gap-4 reveal" style="transition-delay:.3s">
+          <a href="#obras" class="btn-primary inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
+            Ver projectos
+          </a>
+          <a href="#contacto" class="inline-flex items-center justify-center gap-1.5 text-white/85 hover:text-white text-[15px] transition-colors group py-3 xs:py-0">
+            Falar com a equipa
+            <span class="transition-transform group-hover:translate-x-0.5">→</span>
+          </a>
         </div>
       </div>
-      <div class="hero-note">MATOLA · MOÇAMBIQUE <i></i> DESDE 2026</div>
-    </section>
 
-    <!-- TICKER -->
-    <section class="ticker">
-      <div>DESIGN POR MEDIDA — CARPINTARIA — COZINHAS — MOBILIÁRIO — REMODELAÇÃO — METALOMECÂNICA — </div>
-    </section>
-
-    <!-- INTRO -->
-    <section class="intro container reveal" id="sobre">
-      <div>
-        <p class="eyebrow">01 / A MOVEZA</p>
-        <h2>Da matéria-prima<br>ao espaço <em>pronto.</em></h2>
-      </div>
-      <div>
-        <p class="big">A MOVEZA une design, produção e montagem numa só equipa.</p>
-        <p>Criamos soluções funcionais e duradouras com madeira, metal e materiais mistos, acompanhando todo o projecto com rigor, transparência e atenção aos detalhes.</p>
-        <a class="under" href="#empresa">Conhecer a empresa ↗</a>
+      <div class="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-3 text-white/40 text-[10px] md:text-[11px] tracking-[0.08em] uppercase whitespace-nowrap">
+        Matola · Moçambique <span class="w-4 h-px bg-white/20"></span> Desde 2026
       </div>
     </section>
 
-    <!-- CRAFT -->
-    <section class="craft">
-      <div class="craft-img reveal">
-        <img src="assets/craftsmanship-v3.png" alt="Execução artesanal de mobiliário em madeira">
-        <span>PRECISÃO EM CADA DETALHE</span>
-      </div>
-      <div class="craft-copy reveal">
-        <p class="eyebrow">FEITO À MEDIDA</p>
-        <h2>Ideias ganham forma<br>nas nossas <em>mãos.</em></h2>
-        <p>Do desenho técnico ao acabamento, cada peça é produzida para responder ao espaço, ao uso e à personalidade de quem o habita.</p>
-        <ul>
-          <li><b>01</b>Materiais seleccionados</li>
-          <li><b>02</b>Produção cuidada</li>
-          <li><b>03</b>Montagem profissional</li>
-        </ul>
+    <!-- ============ TICKER ============ -->
+    <section class="bg-white py-3.5 md:py-4 border-b border-ink-200 overflow-hidden mask-fade">
+      <div class="flex whitespace-nowrap animate-ticker">
+        <span class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 px-6">
+          Design por medida &nbsp;·&nbsp; Carpintaria &nbsp;·&nbsp; Cozinhas &nbsp;·&nbsp; Mobiliário &nbsp;·&nbsp; Remodelação &nbsp;·&nbsp; Metalomecânica &nbsp;·&nbsp;
+        </span>
+        <span class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 px-6" aria-hidden="true">
+          Design por medida &nbsp;·&nbsp; Carpintaria &nbsp;·&nbsp; Cozinhas &nbsp;·&nbsp; Mobiliário &nbsp;·&nbsp; Remodelação &nbsp;·&nbsp; Metalomecânica &nbsp;·&nbsp;
+        </span>
       </div>
     </section>
 
-    <!-- SERVICES (CLICKABLE CARDS) -->
-    <section class="services container" id="servicos">
-      <p class="eyebrow">02 / SERVIÇOS</p>
-      <h2>Capacidade completa.<br><em>Uma única equipa.</em></h2>
-      <div class="service-grid" id="serviceGrid">
-        <!-- Cards will be injected by JS or kept as HTML with data attributes -->
-      </div>
-    </section>
-
-    <!-- IMMERSIVE -->
-    <section class="immersive">
-      <img src="assets/commercial-v3.png" alt="Mobiliário MOVEZA para hotelaria e espaços comerciais">
-      <div class="shade"></div>
-      <div class="container">
-        <p class="eyebrow">RESIDENCIAL · COMERCIAL · HOTELARIA</p>
-        <h2>Um espaço memorável<br>começa com um <em>bom projecto.</em></h2>
-        <a class="btn gold" href="#contacto">Começar o meu projecto ↗</a>
-      </div>
-    </section>
-
-    <!-- PORTFOLIO -->
-    <section class="portfolio container" id="portfolio">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">03 / PROJECTOS</p>
-          <h2>Interiores pensados<br>para serem <em>vividos.</em></h2>
-        </div>
-        <p>Uma linguagem contemporânea, materiais honestos e soluções criadas para durar.</p>
-      </div>
-      <div class="project-grid">
-        <figure class="wide reveal">
-          <img src="assets/interior-wide.png" alt="Sala de estar contemporânea">
-          <figcaption>
-            <b>Residência KaTembe</b>
-            <span>INTERIORES · RESIDENCIAL</span>
-          </figcaption>
-        </figure>
-        <figure class="reveal">
-          <img src="assets/interior-editorial.png" alt="Interior com mobiliário natural">
-          <figcaption>
-            <b>Casa Ponta D'Ouro</b>
-            <span>MOBILIÁRIO · DECORAÇÃO</span>
-          </figcaption>
-        </figure>
-        <figure class="reveal">
-          <img src="assets/commercial-v3.png" alt="Lobby com mobiliário por medida">
-          <figcaption>
-            <b>Hospitalidade Maputo</b>
-            <span>COMERCIAL · HOTELARIA</span>
-          </figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- SECTORS (DROPDOWNS) -->
-    <section class="sectors">
-      <div class="container">
-        <p class="eyebrow">ONDE TRABALHAMOS</p>
-        <h2>Soluções para cada<br>tipo de <em>espaço.</em></h2>
-        <div class="sector-list" id="sectorList">
-          <!-- Sector items injected via JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- PROCESS -->
-    <section class="process container" id="processo">
-      <p class="eyebrow">04 / PROCESSO</p>
-      <h2>Do conceito à instalação.<br><em>Sem complicações.</em></h2>
-      <div class="steps">
-        <article>
-          <b>01</b>
-          <h3>Briefing & visita</h3>
-          <p>Conhecemos as suas necessidades, estilo, espaço e orçamento.</p>
-        </article>
-        <article>
-          <b>02</b>
-          <h3>Conceito & orçamento</h3>
-          <p>Desenvolvemos a solução, definimos materiais e apresentamos a proposta.</p>
-        </article>
-        <article>
-          <b>03</b>
-          <h3>Produção</h3>
-          <p>Fabricamos cada elemento com controlo de qualidade e acompanhamento.</p>
-        </article>
-        <article>
-          <b>04</b>
-          <h3>Entrega & montagem</h3>
-          <p>Transportamos, instalamos e entregamos o espaço pronto a utilizar.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- COMPANY (REMOVED NUEL, TIPO, CAPITAL SOCIAL) -->
-    <section class="company container reveal" id="empresa">
-      <div>
-        <p class="eyebrow">EMPRESA REGISTADA</p>
-        <h2>Confiança também se<br><em>constrói com transparência.</em></h2>
-      </div>
-      <div class="company-data">
-        <dl>
-          <div>
-            <dt>Nome legal</dt>
-            <dd>MOVEZA INTERIORES-DESIGN & SERVIÇOS, LDA</dd>
+    <!-- ============ QUEM SOMOS ============ -->
+    <section id="quem-somos" class="bg-white" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+        <div class="grid lg:grid-cols-12 gap-10 md:gap-14 lg:gap-24 items-start">
+          <div class="lg:col-span-5 reveal">
+            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">01 — Quem Somos</p>
+            <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
+              Uma equipa que<br>
+              pensa, produz<br>
+              e <span class="gradient-text-gold">instala.</span>
+            </h2>
           </div>
-          <div>
-            <dt>Constituição</dt>
-            <dd>18 de Junho de 2026</dd>
+
+          <div class="lg:col-span-7 reveal" style="transition-delay:.1s">
+            <p class="text-[clamp(1.2rem,2vw,1.75rem)] font-normal leading-[1.4] md:leading-[1.35] tracking-apple text-ink-700 mb-6 md:mb-8 text-balance">
+              A MOVEZA une design, produção e montagem numa só equipa — eliminando intermediários e garantindo controlo total sobre cada detalhe.
+            </p>
+            <p class="text-[15px] md:text-[17px] text-ink-500 leading-[1.65] md:leading-[1.6] tracking-apple mb-10 md:mb-12 max-w-2xl">
+              Nascemos em Matola com uma convicção simples: mobiliário e interiores de qualidade não precisam ser complicados. Trabalhamos com madeira, metal e materiais mistos, acompanhando cada projecto do briefing à entrega, com transparência, prazos cumpridos e atenção obsessiva ao acabamento.
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4 md:gap-x-6 pt-8 md:pt-10 border-t border-ink-200 reveal-stagger">
+              <div>
+                <div class="text-[clamp(1.9rem,4vw,3rem)] font-semibold tracking-apple-tight text-ink-700 leading-none">120+</div>
+                <div class="mt-2 text-[12px] md:text-[13px] font-medium text-ink-400 tracking-tight">Projectos</div>
+              </div>
+              <div>
+                <div class="text-[clamp(1.9rem,4vw,3rem)] font-semibold tracking-apple-tight text-ink-700 leading-none">15</div>
+                <div class="mt-2 text-[12px] md:text-[13px] font-medium text-ink-400 tracking-tight">Especialistas</div>
+              </div>
+              <div>
+                <div class="text-[clamp(1.9rem,4vw,3rem)] font-semibold tracking-apple-tight text-ink-700 leading-none">06</div>
+                <div class="mt-2 text-[12px] md:text-[13px] font-medium text-ink-400 tracking-tight">Sectores</div>
+              </div>
+              <div>
+                <div class="text-[clamp(1.9rem,4vw,3rem)] font-semibold tracking-apple-tight gradient-text-gold leading-none">100%</div>
+                <div class="mt-2 text-[12px] md:text-[13px] font-medium text-ink-400 tracking-tight">Feito à medida</div>
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVIÇOS ============ -->
+    <section id="servicos" class="bg-ink-100" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+        <div class="max-w-2xl mb-10 md:mb-16 reveal">
+          <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">02 — Serviços</p>
+          <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
+            Capacidade completa.<br>
+            <span class="gradient-text-gold">Uma única equipa.</span>
+          </h2>
+        </div>
+        <div id="serviceGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4"></div>
+      </div>
+    </section>
+
+    <!-- ============ IMMERSIVE CTA ============ -->
+    <section class="relative min-h-[70svh] md:min-h-[75vh] flex items-center overflow-hidden bg-ink-900 noise">
+      <img src="assets/commercial-v3.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50 md:opacity-55">
+      <div class="absolute inset-0 bg-gradient-to-br from-ink-900/75 via-ink-900/35 to-ink-900/65 md:from-ink-900/70 md:via-ink-900/30 md:to-ink-900/60"></div>
+      <div class="relative z-10 max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-20 md:py-24 text-white w-full">
+        <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-white/60 mb-4 md:mb-5 reveal">Residencial · Comercial · Hotelaria</p>
+        <h2 class="text-[clamp(1.7rem,7vw,4rem)] font-semibold leading-[1.1] md:leading-[1.05] tracking-apple-tight max-w-3xl mb-8 md:mb-10 text-balance reveal" style="transition-delay:.1s">
+          Um espaço memorável<br>começa com um <span class="gradient-text-gold">bom projecto.</span>
+        </h2>
+        <a href="#contacto" class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.15)] reveal" style="transition-delay:.2s">
+          Começar o meu projecto
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ NOSSAS OBRAS ============ -->
+    <section id="obras" class="bg-white" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 md:gap-6 mb-10 md:mb-14 reveal">
           <div>
-            <dt>Sede</dt>
-            <dd>Matola C, Quarteirão 18, Casa n.º 30, Rés-do-Chão</dd>
+            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">03 — Nossas Obras</p>
+            <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
+              Interiores pensados<br>
+              para serem <span class="gradient-text-gold">vividos.</span>
+            </h2>
+          </div>
+          <p class="text-[15px] md:text-[17px] text-ink-500 max-w-sm leading-[1.55] tracking-apple">
+            Uma linguagem contemporânea, materiais honestos e soluções criadas para durar.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4 mb-10 md:mb-12">
+          <a href="galeria.html" class="group sm:col-span-2 lg:col-span-2 lg:row-span-2 relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100 aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[580px] reveal">
+            <img src="assets/interior-wide.png" alt="Residência KaTembe" class="w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/15 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-5 md:p-8 text-white">
+              <b class="block text-[18px] md:text-[22px] font-semibold tracking-tight mb-1">Residência KaTembe</b>
+              <span class="text-[11px] md:text-[12px] tracking-[0.02em] text-white/70 font-medium">Interiores · Residencial</span>
+            </div>
+          </a>
+
+          <a href="galeria.html" class="group relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100 aspect-[4/3] reveal">
+            <img src="assets/interior-editorial.png" alt="Casa Ponta D'Ouro" class="w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/15 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-white">
+              <b class="block text-[16px] md:text-[17px] font-semibold tracking-tight mb-1">Casa Ponta D'Ouro</b>
+              <span class="text-[10px] md:text-[11px] tracking-[0.02em] text-white/70 font-medium">Mobiliário · Decoração</span>
+            </div>
+          </a>
+
+          <a href="galeria.html" class="group relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100 aspect-[4/3] reveal">
+            <img src="assets/commercial-v3.png" alt="Hospitalidade Maputo" class="w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/15 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-white">
+              <b class="block text-[16px] md:text-[17px] font-semibold tracking-tight mb-1">Hospitalidade Maputo</b>
+              <span class="text-[10px] md:text-[11px] tracking-[0.02em] text-white/70 font-medium">Comercial · Hotelaria</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="flex justify-center reveal">
+          <a href="galeria.html" class="group inline-flex items-center gap-2 text-[16px] md:text-[17px] font-medium text-ink-700 hover:text-gold-500 active:text-gold-500 transition-colors py-3 px-2">
+            Ver mais obras
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-ink-700 text-white text-[11px] transition-all group-hover:bg-gold-500 group-hover:translate-x-0.5">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTORES ============ -->
+    <section class="bg-ink-100" style="padding-top: clamp(3.5rem, 6vw, 8rem); padding-bottom: clamp(3.5rem, 6vw, 8rem);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+        <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5 reveal">Onde Trabalhamos</p>
+        <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 mb-10 md:mb-14 text-balance reveal" style="transition-delay:.1s">
+          Soluções para cada<br>tipo de <span class="gradient-text-gold">espaço.</span>
+        </h2>
+        <div id="sectorList" class="border-t border-ink-300/60"></div>
+      </div>
+    </section>
+
+    <!-- ============ TESTEMUNHOS ============ -->
+    <section id="testemunhos" class="bg-ink-700 text-white noise relative overflow-hidden" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 relative z-10">
+        <div class="max-w-2xl mb-10 md:mb-16 reveal">
+          <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-white/40 mb-4 md:mb-5">04 — Testemunhos</p>
+          <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-white text-balance">
+            O que dizem<br>
+            <span class="gradient-text-gold">os nossos clientes.</span>
+          </h2>
+        </div>
+
+        <div class="md:hidden -mx-5 xs:-mx-6 sm:-mx-8 px-5 xs:px-6 sm:px-8 overflow-x-auto no-scrollbar snap-x snap-mandatory">
+          <div class="flex gap-3.5 pb-2" style="width: max-content;">
+            <figure class="snap-start flex-shrink-0 w-[85vw] max-w-[360px] p-6 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm reveal">
+              <div class="flex gap-0.5 mb-5 text-gold-400 text-[14px]"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+              <blockquote class="text-[15px] font-normal leading-[1.6] tracking-apple text-white/90 mb-6">
+                A MOVEZA transformou por completo a nossa cozinha. Prazos cumpridos, acabamento impecável e uma equipa que realmente ouve.
+              </blockquote>
+              <figcaption class="flex items-center gap-3 pt-5 border-t border-white/[0.08]">
+                <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">AM</div>
+                <div>
+                  <div class="font-medium text-white text-[14px] tracking-tight">Ana Macuácua</div>
+                  <div class="text-[12px] text-white/45 mt-0.5">Residência · Matola</div>
+                </div>
+              </figcaption>
+            </figure>
+            <figure class="snap-start flex-shrink-0 w-[85vw] max-w-[360px] p-6 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm reveal">
+              <div class="flex gap-0.5 mb-5 text-gold-400 text-[14px]"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+              <blockquote class="text-[15px] font-normal leading-[1.6] tracking-apple text-white/90 mb-6">
+                Equipámos 40 quartos de hotel com mobiliário por medida. Qualidade consistente e um acompanhamento exemplar.
+              </blockquote>
+              <figcaption class="flex items-center gap-3 pt-5 border-t border-white/[0.08]">
+                <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">JS</div>
+                <div>
+                  <div class="font-medium text-white text-[14px] tracking-tight">João Silva</div>
+                  <div class="text-[12px] text-white/45 mt-0.5">Hotelaria · Maputo</div>
+                </div>
+              </figcaption>
+            </figure>
+            <figure class="snap-start flex-shrink-0 w-[85vw] max-w-[360px] p-6 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm reveal">
+              <div class="flex gap-0.5 mb-5 text-gold-400 text-[14px]"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+              <blockquote class="text-[15px] font-normal leading-[1.6] tracking-apple text-white/90 mb-6">
+                Profissionalismo raro. Desenharam, produziram e instalaram o nosso escritório em tempo recorde.
+              </blockquote>
+              <figcaption class="flex items-center gap-3 pt-5 border-t border-white/[0.08]">
+                <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">CT</div>
+                <div>
+                  <div class="font-medium text-white text-[14px] tracking-tight">Carla Tembe</div>
+                  <div class="text-[12px] text-white/45 mt-0.5">Escritório · Matola</div>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="hidden md:grid md:grid-cols-3 gap-4 reveal-stagger">
+          <figure class="p-8 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
+            <div class="flex gap-0.5 mb-6 text-gold-400"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+            <blockquote class="text-[17px] font-normal leading-[1.55] tracking-apple text-white/90 mb-8">
+              A MOVEZA transformou por completo a nossa cozinha. Prazos cumpridos, acabamento impecável e uma equipa que realmente ouve.
+            </blockquote>
+            <figcaption class="flex items-center gap-3 pt-6 border-t border-white/[0.08]">
+              <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">AM</div>
+              <div>
+                <div class="font-medium text-white text-[14px] tracking-tight">Ana Macuácua</div>
+                <div class="text-[12px] text-white/45 mt-0.5">Residência · Matola</div>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="p-8 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
+            <div class="flex gap-0.5 mb-6 text-gold-400"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+            <blockquote class="text-[17px] font-normal leading-[1.55] tracking-apple text-white/90 mb-8">
+              Equipámos 40 quartos de hotel com mobiliário por medida. Qualidade consistente e um acompanhamento exemplar do início ao fim.
+            </blockquote>
+            <figcaption class="flex items-center gap-3 pt-6 border-t border-white/[0.08]">
+              <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">JS</div>
+              <div>
+                <div class="font-medium text-white text-[14px] tracking-tight">João Silva</div>
+                <div class="text-[12px] text-white/45 mt-0.5">Hotelaria · Maputo</div>
+              </div>
+            </figcaption>
+          </figure>
+
+          <figure class="p-8 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
+            <div class="flex gap-0.5 mb-6 text-gold-400"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+            <blockquote class="text-[17px] font-normal leading-[1.55] tracking-apple text-white/90 mb-8">
+              Profissionalismo raro. Desenharam, produziram e instalaram o nosso escritório em tempo recorde, sem surpresas no orçamento.
+            </blockquote>
+            <figcaption class="flex items-center gap-3 pt-6 border-t border-white/[0.08]">
+              <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">CT</div>
+              <div>
+                <div class="font-medium text-white text-[14px] tracking-tight">Carla Tembe</div>
+                <div class="text-[12px] text-white/45 mt-0.5">Escritório · Matola</div>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESSO ============ -->
+    <section id="processo" class="bg-white" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+        <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5 reveal">05 — Processo</p>
+        <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 mb-10 md:mb-16 text-balance reveal" style="transition-delay:.1s">
+          Do conceito à instalação.<br>
+          <span class="gradient-text-gold">Sem complicações.</span>
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-6 reveal-stagger">
+          <article>
+            <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">01</b>
+            <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Briefing & visita</h3>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Conhecemos as suas necessidades, estilo, espaço e orçamento.</p>
+          </article>
+          <article>
+            <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">02</b>
+            <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Conceito & orçamento</h3>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Desenvolvemos a solução, definimos materiais e apresentamos a proposta.</p>
+          </article>
+          <article>
+            <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">03</b>
+            <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Produção</h3>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Fabricamos cada elemento com controlo de qualidade e acompanhamento.</p>
+          </article>
+          <article>
+            <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">04</b>
+            <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Entrega & montagem</h3>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Transportamos, instalamos e entregamos o espaço pronto a utilizar.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EMPRESA ============ -->
+    <section id="empresa" class="bg-ink-100" style="padding-top: clamp(3.5rem, 6vw, 8rem); padding-bottom: clamp(3.5rem, 6vw, 8rem);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 grid lg:grid-cols-2 gap-10 md:gap-16 items-start reveal">
+        <div>
+          <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">Empresa Registada</p>
+          <h2 class="text-[clamp(1.7rem,6vw,3rem)] font-semibold leading-[1.1] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
+            Confiança também se<br>
+            <span class="gradient-text-gold">constrói com transparência.</span>
+          </h2>
+        </div>
+        <dl class="divide-y divide-ink-300/60">
+          <div class="grid grid-cols-1 xs:grid-cols-[1fr_2fr] gap-1 xs:gap-4 py-4 md:py-5">
+            <dt class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 xs:pt-0.5">Nome legal</dt>
+            <dd class="text-[14px] md:text-[15px] text-ink-700 tracking-apple">MOVEZA INTERIORES-DESIGN & SERVIÇOS, LDA</dd>
+          </div>
+          <div class="grid grid-cols-1 xs:grid-cols-[1fr_2fr] gap-1 xs:gap-4 py-4 md:py-5">
+            <dt class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 xs:pt-0.5">Constituição</dt>
+            <dd class="text-[14px] md:text-[15px] text-ink-700 tracking-apple">18 de Junho de 2026</dd>
+          </div>
+          <div class="grid grid-cols-1 xs:grid-cols-[1fr_2fr] gap-1 xs:gap-4 py-4 md:py-5">
+            <dt class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 xs:pt-0.5">Sede</dt>
+            <dd class="text-[14px] md:text-[15px] text-ink-700 tracking-apple">Matola C, Quarteirão 18, Casa n.º 30, Rés-do-Chão</dd>
           </div>
         </dl>
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section class="contact" id="contacto">
-      <div class="container">
-        <div>
-          <p class="eyebrow">FALE CONNOSCO</p>
-          <h2>Tem um espaço<br>para <em>transformar?</em></h2>
-          <p>Conte-nos a sua ideia. A nossa equipa entra em contacto para compreender o projecto e preparar os próximos passos.</p>
-          <div class="contact-data">
-            <a href="tel:+258879236274">T. +258 87 923 6274</a>
-            <a href="mailto:geral@moveza.co.mz">geral@movezainteriores.co.mz</a>
-            <span>Matola C, Q. 18, Casa n.º 30<br>Província de Maputo, Moçambique</span>
+    <!-- ============ CONTACTO ============ -->
+    <section id="contacto" class="bg-white" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
+      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 grid lg:grid-cols-2 gap-12 md:gap-16">
+        <div class="reveal">
+          <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">Fale connosco</p>
+          <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 mb-5 md:mb-6 text-balance">
+            Tem um espaço<br>para <span class="gradient-text-gold">transformar?</span>
+          </h2>
+          <p class="text-[15px] md:text-[17px] text-ink-500 max-w-md mb-8 md:mb-10 leading-[1.6] md:leading-[1.55] tracking-apple">
+            Conte-nos a sua ideia. A nossa equipa entra em contacto para compreender o projecto e preparar os próximos passos.
+          </p>
+          <div class="flex flex-col gap-2.5">
+            <a href="tel:+258879236274" class="text-[15px] text-ink-500 hover:text-gold-500 active:text-gold-500 transition-colors tracking-apple">+258 87 923 6274</a>
+            <a href="mailto:geral@movezainteriores.co.mz" class="text-[15px] text-ink-500 hover:text-gold-500 active:text-gold-500 transition-colors tracking-apple break-all">geral@movezainteriores.co.mz</a>
+            <span class="text-[15px] text-ink-500 mt-3 leading-[1.55] tracking-apple">
+              Matola C, Q. 18, Casa n.º 30<br>Província de Maputo, Moçambique
+            </span>
           </div>
         </div>
-        <form id="form">
-          <label>Nome
-            <input required placeholder="O seu nome">
+
+        <form id="form" class="reveal flex flex-col gap-4 md:gap-5" style="transition-delay:.1s">
+          <label class="flex flex-col gap-2 text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400">
+            Nome
+            <input required placeholder="O seu nome" class="py-3 border-b border-ink-300 text-[15px] text-ink-700 placeholder-ink-300 focus:border-ink-700 transition-colors bg-transparent outline-none tracking-apple">
           </label>
-          <label>Telefone / WhatsApp
-            <input required placeholder="+258">
+          <label class="flex flex-col gap-2 text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400">
+            Telefone / WhatsApp
+            <input required type="tel" placeholder="+258" class="py-3 border-b border-ink-300 text-[15px] text-ink-700 placeholder-ink-300 focus:border-ink-700 transition-colors bg-transparent outline-none tracking-apple">
           </label>
-          <label>Serviço
-            <select>
+          <label class="flex flex-col gap-2 text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400">
+            Serviço
+            <select class="py-3 border-b border-ink-300 text-[15px] text-ink-700 focus:border-ink-700 transition-colors bg-transparent outline-none cursor-pointer tracking-apple">
               <option>Mobiliário por medida</option>
               <option>Cozinha ou roupeiro</option>
               <option>Design de interiores</option>
@@ -1621,317 +607,378 @@
               <option>Metalomecânica</option>
             </select>
           </label>
-          <label>Mensagem
-            <textarea rows="3" placeholder="Fale-nos do seu projecto"></textarea>
+          <label class="flex flex-col gap-2 text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400">
+            Mensagem
+            <textarea rows="3" placeholder="Fale-nos do seu projecto" class="py-3 border-b border-ink-300 text-[15px] text-ink-700 placeholder-ink-300 focus:border-ink-700 transition-colors resize-y bg-transparent outline-none tracking-apple"></textarea>
           </label>
-          <button class="btn gold">Solicitar orçamento ↗</button>
+          <button class="btn-primary mt-2 md:mt-3 w-full sm:w-auto sm:self-start inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-ink-700 text-white text-[15px] font-medium hover:bg-ink-800">
+            Solicitar orçamento <span class="text-gold-400 text-xs">↗</span>
+          </button>
         </form>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <img src="assets/moveza-logo.png" alt="MOVEZA">
-      <p>Mobiliário, interiores e serviços criados à medida.</p>
-      <nav>
-        <a href="#sobre">Sobre</a>
-        <a href="#servicos">Serviços</a>
-        <a href="#portfolio">Projectos</a>
-        <a href="#contacto">Contacto</a>
-      </nav>
-      <div class="foot-contact">
-        <span>Matola, Província de Maputo</span>
-        <a href="tel:+258879236274">+258 87 923 6274</a>
-        <a href="mailto:geral@moveza.co.mz">geral@movezainteriores.co.mz</a>
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-ink-100 text-ink-500 pt-14 md:pt-16 pb-8 md:pb-10 border-t border-ink-200 safe-bottom">
+    <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 md:gap-12 mb-10 md:mb-12">
+      <div class="sm:col-span-2 lg:col-span-5">
+        <div class="flex items-center gap-2.5 mb-4 md:mb-5">
+          <span class="w-7 h-7 rounded-[7px] overflow-hidden bg-ink-700 flex-shrink-0">
+            <img src="assets/moveza-logo.png" alt="MOVEZA" class="w-full h-full object-cover">
+          </span>
+          <strong class="text-ink-700 font-semibold tracking-tight text-[15px]">MOVEZA</strong>
+        </div>
+        <p class="text-[14px] leading-[1.55] max-w-sm tracking-apple">
+          Mobiliário, interiores e serviços criados à medida. Da matéria-prima ao espaço pronto.
+        </p>
       </div>
-      <small>© 2026 MOVEZA INTERIORES-DESIGN & SERVIÇOS, LDA · NUEL 105076061</small>
+
+      <div class="lg:col-span-3">
+        <h4 class="text-[13px] font-medium tracking-tight text-ink-700 mb-3.5 md:mb-4">Navegar</h4>
+        <nav class="flex flex-col gap-2.5">
+          <a href="#quem-somos" class="text-[14px] hover:text-ink-700 active:text-gold-500 transition-colors tracking-apple py-0.5">Quem Somos</a>
+          <a href="#servicos"   class="text-[14px] hover:text-ink-700 active:text-gold-500 transition-colors tracking-apple py-0.5">Serviços</a>
+          <a href="#obras"      class="text-[14px] hover:text-ink-700 active:text-gold-500 transition-colors tracking-apple py-0.5">Obras</a>
+          <a href="galeria.html" class="text-[14px] hover:text-ink-700 active:text-gold-500 transition-colors tracking-apple py-0.5">Galeria</a>
+          <a href="#contacto"   class="text-[14px] hover:text-ink-700 active:text-gold-500 transition-colors tracking-apple py-0.5">Contacto</a>
+        </nav>
+      </div>
+
+      <div class="lg:col-span-4">
+        <h4 class="text-[13px] font-medium tracking-tight text-ink-700 mb-3.5 md:mb-4">Contacto</h4>
+        <div class="flex flex-col gap-2.5 text-[14px] tracking-apple">
+          <span>Matola, Província de Maputo</span>
+          <a href="tel:+258879236274" class="hover:text-ink-700 active:text-gold-500 transition-colors py-0.5">+258 87 923 6274</a>
+          <a href="mailto:geral@movezainteriores.co.mz" class="hover:text-ink-700 active:text-gold-500 transition-colors py-0.5 break-all">geral@movezainteriores.co.mz</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 pt-6 md:pt-8 border-t border-ink-200 flex flex-col sm:flex-row justify-between gap-2 md:gap-3 text-[11px] md:text-[12px] text-ink-400 tracking-apple">
+      <span>© 2026 MOVEZA INTERIORES-DESIGN & SERVIÇOS, LDA · NUEL 105076061</span>
+      <span>Feito com rigor em Matola, Moçambique.</span>
     </div>
   </footer>
 
-  <!-- MODAL OVERLAY -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" id="modalClose" aria-label="Fechar">✕</button>
-      <p class="modal-eyebrow" id="modalEyebrow">SERVIÇO</p>
-      <h3 id="modalTitle"></h3>
-      <p id="modalDesc"></p>
-      <ul id="modalList"></ul>
-      <a href="#contacto" class="btn gold" id="modalCta">Pedir orçamento ↗</a>
+  <!-- ============ MODAL ============ -->
+  <div id="modalOverlay" class="fixed inset-0 z-[2000] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-ink-900/40 backdrop-blur-md opacity-0 invisible transition-all duration-300">
+    <div class="relative w-full max-w-xl max-h-[92svh] sm:max-h-[88vh] overflow-y-auto bg-white rounded-t-[24px] sm:rounded-[28px] p-6 xs:p-8 sm:p-10 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.25)] translate-y-4 sm:translate-y-0 scale-[0.98] sm:scale-95 transition-transform duration-300 safe-bottom" id="modal">
+      <div class="w-9 h-1 bg-ink-200 rounded-full mx-auto mb-5 sm:hidden"></div>
+      <button id="modalClose" class="absolute top-4 sm:top-5 right-4 sm:right-5 w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-ink-100 hover:bg-ink-200 active:bg-ink-300 flex items-center justify-center text-ink-500 hover:text-ink-700 transition-colors text-[13px]" aria-label="Fechar">✕</button>
+      <p id="modalEyebrow" class="text-[12px] font-medium tracking-tight text-gold-500 mb-3">SERVIÇO</p>
+      <h3 id="modalTitle" class="text-[22px] xs:text-[24px] sm:text-[28px] font-semibold tracking-apple-tight text-ink-700 mb-3 md:mb-4 pr-10 leading-tight"></h3>
+      <p id="modalDesc" class="text-[14px] md:text-[15px] text-ink-500 leading-[1.6] tracking-apple mb-5 md:mb-6"></p>
+      <ul id="modalList" class="flex flex-col gap-2.5 md:gap-3 mb-6 md:mb-8"></ul>
+      <a href="#contacto" id="modalCta" class="btn-primary inline-flex w-full justify-center items-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-ink-700 text-white text-[15px] font-medium hover:bg-ink-800">
+        Pedir orçamento <span class="text-gold-400 text-xs">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ GALLERY POPUP (DISCRETO) ============ -->
+  <div id="galleryPopup" class="gallery-popup fixed z-[1500] w-[calc(100%-1.5rem)] xs:w-[calc(100%-2rem)] sm:w-auto sm:max-w-[440px] pointer-events-none
+       bottom-3 left-3 right-3 xs:bottom-4 xs:left-4 xs:right-4
+       sm:bottom-5 sm:left-1/2 sm:right-auto sm:-translate-x-1/2
+       safe-bottom" role="status" aria-live="polite">
+    <div class="relative pointer-events-auto rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] ring-1 ring-white/[0.08]">
+      <div class="absolute inset-0 bg-ink-800/95 backdrop-blur-xl"></div>
+      <div class="popup-shimmer"></div>
+
+      <div class="relative flex items-center gap-3 xs:gap-4 p-3 xs:p-3.5 pr-2.5 xs:pr-3">
+        <a href="galeria.html" class="group relative flex-shrink-0 w-12 h-12 xs:w-14 xs:h-14 rounded-xl overflow-hidden ring-1 ring-white/10">
+          <img src="assets/interior-wide.png" alt="" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-tr from-gold-500/20 to-transparent"></div>
+          <div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-xl"></div>
+        </a>
+
+        <a href="galeria.html" class="group flex-1 min-w-0 text-left">
+          <div class="flex items-center gap-2 mb-0.5 xs:mb-1">
+            <span class="inline-flex items-center gap-1 text-[9px] xs:text-[10px] font-semibold tracking-[0.08em] uppercase text-gold-400">
+              <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
+              Nova galeria
+            </span>
+          </div>
+          <p class="text-[13px] xs:text-[14px] font-medium text-white tracking-tight leading-snug truncate group-hover:text-gold-300 transition-colors">
+            Veja as nossas obras
+          </p>
+          <p class="hidden xs:block text-[12px] text-white/55 tracking-apple mt-0.5 truncate">
+            Projectos residenciais e comerciais
+          </p>
+        </a>
+
+        <a href="galeria.html" class="flex-shrink-0 w-8 h-8 xs:w-9 xs:h-9 rounded-full bg-white/10 hover:bg-gold-500 active:bg-gold-500 flex items-center justify-center text-white transition-all duration-300 group">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="transition-transform group-hover:translate-x-0.5">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <button id="popupClose" class="flex-shrink-0 w-7 h-7 xs:w-6 xs:h-6 flex items-center justify-center text-white/40 hover:text-white/90 active:text-white/90 transition-colors -mr-0.5" aria-label="Fechar">
+          <svg width="12" height="12" viewBox="0 0 11 11" fill="none">
+            <path d="M1 1l9 9M10 1l-9 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // ----- DATA FOR SERVICES (cards) -----
+      // ===== MOBILE MENU =====
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      const menuIconTop = document.getElementById('menuIconTop');
+      const menuIconBottom = document.getElementById('menuIconBottom');
+
+      function closeMobileNav() {
+        mobileNav.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        if (menuIconTop && menuIconBottom) {
+          menuIconTop.setAttribute('d', 'M2 5h14');
+          menuIconBottom.setAttribute('d', 'M2 13h14');
+        }
+      }
+
+      menuBtn?.addEventListener('click', () => {
+        const isOpen = mobileNav.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', isOpen);
+        if (menuIconTop && menuIconBottom) {
+          if (isOpen) {
+            menuIconTop.setAttribute('d', 'M4 4l10 10');
+            menuIconBottom.setAttribute('d', 'M14 4L4 14');
+          } else {
+            menuIconTop.setAttribute('d', 'M2 5h14');
+            menuIconBottom.setAttribute('d', 'M2 13h14');
+          }
+        }
+      });
+
+      mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) closeMobileNav();
+      });
+
+      // ===== DATA =====
       const servicesData = [
-        {
-          num: "01",
-          title: "Mobiliário por medida",
-          short: "Fabricação em madeira, metal e materiais mistos para espaços residenciais, comerciais e industriais.",
-          details: [
-            "Móveis de sala, quarto, escritório e áreas comuns",
-            "Soluções em madeira maciça, folheada, MDF e metais",
-            "Acabamentos personalizados: lacados, vernizes, pinturas",
-            "Projectos para residências, lojas, escritórios e indústria"
-          ]
-        },
-        {
-          num: "02",
-          title: "Cozinhas & roupeiros",
-          short: "Cozinhas modernas e americanas, closets, roupeiros embutidos e armários personalizados.",
-          details: [
-            "Cozinhas funcionais com ilhas, despenseiros e organizadores",
-            "Roupeiros embutidos, walk-in closets e soluções de arrumação",
-            "Materiais resistentes à humidade e ao calor",
-            "Design adaptado ao espaço e ao fluxo de utilização"
-          ]
-        },
-        {
-          num: "03",
-          title: "Carpintaria & marcenaria",
-          short: "Portas, janelas, divisórias, pavimentos, restauro e reparação de mobiliário.",
-          details: [
-            "Portas e janelas em madeira maciça ou folheada",
-            "Divisórias, painéis e revestimentos em madeira",
-            "Pavimentos flutuantes e maciços",
-            "Restauro e reparação de móveis antigos"
-          ]
-        },
-        {
-          num: "04",
-          title: "Design de interiores",
-          short: "Conceito, decoração e consultoria para residências, escritórios, hotéis e comércio.",
-          details: [
-            "Projecto de interiores completo: 2D e 3D",
-            "Selecção de materiais, cores, iluminação e mobiliário",
-            "Consultoria de decoração e organização de espaços",
-            "Acompanhamento de obra e supervisão"
-          ]
-        },
-        {
-          num: "05",
-          title: "Remodelação & gestão",
-          short: "Planeamento, gestão e fiscalização de projectos de decoração e remodelação.",
-          details: [
-            "Gestão integrada de empreitadas e subcontratados",
-            "Planeamento de prazos, custos e recursos",
-            "Fiscalização de qualidade e segurança",
-            "Remodelações residenciais, comerciais e hoteleiras"
-          ]
-        },
-        {
-          num: "06",
-          title: "Metalomecânica leve",
-          short: "Móveis metálicos, estruturas leves, portões, grades, corrimãos e soluções mistas.",
-          details: [
-            "Móveis em ferro, aço inox e alumínio",
-            "Portões, grades, corrimãos e guarda-corpos",
-            "Estruturas metálicas leves para interiores e exteriores",
-            "Combinação de metal com madeira e vidro"
-          ]
-        }
+        { num:"01", title:"Mobiliário por medida", short:"Fabricação em madeira, metal e materiais mistos para espaços residenciais, comerciais e industriais.",
+          details:["Móveis de sala, quarto, escritório e áreas comuns","Soluções em madeira maciça, folheada, MDF e metais","Acabamentos personalizados: lacados, vernizes, pinturas","Projectos para residências, lojas, escritórios e indústria"] },
+        { num:"02", title:"Cozinhas & roupeiros", short:"Cozinhas modernas e americanas, closets, roupeiros embutidos e armários personalizados.",
+          details:["Cozinhas funcionais com ilhas, despenseiros e organizadores","Roupeiros embutidos, walk-in closets e soluções de arrumação","Materiais resistentes à humidade e ao calor","Design adaptado ao espaço e ao fluxo de utilização"] },
+        { num:"03", title:"Carpintaria & marcenaria", short:"Portas, janelas, divisórias, pavimentos, restauro e reparação de mobiliário.",
+          details:["Portas e janelas em madeira maciça ou folheada","Divisórias, painéis e revestimentos em madeira","Pavimentos flutuantes e maciços","Restauro e reparação de móveis antigos"] },
+        { num:"04", title:"Design de interiores", short:"Conceito, decoração e consultoria para residências, escritórios, hotéis e comércio.",
+          details:["Projecto de interiores completo: 2D e 3D","Selecção de materiais, cores, iluminação e mobiliário","Consultoria de decoração e organização de espaços","Acompanhamento de obra e supervisão"] },
+        { num:"05", title:"Remodelação & gestão", short:"Planeamento, gestão e fiscalização de projectos de decoração e remodelação.",
+          details:["Gestão integrada de empreitadas e subcontratados","Planeamento de prazos, custos e recursos","Fiscalização de qualidade e segurança","Remodelações residenciais, comerciais e hoteleiras"] },
+        { num:"06", title:"Metalomecânica leve", short:"Móveis metálicos, estruturas leves, portões, grades, corrimãos e soluções mistas.",
+          details:["Móveis em ferro, aço inox e alumínio","Portões, grades, corrimãos e guarda-corpos","Estruturas metálicas leves para interiores e exteriores","Combinação de metal com madeira e vidro"] }
       ];
 
-      // ----- DATA FOR SECTORS (dropdowns) -----
       const sectorsData = [
-        {
-          label: "Residências",
-          num: "01",
-          desc: "Mobiliário por medida, cozinhas, roupeiros, carpintaria e design de interiores para casas, apartamentos e vivendas. Criamos soluções que aliam estética, funcionalidade e durabilidade para o dia-a-dia da sua família."
-        },
-        {
-          label: "Escritórios",
-          num: "02",
-          desc: "Mobiliário corporativo, divisórias, recepções, salas de reunião e soluções de arrumação. Projectamos espaços de trabalho que promovem produtividade, conforto e uma imagem profissional consistente."
-        },
-        {
-          label: "Hotéis & Restaurantes",
-          num: "03",
-          desc: "Mobiliário para quartos, lobbies, restaurantes, bares e áreas comuns. Trabalhamos com materiais resistentes e design que valoriza a experiência do hóspede, com prazos rigorosos e acabamentos de qualidade."
-        },
-        {
-          label: "Escolas & Hospitais",
-          num: "04",
-          desc: "Soluções robustas e funcionais para ambientes educativos e de saúde: secretárias, armários, bancadas, divisórias e mobiliário específico. Priorizamos segurança, higiene e durabilidade."
-        },
-        {
-          label: "Comércio & Indústria",
-          num: "05",
-          desc: "Balcões, expositores, prateleiras, mobiliário técnico e estruturas metálicas. Desenvolvemos soluções à medida para lojas, armazéns e espaços industriais, com foco na eficiência e resistência."
-        }
+        { label:"Residências", num:"01", desc:"Mobiliário por medida, cozinhas, roupeiros, carpintaria e design de interiores para casas, apartamentos e vivendas. Criamos soluções que aliam estética, funcionalidade e durabilidade para o dia-a-dia da sua família." },
+        { label:"Escritórios", num:"02", desc:"Mobiliário corporativo, divisórias, recepções, salas de reunião e soluções de arrumação. Projectamos espaços de trabalho que promovem produtividade, conforto e uma imagem profissional consistente." },
+        { label:"Hotéis & Restaurantes", num:"03", desc:"Mobiliário para quartos, lobbies, restaurantes, bares e áreas comuns. Trabalhamos com materiais resistentes e design que valoriza a experiência do hóspede, com prazos rigorosos e acabamentos de qualidade." },
+        { label:"Escolas & Hospitais", num:"04", desc:"Soluções robustas e funcionais para ambientes educativos e de saúde: secretárias, armários, bancadas, divisórias e mobiliário específico. Priorizamos segurança, higiene e durabilidade." },
+        { label:"Comércio & Indústria", num:"05", desc:"Balcões, expositores, prateleiras, mobiliário técnico e estruturas metálicas. Desenvolvemos soluções à medida para lojas, armazéns e espaços industriais, com foco na eficiência e resistência." }
       ];
 
-      // ----- RENDER SERVICES -----
-      const serviceGrid = document.getElementById('serviceGrid');
-      if (serviceGrid) {
-        servicesData.forEach((s, i) => {
-          const card = document.createElement('button');
-          card.className = 'service-card';
-          card.setAttribute('aria-label', `Ver detalhes de ${s.title}`);
-          card.dataset.index = i;
-          card.innerHTML = `
-            <b>${s.num}</b>
-            <h3>${s.title}</h3>
-            <p>${s.short}</p>
-            <span class="card-arrow">↗</span>
-          `;
-          serviceGrid.appendChild(card);
-        });
-      }
+      // ===== RENDER SERVICES =====
+      const grid = document.getElementById('serviceGrid');
+      servicesData.forEach((s, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.index = i;
+        btn.className = 'service-card group text-left bg-white hover:bg-ink-50 active:bg-ink-50 rounded-2xl md:rounded-3xl p-6 md:p-7 lg:p-8 flex flex-col transition-all duration-500 md:hover:-translate-y-0.5 md:hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] reveal';
+        btn.innerHTML = `
+          <b class="block text-[12px] font-medium tracking-tight text-ink-400 mb-3.5 md:mb-4">${s.num}</b>
+          <h3 class="text-[16px] md:text-[17px] font-semibold tracking-tight text-ink-700 mb-2">${s.title}</h3>
+          <p class="text-[14px] text-ink-500 leading-[1.55] tracking-apple flex-1">${s.short}</p>
+          <span class="inline-flex items-center gap-1 mt-5 md:mt-6 text-[13px] font-medium text-gold-500 md:opacity-0 md:-translate-x-1 md:group-hover:opacity-100 md:group-hover:translate-x-0 transition-all duration-500">
+            Saber mais <span>→</span>
+          </span>
+        `;
+        grid.appendChild(btn);
+      });
 
-      // ----- RENDER SECTORS (dropdowns) -----
+      // ===== RENDER SECTORS =====
       const sectorList = document.getElementById('sectorList');
-      if (sectorList) {
-        sectorsData.forEach((s, i) => {
-          const item = document.createElement('div');
-          item.className = 'sector-item';
-          item.innerHTML = `
-            <button class="sector-header" aria-expanded="false" data-index="${i}">
-              <span class="sector-label">${s.label}</span>
-              <span class="sector-meta">
-                <span class="sector-num">${s.num}</span>
-                <span class="sector-chevron">▾</span>
-              </span>
-            </button>
-            <div class="sector-body">
-              <p>${s.desc}</p>
-            </div>
-          `;
-          sectorList.appendChild(item);
-        });
-      }
+      sectorsData.forEach((s, i) => {
+        const item = document.createElement('div');
+        item.className = 'border-b border-ink-300/60 sector-item';
+        item.innerHTML = `
+          <button type="button" class="sector-header group w-full flex items-center justify-between py-5 md:py-6 text-left transition-all gap-4" aria-expanded="false" data-index="${i}">
+            <span class="sector-label text-[17px] md:text-[19px] lg:text-[22px] font-medium tracking-apple-tight text-ink-700 group-hover:text-gold-500 active:text-gold-500 transition-colors">${s.label}</span>
+            <span class="flex items-center gap-4 md:gap-5 flex-shrink-0">
+              <span class="text-[12px] tracking-tight text-ink-400 font-medium">${s.num}</span>
+              <span class="sector-chevron text-ink-400 transition-transform duration-500 text-[12px]">▾</span>
+            </span>
+          </button>
+          <div class="sector-body max-h-0 overflow-hidden transition-all duration-500">
+            <p class="text-[14px] md:text-[15px] text-ink-500 leading-[1.65] md:leading-[1.6] max-w-3xl pb-5 md:pb-6 tracking-apple">${s.desc}</p>
+          </div>
+        `;
+        sectorList.appendChild(item);
+      });
 
-      // ----- SECTOR DROPDOWN TOGGLE -----
+      // ===== SECTOR TOGGLE =====
       document.querySelectorAll('.sector-header').forEach(btn => {
         btn.addEventListener('click', function() {
           const item = this.closest('.sector-item');
+          const body = item.querySelector('.sector-body');
+          const chevron = item.querySelector('.sector-chevron');
           const isOpen = item.classList.contains('open');
-          // Close all other open items
+
           document.querySelectorAll('.sector-item.open').forEach(openItem => {
             if (openItem !== item) {
               openItem.classList.remove('open');
-              const header = openItem.querySelector('.sector-header');
-              if (header) header.setAttribute('aria-expanded', 'false');
+              openItem.querySelector('.sector-body').style.maxHeight = '0';
+              openItem.querySelector('.sector-chevron').style.transform = '';
+              openItem.querySelector('.sector-header').setAttribute('aria-expanded', 'false');
             }
           });
-          // Toggle current
+
           item.classList.toggle('open');
+          body.style.maxHeight = isOpen ? '0' : body.scrollHeight + 'px';
+          chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
           this.setAttribute('aria-expanded', !isOpen);
         });
       });
 
-      // ----- MODAL LOGIC -----
+      // ===== MODAL =====
       const overlay = document.getElementById('modalOverlay');
+      const modal = document.getElementById('modal');
       const modalTitle = document.getElementById('modalTitle');
       const modalDesc = document.getElementById('modalDesc');
       const modalList = document.getElementById('modalList');
       const modalEyebrow = document.getElementById('modalEyebrow');
-      const modalCta = document.getElementById('modalCta');
       const modalClose = document.getElementById('modalClose');
+      const modalCta = document.getElementById('modalCta');
 
-      function openModal(index) {
-        const s = servicesData[index];
+      function openModal(i) {
+        const s = servicesData[i];
         if (!s) return;
         modalEyebrow.textContent = `SERVIÇO ${s.num}`;
         modalTitle.textContent = s.title;
         modalDesc.textContent = s.short;
-        modalList.innerHTML = s.details.map(d => `<li>${d}</li>`).join('');
-        overlay.classList.add('active');
+        modalList.innerHTML = s.details.map(d => `
+          <li class="flex items-start gap-3 text-[14px] text-ink-600 leading-[1.55] tracking-apple">
+            <span class="text-gold-500 font-medium flex-shrink-0">—</span>
+            <span>${d}</span>
+          </li>
+        `).join('');
+        overlay.classList.remove('opacity-0','invisible');
+        modal.classList.remove('translate-y-4','scale-[0.98]','sm:scale-95');
+        modal.classList.add('translate-y-0','scale-100');
         document.body.style.overflow = 'hidden';
-        // Focus trap: focus the close button
         setTimeout(() => modalClose.focus(), 100);
       }
 
       function closeModal() {
-        overlay.classList.remove('active');
+        overlay.classList.add('opacity-0','invisible');
+        modal.classList.remove('translate-y-0','scale-100');
+        modal.classList.add('translate-y-4','scale-[0.98]','sm:scale-95');
         document.body.style.overflow = '';
       }
 
-      // Attach click to service cards
-      document.addEventListener('click', function(e) {
+      document.addEventListener('click', e => {
         const card = e.target.closest('.service-card');
-        if (card) {
-          const idx = parseInt(card.dataset.index, 10);
-          if (!isNaN(idx)) openModal(idx);
-        }
+        if (card) openModal(parseInt(card.dataset.index, 10));
       });
 
-      // Close modal on overlay click, close button, or CTA
-      overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) closeModal();
-      });
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
       modalClose.addEventListener('click', closeModal);
-      modalCta.addEventListener('click', function(e) {
-        // Let the anchor work (scroll to contact) but close modal
-        closeModal();
+      modalCta.addEventListener('click', closeModal);
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !overlay.classList.contains('invisible')) closeModal();
       });
 
-      // Close on Escape
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && overlay.classList.contains('active')) {
-          closeModal();
-        }
-      });
-
-      // ----- REVEAL ON SCROLL -----
-      const reveals = document.querySelectorAll('.reveal');
-
-      const revealObserver = new IntersectionObserver((entries) => {
+      // ===== REVEAL ON SCROLL =====
+      const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            revealObserver.unobserve(entry.target);
+            observer.unobserve(entry.target);
           }
         });
-      }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -40px 0px'
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+      document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+
+      // ===== FORM =====
+      document.getElementById('form')?.addEventListener('submit', e => {
+        e.preventDefault();
+        alert('Obrigado! A sua mensagem foi enviada. Entraremos em contacto brevemente.');
+        e.target.reset();
       });
 
-      reveals.forEach(el => revealObserver.observe(el));
-
-      // ----- TICKER SEAMLESS LOOP -----
-      const ticker = document.querySelector('.ticker div');
-      if (ticker) {
-        const content = ticker.textContent.trim();
-        ticker.innerHTML = content + ' ' + content;
-      }
-
-      // ----- FORM SUBMIT (prevent default + feedback) -----
-      const form = document.getElementById('form');
-      if (form) {
-        form.addEventListener('submit', (e) => {
+      // ===== SMOOTH SCROLL OFFSET =====
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e) {
+          const id = this.getAttribute('href');
+          if (id === '#' || id.length < 2) return;
+          const el = document.querySelector(id);
+          if (!el) return;
           e.preventDefault();
-          alert('Obrigado! A sua mensagem foi enviada. Entraremos em contacto brevemente.');
-          form.reset();
-        });
-      }
-
-      // ----- SMOOTH SCROLL FOR ANCHORS (with offset for fixed header) -----
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-          const target = document.querySelector(targetId);
-          if (target) {
-            e.preventDefault();
-            const headerOffset = 52;
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth'
-            });
-          }
+          const headerOffset = window.innerWidth < 768 ? 56 : 64;
+          const y = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
         });
       });
 
+      // ==========================================================
+      // ============ GALLERY POPUP ============
+      // Aparece 2s após window.load, sem auto-hide
+      // ==========================================================
+      const galleryPopup = document.getElementById('galleryPopup');
+      const popupClose = document.getElementById('popupClose');
+
+      let popupShown = false;
+
+      function showGalleryPopup() {
+        if (popupShown) return;
+        popupShown = true;
+        galleryPopup.classList.add('show');
+      }
+
+      function hideGalleryPopup() {
+        galleryPopup.classList.remove('show');
+        galleryPopup.classList.add('hide-down');
+      }
+
+      // Botão fechar
+      popupClose?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        hideGalleryPopup();
+      });
+
+      // Clicar em qualquer link do popup fecha-o (e navega)
+      galleryPopup?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => hideGalleryPopup());
+      });
+
+      // Fechar com tecla Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && galleryPopup.classList.contains('show')) {
+          hideGalleryPopup();
+        }
+      });
+
+      // Mostrar 2 segundos após a página carregar completamente
+      function schedulePopup() {
+        setTimeout(showGalleryPopup, 2000);
+      }
+
+      if (document.readyState === 'complete') {
+        // Se já carregou (cache), agenda já
+        schedulePopup();
+      } else {
+        // Caso contrário, espera pelo evento load
+        window.addEventListener('load', schedulePopup);
+      }
     })();
   </script>
-  <script src="mobile-menu.js"></script>
 </body>
 </html>
