@@ -131,10 +131,34 @@
         <span class="text-[14px] xs:text-[15px] md:text-[15px] font-semibold tracking-tight text-white truncate">MOVEZA</span>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
+      <nav class="hidden lg:flex h-full items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
         <a href="index.html#quem-somos" class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Quem Somos</a>
         <a href="index.html#servicos"   class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Serviços</a>
-        <a href="galeria.html"          class="nav-link text-[13px] text-white font-medium transition-colors">Obras</a>
+        <div class="group relative self-stretch flex items-center">
+          <a href="galeria.html" class="nav-link inline-flex items-center gap-1.5 text-[13px] text-white font-medium transition-colors" aria-haspopup="true">
+            Obras
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" class="transition-transform duration-300 group-hover:rotate-180 group-focus-within:rotate-180">
+              <path d="M2 3.5 5 6.5l3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <div class="absolute top-full left-1/2 -translate-x-1/2 w-[440px] pt-3 opacity-0 invisible translate-y-1 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+            <div class="rounded-2xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.35)] p-2">
+              <a href="galeria.html" class="flex items-center justify-between rounded-xl px-3.5 py-3 mb-1 bg-white/[0.07] hover:bg-white/[0.11] transition-colors">
+                <span><b class="block text-[13px] font-semibold text-white">Todas as obras</b><small class="block mt-0.5 text-[11px] text-white/40">53 projectos em 7 categorias</small></span>
+                <span class="text-gold-400">→</span>
+              </a>
+              <div class="grid grid-cols-2 gap-1">
+                <a href="galeria.html?categoria=cozinhas" class="rounded-xl px-3.5 py-2.5 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors">Cozinhas</a>
+                <a href="galeria.html?categoria=mesas-cabeceira" class="rounded-xl px-3.5 py-2.5 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors">Mesas de cabeceira</a>
+                <a href="galeria.html?categoria=mesas-centro" class="rounded-xl px-3.5 py-2.5 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors">Mesas de centro</a>
+                <a href="galeria.html?categoria=paineis-tv" class="rounded-xl px-3.5 py-2.5 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors">Painéis de TV</a>
+                <a href="galeria.html?categoria=roupeiros" class="rounded-xl px-3.5 py-2.5 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors">Roupeiros</a>
+                <a href="galeria.html?categoria=aparadores" class="rounded-xl px-3.5 py-2.5 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors">Aparadores</a>
+                <a href="galeria.html?categoria=cabeceiras" class="rounded-xl px-3.5 py-2.5 text-[12px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors">Cabeceiras</a>
+              </div>
+            </div>
+          </div>
+        </div>
         <a href="index.html#testemunhos" class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Testemunhos</a>
         <a href="index.html#contacto"   class="nav-link text-[13px] text-white/55 hover:text-white transition-colors">Contacto</a>
       </nav>
@@ -156,7 +180,24 @@
       <div class="py-3">
         <a href="index.html#quem-somos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85 border-b border-white/[0.06] active:text-gold-400">Quem Somos</a>
         <a href="index.html#servicos"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85 border-b border-white/[0.06] active:text-gold-400">Serviços</a>
-        <a href="galeria.html"          class="block py-3.5 text-[17px] sm:text-[18px] font-semibold tracking-tight text-white border-b border-white/[0.06]">Obras</a>
+        <details class="group border-b border-white/[0.06]">
+          <summary class="flex items-center justify-between py-3.5 text-[17px] sm:text-[18px] font-semibold tracking-tight text-white cursor-pointer list-none">
+            Obras
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" class="transition-transform duration-300 group-open:rotate-180">
+              <path d="M3 5 7 9l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <div class="grid grid-cols-2 gap-1 pb-3">
+            <a href="galeria.html" class="col-span-2 rounded-xl bg-white/[0.07] px-3 py-2.5 text-[13px] font-semibold text-white">Todas as obras</a>
+            <a href="galeria.html?categoria=cozinhas" class="rounded-xl px-3 py-2 text-[13px] text-white/55">Cozinhas</a>
+            <a href="galeria.html?categoria=mesas-cabeceira" class="rounded-xl px-3 py-2 text-[13px] text-white/55">Mesas de cabeceira</a>
+            <a href="galeria.html?categoria=mesas-centro" class="rounded-xl px-3 py-2 text-[13px] text-white/55">Mesas de centro</a>
+            <a href="galeria.html?categoria=paineis-tv" class="rounded-xl px-3 py-2 text-[13px] text-white/55">Painéis de TV</a>
+            <a href="galeria.html?categoria=roupeiros" class="rounded-xl px-3 py-2 text-[13px] text-white/55">Roupeiros</a>
+            <a href="galeria.html?categoria=aparadores" class="rounded-xl px-3 py-2 text-[13px] text-white/55">Aparadores</a>
+            <a href="galeria.html?categoria=cabeceiras" class="rounded-xl px-3 py-2 text-[13px] text-white/55">Cabeceiras</a>
+          </div>
+        </details>
         <a href="index.html#testemunhos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85 border-b border-white/[0.06] active:text-gold-400">Testemunhos</a>
         <a href="index.html#contacto"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-white/85">Contacto</a>
         <a href="index.html#contacto" class="sm:hidden mt-3 block text-center py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium active:scale-[0.98] transition-transform">Pedir orçamento</a>
@@ -166,84 +207,90 @@
 
   <main class="pt-12 md:pt-[52px] bg-ink-900">
 
-    <!-- ============ HERO (SIMPLES) ============ -->
-    <section class="relative bg-ink-900 noise border-b border-white/[0.06] pt-14 md:pt-20 pb-10 md:pb-14">
-      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
-        <!-- Breadcrumb -->
-        <nav class="flex items-center gap-2 text-[12px] md:text-[13px] text-white/40 mb-6 md:mb-8 reveal" aria-label="Navegação">
+    <!-- ============ HERO EDITORIAL ============ -->
+    <section class="relative bg-ink-900 noise border-b border-white/[0.06] pt-16 md:pt-24 pb-14 md:pb-24 overflow-hidden">
+      <div class="absolute top-0 right-0 w-[45vw] h-[45vw] max-w-[620px] max-h-[620px] rounded-full bg-gold-500/[0.035] blur-3xl pointer-events-none"></div>
+      <div class="relative max-w-[1400px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-10">
+        <nav class="flex items-center gap-2 text-[11px] md:text-[12px] uppercase tracking-[0.14em] text-white/35 mb-12 md:mb-20 reveal" aria-label="Navegação">
           <a href="index.html" class="hover:text-white transition-colors">Início</a>
-          <span class="text-white/20">/</span>
-          <span class="text-white font-medium">Obras</span>
+          <span class="w-5 h-px bg-white/20"></span>
+          <span class="text-gold-400">Obras</span>
         </nav>
 
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-12 reveal">
-          <div class="max-w-3xl">
-            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-gold-400 mb-4 md:mb-5">Galeria de Projectos</p>
-            <p class="text-[15px] md:text-[17px] text-white/55 leading-[1.6] tracking-apple max-w-2xl">
-              Uma selecção de obras que executámos para residências, escritórios, hotelaria e espaços comerciais em Moçambique. Clique para ver em detalhe.
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-end reveal">
+          <div class="lg:col-span-9">
+            <p class="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400 mb-5 md:mb-7">Colecção MOVEZA · 2026</p>
+            <h1 class="text-[clamp(3.2rem,9vw,8rem)] font-medium leading-[0.88] tracking-[-0.065em] text-white">
+              Espaços com<br><span class="text-white/35">identidade.</span>
+            </h1>
+          </div>
+          <div class="lg:col-span-3 lg:pb-2">
+            <p class="text-[14px] md:text-[15px] text-white/50 leading-[1.7] tracking-apple max-w-sm">
+              Mobiliário e interiores executados por medida, apresentados sem excessos — matéria, proporção e detalhe.
             </p>
           </div>
+        </div>
 
-          <div class="flex items-center gap-6 lg:gap-8 pt-4 lg:pt-0 lg:pb-2">
-            <div class="flex items-baseline gap-2">
-              <span id="visibleCount" class="text-[clamp(2rem,4vw,3rem)] font-semibold tracking-apple-tight text-white leading-none">0</span>
-              <span class="text-[13px] text-white/40 font-medium">obras</span>
-            </div>
-            <div class="w-px h-10 bg-white/10"></div>
-            <div class="flex items-baseline gap-2">
-              <span class="text-[clamp(2rem,4vw,3rem)] font-semibold tracking-apple-tight gradient-text-gold leading-none">5</span>
-              <span class="text-[13px] text-white/40 font-medium">categorias</span>
-            </div>
+        <div class="flex items-center justify-between gap-6 mt-14 md:mt-24 pt-6 border-t border-white/10 reveal">
+          <span class="text-[10px] uppercase tracking-[0.16em] text-white/35">Matola · Moçambique</span>
+          <div class="flex items-baseline gap-6 md:gap-10">
+            <span class="text-[11px] text-white/40"><b id="visibleCount" class="text-xl md:text-2xl font-medium text-white mr-1.5">0</b> obras</span>
+            <span class="text-[11px] text-white/40"><b class="text-xl md:text-2xl font-medium text-gold-400 mr-1.5">7</b> categorias</span>
           </div>
         </div>
       </div>
     </section>
-
     <!-- ============ FILTERS ============ -->
-    <section class="sticky top-12 md:top-[52px] z-40 glass-dark border-b border-white/[0.06]">
+    <section class="sticky top-12 md:top-[52px] z-40 bg-[#f7f5f0]/95 backdrop-blur-xl border-b border-ink-900/[0.08]">
       <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-3.5 md:py-4">
         <div class="flex items-center gap-2 md:gap-2.5 overflow-x-auto no-scrollbar -mx-5 xs:-mx-6 sm:-mx-8 lg:mx-0 px-5 xs:px-6 sm:px-8 lg:px-0">
-          <button data-filter="all" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white text-ink-900 text-[13px] md:text-[13.5px] font-medium active:scale-95">
+          <button data-filter="all" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-ink-900 text-white text-[13px] md:text-[13.5px] font-medium active:scale-95">
             Todas
           </button>
-          <button data-filter="residencial" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
-            Residencial
-          </button>
-          <button data-filter="comercial" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
-            Comercial
-          </button>
-          <button data-filter="hotelaria" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
-            Hotelaria
-          </button>
-          <button data-filter="cozinhas" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
+          <button data-filter="cozinhas" class="filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05] text-[12px] md:text-[13px] font-medium active:scale-95">
             Cozinhas
           </button>
-          <button data-filter="carpintaria" class="filter-pill flex-shrink-0 inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/70 hover:text-white hover:bg-white/[0.1] text-[13px] md:text-[13.5px] font-medium active:scale-95">
-            Carpintaria
+          <button data-filter="mesas-cabeceira" class="filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05] text-[12px] md:text-[13px] font-medium active:scale-95">
+            Mesas de cabeceira
+          </button>
+          <button data-filter="mesas-centro" class="filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05] text-[12px] md:text-[13px] font-medium active:scale-95">
+            Mesas de centro
+          </button>
+          <button data-filter="paineis-tv" class="filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05] text-[12px] md:text-[13px] font-medium active:scale-95">
+            Painéis de TV
+          </button>
+          <button data-filter="roupeiros" class="filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05] text-[12px] md:text-[13px] font-medium active:scale-95">
+            Roupeiros
+          </button>
+          <button data-filter="aparadores" class="filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05] text-[12px] md:text-[13px] font-medium active:scale-95">
+            Aparadores
+          </button>
+          <button data-filter="cabeceiras" class="filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05] text-[12px] md:text-[13px] font-medium active:scale-95">
+            Cabeceiras
           </button>
         </div>
       </div>
     </section>
 
     <!-- ============ GALLERY GRID ============ -->
-    <section class="bg-ink-900" style="padding-top: clamp(3rem, 5vw, 4.5rem); padding-bottom: clamp(4rem, 7vw, 6.5rem);">
+    <section class="bg-[#f7f5f0]" style="padding-top: clamp(2.5rem, 5vw, 5rem); padding-bottom: clamp(5rem, 8vw, 9rem);">
       <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
 
-        <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"></div>
+        <div id="galleryGrid" class="columns-2 lg:columns-3 gap-3.5 md:gap-7"></div>
 
-        <div id="emptyState" class="hidden text-center py-20">
-          <div class="w-16 h-16 rounded-full bg-white/[0.05] mx-auto mb-5 flex items-center justify-center">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="text-white/40">
+        <div id="emptyState" class="hidden text-center py-20 text-ink-700">
+          <div class="w-16 h-16 rounded-full bg-ink-900/[0.05] mx-auto mb-5 flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" class="text-ink-400">
               <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
               <path d="M3 15l5-5 4 4 6-6 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <p class="text-[17px] font-medium tracking-tight text-white mb-1.5">Sem obras nesta categoria</p>
-          <p class="text-[14px] text-white/50">Experimente outro filtro acima.</p>
+          <p class="text-[17px] font-medium tracking-tight text-ink-700 mb-1.5">Sem obras nesta categoria</p>
+          <p class="text-[14px] text-ink-400">Experimente outro filtro acima.</p>
         </div>
 
         <div id="loadMoreWrap" class="flex justify-center mt-12 md:mt-14">
-          <button id="loadMoreBtn" class="btn-primary group inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-white/15 hover:border-white/40 text-white text-[14px] md:text-[15px] font-medium transition-colors">
+          <button id="loadMoreBtn" class="btn-primary group inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-ink-900/15 hover:border-ink-900/40 text-ink-700 text-[14px] md:text-[15px] font-medium transition-colors">
             <span id="loadMoreText">Ver mais obras</span>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="transition-transform group-hover:translate-y-0.5">
               <path d="M7 2v10M3 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -254,16 +301,16 @@
     </section>
 
     <!-- ============ CTA STRIP ============ -->
-    <section class="relative bg-ink-800 border-t border-white/[0.06] noise overflow-hidden">
+    <section class="relative bg-[#efeae1] border-t border-ink-900/[0.08] overflow-hidden">
       <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-16 md:py-20 relative z-10">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
           <div class="max-w-2xl">
-            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-white/40 mb-4 reveal">Pronto para começar?</p>
-            <h2 class="text-[clamp(1.5rem,4vw,2.75rem)] font-semibold leading-[1.1] tracking-apple-tight text-white mb-0 text-balance reveal" style="transition-delay:.1s">
+            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 reveal">Pronto para começar?</p>
+            <h2 class="text-[clamp(1.5rem,4vw,2.75rem)] font-semibold leading-[1.1] tracking-apple-tight text-ink-700 mb-0 text-balance reveal" style="transition-delay:.1s">
               Tem um espaço para <span class="gradient-text-gold">transformar?</span>
             </h2>
           </div>
-          <a href="index.html#contacto" class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.3)] self-start md:self-auto reveal" style="transition-delay:.2s">
+          <a href="https://wa.me/258840236274?text=Ola%20MOVEZA%2C%20gostaria%20de%20falar%20sobre%20um%20projecto." target="_blank" rel="noopener noreferrer" class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-ink-900 text-white text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.3)] self-start md:self-auto reveal" style="transition-delay:.2s">
             Pedir orçamento <span class="text-gold-500 text-xs">↗</span>
           </a>
         </div>
@@ -302,7 +349,8 @@
         <h4 class="text-[13px] font-medium tracking-tight text-white mb-3.5 md:mb-4">Contacto</h4>
         <div class="flex flex-col gap-2.5 text-[14px] tracking-apple">
           <span>Matola, Província de Maputo</span>
-          <a href="tel:+258879236274" class="hover:text-white active:text-gold-400 transition-colors py-0.5">+258 87 923 6274</a>
+          <a href="https://wa.me/258840236274?text=Ola%20MOVEZA%2C%20gostaria%20de%20falar%20sobre%20um%20projecto." target="_blank" rel="noopener noreferrer" class="hover:text-white active:text-gold-400 transition-colors py-0.5">WhatsApp · +258 84 023 6274</a>
+          <a href="tel:+258879236274" class="hover:text-white active:text-gold-400 transition-colors py-0.5">Telefone · +258 87 923 6274</a>
           <a href="mailto:geral@movezainteriores.co.mz" class="hover:text-white active:text-gold-400 transition-colors py-0.5 break-all">geral@movezainteriores.co.mz</a>
         </div>
       </div>
@@ -362,6 +410,7 @@
         mobileNav.style.maxHeight = '0';
         mobileNav.style.opacity = '0';
         mobileNav.style.transform = 'translateY(-8px)';
+        mobileNav.style.overflowY = 'hidden';
         menuBtn.setAttribute('aria-expanded', 'false');
         menuIconTop.setAttribute('d', 'M2 5h14');
         menuIconBottom.setAttribute('d', 'M2 13h14');
@@ -372,7 +421,8 @@
         const nextOpen = !isOpen;
         menuBtn.setAttribute('aria-expanded', nextOpen);
         if (nextOpen) {
-          mobileNav.style.maxHeight = '500px';
+          mobileNav.style.maxHeight = 'calc(100svh - 48px)';
+          mobileNav.style.overflowY = 'auto';
           mobileNav.style.opacity = '1';
           mobileNav.style.transform = 'translateY(0)';
           menuIconTop.setAttribute('d', 'M4 4l10 10');
@@ -389,25 +439,69 @@
       // ============ GALLERY DATA ============
       // ==========================================================
       const projects = [
-        { src: "assets/hero-interiors-v3.png",    title: "Sala Contemporânea",        category: "residencial",  categoryLabel: "Residencial",  meta: "Interiores",   location: "Maputo" },
-        { src: "assets/interior-wide.png",        title: "Residência KaTembe",        category: "residencial",  categoryLabel: "Residencial",  meta: "Interiores",   location: "KaTembe" },
-        { src: "assets/interior-editorial.png",   title: "Casa Ponta D'Ouro",         category: "residencial",  categoryLabel: "Residencial",  meta: "Mobiliário",   location: "Ponta D'Ouro" },
-        { src: "assets/hero-room.png",            title: "Suite Privada",             category: "residencial",  categoryLabel: "Residencial",  meta: "Quarto",       location: "Matola" },
-        { src: "assets/hero-sofa.png",            title: "Sala de Estar",             category: "residencial",  categoryLabel: "Residencial",  meta: "Mobiliário",   location: "Sommerschield" },
-        { src: "assets/hero-estate-v2.png",       title: "Vivenda Privada",           category: "residencial",  categoryLabel: "Residencial",  meta: "Interiores",   location: "Matola Rio" },
+        { src: "assets/cozinhas/cozinha-cinza-e-madeira.png", title: "Cozinha Cinza e Madeira", category: "cozinhas", categoryLabel: "Cozinhas", meta: "Cozinha por medida" },
+        { src: "assets/cozinhas/cozinha-branca-com-ilha.png", title: "Cozinha Branca com Ilha", category: "cozinhas", categoryLabel: "Cozinhas", meta: "Cozinha por medida" },
+        { src: "assets/cozinhas/cozinha-verde-com-peninsula.png", title: "Cozinha Verde com Península", category: "cozinhas", categoryLabel: "Cozinhas", meta: "Cozinha por medida" },
+        { src: "assets/cozinhas/cozinha-branca-com-bancada-madeira.png", title: "Cozinha Branca com Bancada em Madeira", category: "cozinhas", categoryLabel: "Cozinhas", meta: "Cozinha por medida" },
 
-        { src: "assets/commercial-v3.png",        title: "Lobby de Hotel",            category: "hotelaria",    categoryLabel: "Hotelaria",    meta: "Mobiliário",   location: "Maputo" },
-        { src: "assets/hero-room.png",            title: "Quarto de Hóspedes",        category: "hotelaria",    categoryLabel: "Hotelaria",    meta: "Interiores",   location: "Bilene" },
+        { src: "assets/mesas-de-cabeceira/mesa-cabeceira-branca-duas-gavetas.png", title: "Mesa de Cabeceira com Duas Gavetas", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
+        { src: "assets/mesas-de-cabeceira/colecao-mesas-cabeceira.png", title: "Colecção de Mesas de Cabeceira", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
+        { src: "assets/mesas-de-cabeceira/mesa-cabeceira-branca-estrutura-dourada.png", title: "Mesa de Cabeceira com Estrutura Dourada", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
+        { src: "assets/mesas-de-cabeceira/mesa-cabeceira-branca-design-suspenso.png", title: "Mesa de Cabeceira de Design Suspenso", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
+        { src: "assets/mesas-de-cabeceira/mesa-cabeceira-branca-base-dourada.png", title: "Mesa de Cabeceira com Base Dourada", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
+        { src: "assets/mesas-de-cabeceira/mesa-cabeceira-branca-suspensa.png", title: "Mesa de Cabeceira Suspensa", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
+        { src: "assets/mesas-de-cabeceira/mesa-cabeceira-branca-pes-altos.png", title: "Mesa de Cabeceira com Pés Altos", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
+        { src: "assets/mesas-de-cabeceira/par-mesas-cabeceira-madeira-e-branca.png", title: "Par de Mesas em Madeira e Branco", category: "mesas-cabeceira", categoryLabel: "Mesas de cabeceira", meta: "Mobiliário de quarto" },
 
-        { src: "assets/commercial-v3.png",        title: "Espaço Comercial",          category: "comercial",    categoryLabel: "Comercial",    meta: "Design",       location: "Polana" },
-        { src: "assets/hero-moveza.png",          title: "Recepção Corporativa",      category: "comercial",    categoryLabel: "Comercial",    meta: "Mobiliário",   location: "Baixa, Maputo" },
+        { src: "assets/mesas-de-centro/sala-painel-madeira-e-mesa-retangular.png", title: "Sala com Mesa de Centro Rectangular", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
+        { src: "assets/mesas-de-centro/mesa-centro-redonda-dupla.png", title: "Mesa de Centro Redonda Dupla", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
+        { src: "assets/mesas-de-centro/sala-mesa-centro-madeira-e-branco.png", title: "Mesa de Centro em Madeira e Branco", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
+        { src: "assets/mesas-de-centro/mesa-centro-quadrada-branca-e-vidro.png", title: "Mesa de Centro Branca e Vidro", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
+        { src: "assets/mesas-de-centro/sala-mesa-centro-branca-retangular.png", title: "Mesa de Centro Branca Rectangular", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
+        { src: "assets/mesas-de-centro/sala-mesa-centro-redonda-branca.png", title: "Mesa de Centro Redonda Branca", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
+        { src: "assets/mesas-de-centro/mesa-centro-redonda-preta-e-branca.png", title: "Mesa de Centro Preta e Branca", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
+        { src: "assets/mesas-de-centro/mesa-centro-quadrada-espelhada.png", title: "Mesa de Centro Quadrada Espelhada", category: "mesas-centro", categoryLabel: "Mesas de centro", meta: "Mobiliário de sala" },
 
-        { src: "assets/craftsmanship-v3.png",     title: "Cozinha por Medida",        category: "cozinhas",     categoryLabel: "Cozinhas",     meta: "Cozinha",      location: "Matola C" },
-        { src: "assets/craftsmanship-v3.png",     title: "Carpintaria Fina",          category: "carpintaria",  categoryLabel: "Carpintaria",  meta: "Marcenaria",   location: "Matola" },
+        { src: "assets/paineis-de-tv/painel-tv-madeira-ripada-iluminado.png", title: "Painel de TV em Madeira Iluminado", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/sala-painel-tv-estante-integrada.png", title: "Painel de TV com Estante Integrada", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/painel-tv-ripado-cinza.png", title: "Painel de TV Ripado Cinza", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/painel-tv-branco-iluminado.png", title: "Painel de TV Branco Iluminado", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/painel-tv-cinza-iluminado.png", title: "Painel de TV Cinza Iluminado", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/sala-painel-tv-com-espelho.png", title: "Sala com Painel de TV e Espelho", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/painel-tv-branco-com-divisoria.png", title: "Painel de TV Branco com Divisória", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/painel-tv-branco-com-estantes.png", title: "Painel de TV Branco com Estantes", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+        { src: "assets/paineis-de-tv/sala-painel-tv-branco-integrado.png", title: "Sala com Painel de TV Integrado", category: "paineis-tv", categoryLabel: "Painéis de TV", meta: "Carpintaria por medida" },
+
+        { src: "assets/roupeiros/roupeiro-portas-correr-madeira-clara.png", title: "Roupeiro de Correr em Madeira Clara", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/roupeiro-portas-espelho-com-gavetas.png", title: "Roupeiro de Espelho com Gavetas", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/closet-branco-portas-de-vidro.png", title: "Closet Branco com Portas de Vidro", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/roupeiro-hall-branco-e-madeira.png", title: "Roupeiro de Hall Branco e Madeira", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/roupeiro-aberto-branco.png", title: "Roupeiro Aberto Branco", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/roupeiro-embutido-branco.png", title: "Roupeiro Embutido Branco", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/closet-aberto-em-l.png", title: "Closet Aberto em L", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/closet-iluminado-portas-de-vidro.png", title: "Closet Iluminado com Portas de Vidro", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+        { src: "assets/roupeiros/roupeiro-corredor-branco.png", title: "Roupeiro de Corredor Branco", category: "roupeiros", categoryLabel: "Roupeiros", meta: "Arrumação por medida" },
+
+        { src: "assets/aparadores/aparador-madeira-ripada.png", title: "Aparador em Madeira Ripada", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-branco-curvo.png", title: "Aparador Branco Curvo", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-cinza-e-madeira.png", title: "Aparador Cinza e Madeira", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-madeira-tampo-branco.png", title: "Aparador em Madeira com Tampo Branco", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-madeira-com-espelhos.png", title: "Aparador em Madeira com Espelhos", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-branco-geometrico.png", title: "Aparador Branco Geométrico", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-branco-sala-de-jantar.png", title: "Aparador Branco de Sala de Jantar", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-madeira-detalhes-dourados.png", title: "Aparador em Madeira com Detalhes Dourados", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+        { src: "assets/aparadores/aparador-madeira-com-espelho-redondo.png", title: "Aparador em Madeira com Espelho Redondo", category: "aparadores", categoryLabel: "Aparadores", meta: "Mobiliário por medida" },
+
+        { src: "assets/cabeceiras-de-cama/quarto-cabeceira-cinza-parede-integrada.png", title: "Cabeceira Cinza Integrada à Parede", category: "cabeceiras", categoryLabel: "Cabeceiras", meta: "Quarto por medida" },
+        { src: "assets/cabeceiras-de-cama/quarto-cabeceira-bege-estofada.png", title: "Cabeceira Bege Estofada", category: "cabeceiras", categoryLabel: "Cabeceiras", meta: "Quarto por medida" },
+        { src: "assets/cabeceiras-de-cama/quarto-cabeceira-cinza-com-nichos.png", title: "Cabeceira Cinza com Nichos", category: "cabeceiras", categoryLabel: "Cabeceiras", meta: "Quarto por medida" },
+        { src: "assets/cabeceiras-de-cama/quarto-cabeceira-cinza-e-painel-ripado.png", title: "Cabeceira Cinza com Painel Ripado", category: "cabeceiras", categoryLabel: "Cabeceiras", meta: "Quarto por medida" },
+        { src: "assets/cabeceiras-de-cama/quarto-cabeceira-azul-decorada.png", title: "Cabeceira Azul em Quarto Decorado", category: "cabeceiras", categoryLabel: "Cabeceiras", meta: "Quarto por medida" },
+        { src: "assets/cabeceiras-de-cama/quarto-cabeceira-azul-clara.png", title: "Cabeceira Azul Clara", category: "cabeceiras", categoryLabel: "Cabeceiras", meta: "Quarto por medida" },
       ];
 
-      const INITIAL_COUNT = 8;
-      const LOAD_STEP = 4;
+      const INITIAL_COUNT = 12;
+      const LOAD_STEP = 12;
 
       let currentFilter = 'all';
       let visibleLimit = INITIAL_COUNT;
@@ -439,34 +533,41 @@
 
           visible.forEach((p, i) => {
             const item = document.createElement('button');
+            const aspectClass = i % 6 === 0
+              ? 'aspect-[4/5]'
+              : i % 4 === 0
+                ? 'aspect-square'
+                : 'aspect-[4/3]';
+
             item.type = 'button';
-            item.className = 'gallery-item group relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-800 aspect-[4/3] text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900';
+            item.className = 'gallery-item group relative w-full mb-5 md:mb-10 break-inside-avoid text-left focus:outline-none';
             item.dataset.index = i;
-            item.style.transitionDelay = `${Math.min(i * 50, 500)}ms`;
+            item.style.transitionDelay = `${Math.min(i * 45, 360)}ms`;
             item.setAttribute('aria-label', `Ver ${p.title} em detalhe`);
 
             item.innerHTML = `
-              <img
-                src="${p.src}"
-                alt="${p.title}"
-                loading="lazy"
-                onerror="this.onerror=null;this.src='${PLACEHOLDER}'"
-                class="w-full h-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.06] group-active:scale-[1.02]">
-              <div class="absolute inset-0 bg-gradient-to-t from-ink-900/95 via-ink-900/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
-
-              <div class="absolute top-3 right-3 md:top-4 md:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <span class="inline-flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white">
-                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-                    <path d="M5 3h6v6M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <span class="relative block ${aspectClass} overflow-hidden bg-ink-200 rounded-xl md:rounded-2xl">
+                <img
+                  src="${p.src}"
+                  alt="${p.title}"
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.onerror=null;this.src='${PLACEHOLDER}'"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.035]">
+                <span class="absolute inset-0 bg-ink-900/0 group-hover:bg-ink-900/10 transition-colors duration-500"></span>
+                <span class="absolute top-3 right-3 md:top-4 md:right-4 flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/90 text-ink-900 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 shadow-sm">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M5 3h6v6M11 3L3 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </span>
-              </div>
-
-              <div class="absolute bottom-0 left-0 right-0 p-3.5 md:p-5 text-white">
-                <span class="inline-block text-[9px] md:text-[10px] font-semibold tracking-[0.08em] uppercase text-gold-400 mb-1.5 md:mb-2">${p.categoryLabel}</span>
-                <b class="block text-[14px] md:text-[17px] font-semibold tracking-tight leading-tight mb-0.5 md:mb-1">${p.title}</b>
-                <span class="text-[10px] md:text-[12px] tracking-[0.02em] text-white/60 font-medium">${p.meta} · ${p.location}</span>
-              </div>
+              </span>
+              <span class="flex items-start justify-between gap-4 pt-3 md:pt-4 px-0.5">
+                <span>
+                  <span class="block text-[9px] md:text-[10px] font-semibold tracking-[0.13em] uppercase text-gold-600 mb-1.5">${p.categoryLabel}</span>
+                  <b class="block text-[13px] md:text-[16px] font-medium tracking-apple text-ink-700 leading-tight">${p.title}</b>
+                </span>
+                <span class="hidden md:block text-[10px] text-ink-400 whitespace-nowrap pt-0.5">${String(i + 1).padStart(2, '0')}</span>
+              </span>
             `;
 
             galleryGrid.appendChild(item);
@@ -493,6 +594,25 @@
 
       // ===== Filter pills =====
       const filterPills = document.querySelectorAll('.filter-pill');
+      const requestedFilter = new URLSearchParams(window.location.search).get('categoria');
+      const availableFilters = new Set([...filterPills].map(pill => pill.dataset.filter));
+
+      if (requestedFilter && availableFilters.has(requestedFilter)) {
+        currentFilter = requestedFilter;
+      }
+
+      function syncFilterPills() {
+        filterPills.forEach(p => {
+          const isActive = p.dataset.filter === currentFilter;
+          p.className = 'filter-pill flex-shrink-0 inline-flex items-center px-4 md:px-5 py-2 rounded-full text-[12px] md:text-[13px] font-medium active:scale-95 ' +
+            (isActive
+              ? 'bg-ink-900 text-white'
+              : 'bg-transparent text-ink-500 hover:text-ink-900 hover:bg-ink-900/[0.05]');
+        });
+      }
+
+      syncFilterPills();
+
       filterPills.forEach(pill => {
         pill.addEventListener('click', () => {
           const newFilter = pill.dataset.filter;
@@ -500,21 +620,15 @@
 
           currentFilter = newFilter;
           visibleLimit = INITIAL_COUNT;
+          syncFilterPills();
 
-          filterPills.forEach(p => {
-            if (p.dataset.filter === currentFilter) {
-              p.classList.remove('bg-white/[0.06]','border','border-white/[0.08]','text-white/70','hover:text-white','hover:bg-white/[0.1]');
-              p.classList.add('bg-white','text-ink-900');
-            } else {
-              p.classList.add('bg-white/[0.06]','border','border-white/[0.08]','text-white/70','hover:text-white','hover:bg-white/[0.1]');
-              p.classList.remove('bg-white','text-ink-900');
-            }
-          });
-
+          const nextUrl = newFilter === 'all'
+            ? 'galeria.html'
+            : 'galeria.html?categoria=' + encodeURIComponent(newFilter);
+          history.replaceState(null, '', nextUrl);
           render();
         });
       });
-
       // ===== Load more =====
       loadMoreBtn?.addEventListener('click', () => {
         visibleLimit += LOAD_STEP;
@@ -586,7 +700,7 @@
 
         lightboxImg.alt = p.title;
         lbTitle.textContent = p.title;
-        lbMeta.textContent = `${p.meta} · ${p.location}`;
+        lbMeta.textContent = `${p.meta}`;
         lbCurrent.textContent = String(currentIndex + 1);
         lbTotal.textContent = String(currentList.length);
       }

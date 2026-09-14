@@ -121,7 +121,8 @@
       transform: translateY(-8px);
     }
     .mobile-nav.open {
-      max-height: 500px;
+      max-height: calc(100svh - var(--header-h));
+      overflow-y: auto;
       opacity: 1;
       transform: translateY(0);
     }
@@ -133,17 +134,17 @@
 
     /* ============ GALLERY POPUP ============ */
     .gallery-popup {
-      transform: translateY(120%) scale(0.96);
+      transform: translate(var(--popup-x, 0%), 120%) scale(0.97);
       opacity: 0;
       transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s ease;
       will-change: transform, opacity;
     }
     .gallery-popup.show {
-      transform: translateY(0) scale(1);
+      transform: translate(var(--popup-x, 0%), 0) scale(1);
       opacity: 1;
     }
     .gallery-popup.hide-down {
-      transform: translateY(120%) scale(0.96);
+      transform: translate(var(--popup-x, 0%), 120%) scale(0.97);
       opacity: 0;
     }
 
@@ -157,6 +158,25 @@
     }
     @keyframes shimmer { 0% { background-position: 100% 0; } 60%, 100% { background-position: -100% 0; } }
 
+    /* Editorial minimalism shared with the gallery */
+    #quem-somos, #obras, #processo, #contacto { background: #fbfaf7; }
+    #servicos, #empresa { background: #f3efe7; }
+    main > section:not(#inicio) h2 { font-weight: 500; letter-spacing: -0.05em; }
+    #serviceGrid { gap: 0; border-bottom: 1px solid rgba(29,29,31,.12); }
+    .service-card {
+      border-radius: 0 !important;
+      border-top: 1px solid rgba(29,29,31,.12);
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    #processo article { padding-top: 1.25rem; border-top: 1px solid rgba(29,29,31,.14); }
+    @media (min-width: 640px) {
+      .gallery-popup { --popup-x: -50%; }
+    }
+    @media (min-width: 1024px) {
+      .service-card:nth-child(3n+2),
+      .service-card:nth-child(3n+3) { border-left: 1px solid rgba(29,29,31,.09); }
+    }
     :root {
       --section-py: clamp(4rem, 8vw, 10rem);
       --header-h: 52px;
@@ -184,10 +204,37 @@
         <span class="text-[14px] xs:text-[15px] md:text-[15px] font-semibold tracking-tight text-ink-700 truncate">MOVEZA</span>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
+      <nav class="hidden lg:flex h-full items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
         <a href="#quem-somos" class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Quem Somos</a>
         <a href="#servicos"   class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Serviços</a>
-        <a href="#obras"      class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Obras</a>
+        <div class="group relative self-stretch flex items-center">
+          <a href="#obras" class="nav-link inline-flex items-center gap-1.5 text-[13px] text-ink-500 hover:text-ink-700 transition-colors" aria-haspopup="true">
+            Obras
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" class="transition-transform duration-300 group-hover:rotate-180 group-focus-within:rotate-180">
+              <path d="M2 3.5 5 6.5l3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <div class="absolute top-full left-1/2 -translate-x-1/2 w-[440px] pt-3 opacity-0 invisible translate-y-1 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+            <div class="rounded-2xl border border-ink-900/10 bg-white/95 backdrop-blur-xl shadow-[0_18px_55px_rgba(10,10,11,0.14)] p-2">
+              <a href="galeria.html" class="flex items-center justify-between rounded-xl px-3.5 py-3 mb-1 bg-ink-100 hover:bg-ink-200 transition-colors">
+                <span>
+                  <b class="block text-[13px] font-semibold text-ink-700">Ver todas as obras</b>
+                  <small class="block mt-0.5 text-[11px] text-ink-400">53 projectos em 7 categorias</small>
+                </span>
+                <span class="text-gold-500 text-[14px]">→</span>
+              </a>
+              <div class="grid grid-cols-2 gap-1">
+                <a href="galeria.html?categoria=cozinhas" class="rounded-xl px-3.5 py-2.5 text-[12px] font-medium text-ink-600 hover:text-ink-900 hover:bg-ink-100 transition-colors">Cozinhas</a>
+                <a href="galeria.html?categoria=mesas-cabeceira" class="rounded-xl px-3.5 py-2.5 text-[12px] font-medium text-ink-600 hover:text-ink-900 hover:bg-ink-100 transition-colors">Mesas de cabeceira</a>
+                <a href="galeria.html?categoria=mesas-centro" class="rounded-xl px-3.5 py-2.5 text-[12px] font-medium text-ink-600 hover:text-ink-900 hover:bg-ink-100 transition-colors">Mesas de centro</a>
+                <a href="galeria.html?categoria=paineis-tv" class="rounded-xl px-3.5 py-2.5 text-[12px] font-medium text-ink-600 hover:text-ink-900 hover:bg-ink-100 transition-colors">Painéis de TV</a>
+                <a href="galeria.html?categoria=roupeiros" class="rounded-xl px-3.5 py-2.5 text-[12px] font-medium text-ink-600 hover:text-ink-900 hover:bg-ink-100 transition-colors">Roupeiros</a>
+                <a href="galeria.html?categoria=aparadores" class="rounded-xl px-3.5 py-2.5 text-[12px] font-medium text-ink-600 hover:text-ink-900 hover:bg-ink-100 transition-colors">Aparadores</a>
+                <a href="galeria.html?categoria=cabeceiras" class="rounded-xl px-3.5 py-2.5 text-[12px] font-medium text-ink-600 hover:text-ink-900 hover:bg-ink-100 transition-colors">Cabeceiras</a>
+              </div>
+            </div>
+          </div>
+        </div>
         <a href="#testemunhos" class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Testemunhos</a>
         <a href="#contacto"   class="nav-link text-[13px] text-ink-500 hover:text-ink-700 transition-colors">Contacto</a>
       </nav>
@@ -209,7 +256,24 @@
       <div class="py-3 space-y-0">
         <a href="#quem-somos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Quem Somos</a>
         <a href="#servicos"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Serviços</a>
-        <a href="#obras"      class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Obras</a>
+        <details class="group border-b border-ink-900/5">
+          <summary class="flex items-center justify-between py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 active:text-gold-500 transition-colors cursor-pointer list-none">
+            Obras
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" class="transition-transform duration-300 group-open:rotate-180">
+              <path d="M3 5 7 9l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <div class="grid grid-cols-2 gap-1 pb-3">
+            <a href="galeria.html" class="col-span-2 rounded-xl bg-ink-100 px-3 py-2.5 text-[13px] font-semibold text-ink-700">Todas as obras</a>
+            <a href="galeria.html?categoria=cozinhas" class="rounded-xl px-3 py-2 text-[13px] text-ink-500 active:bg-ink-100">Cozinhas</a>
+            <a href="galeria.html?categoria=mesas-cabeceira" class="rounded-xl px-3 py-2 text-[13px] text-ink-500 active:bg-ink-100">Mesas de cabeceira</a>
+            <a href="galeria.html?categoria=mesas-centro" class="rounded-xl px-3 py-2 text-[13px] text-ink-500 active:bg-ink-100">Mesas de centro</a>
+            <a href="galeria.html?categoria=paineis-tv" class="rounded-xl px-3 py-2 text-[13px] text-ink-500 active:bg-ink-100">Painéis de TV</a>
+            <a href="galeria.html?categoria=roupeiros" class="rounded-xl px-3 py-2 text-[13px] text-ink-500 active:bg-ink-100">Roupeiros</a>
+            <a href="galeria.html?categoria=aparadores" class="rounded-xl px-3 py-2 text-[13px] text-ink-500 active:bg-ink-100">Aparadores</a>
+            <a href="galeria.html?categoria=cabeceiras" class="rounded-xl px-3 py-2 text-[13px] text-ink-500 active:bg-ink-100">Cabeceiras</a>
+          </div>
+        </details>
         <a href="#testemunhos" class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 border-b border-ink-900/5 active:text-gold-500 transition-colors">Testemunhos</a>
         <a href="#contacto"   class="block py-3.5 text-[17px] sm:text-[18px] font-medium tracking-tight text-ink-700 active:text-gold-500 transition-colors">Contacto</a>
         <a href="#contacto" class="sm:hidden mt-3 block text-center py-3 rounded-full bg-ink-700 text-white text-[15px] font-medium active:scale-[0.98] transition-transform">Pedir orçamento</a>
@@ -232,20 +296,20 @@
       <div class="absolute inset-0 bg-gradient-to-b from-ink-900/60 via-ink-900/25 to-ink-900/80 md:from-ink-900/50 md:via-ink-900/20 md:to-ink-900/75"></div>
 
       <div class="relative z-10 max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-24 xs:py-28 md:py-32 lg:py-40 text-white w-full">
-        <p class="text-[11px] xs:text-[12px] md:text-[13px] font-medium tracking-[0.02em] text-white/70 mb-4 md:mb-5 reveal">Mobiliário · Interiores · Execução</p>
-        <h1 class="text-[clamp(2.1rem,9vw,6rem)] font-semibold leading-[1.05] md:leading-[1.03] tracking-apple-tight max-w-5xl mb-5 md:mb-6 text-balance reveal" style="transition-delay:.1s">
-          Desenhamos espaços.<br>
-          <span class="gradient-text-gold">Construímos identidade.</span>
+        <p class="text-[11px] xs:text-[12px] md:text-[13px] font-medium tracking-[0.02em] text-white/70 mb-4 md:mb-5 reveal">Feito em Matola · Pensado para si</p>
+        <h1 class="text-[clamp(2.1rem,9vw,6rem)] font-medium leading-[0.98] md:leading-[0.95] tracking-[-0.055em] max-w-5xl mb-5 md:mb-6 text-balance reveal" style="transition-delay:.1s">
+          A sua casa merece<br>
+          <span class="gradient-text-gold">móveis que façam sentido.</span>
         </h1>
         <p class="text-[clamp(1rem,1.6vw,1.35rem)] text-white/75 font-normal max-w-xl mb-8 md:mb-10 leading-[1.45] md:leading-[1.4] tracking-apple reveal" style="transition-delay:.2s">
-          Da primeira ideia à montagem final, criamos mobiliário e interiores por medida para residências, empresas e hotelaria.
+          Conte-nos como vive e o que imagina. Nós desenhamos, produzimos e instalamos cada peça à medida do seu espaço.
         </p>
         <div class="flex flex-col xs:flex-row xs:flex-wrap items-stretch xs:items-center gap-3 xs:gap-4 reveal" style="transition-delay:.3s">
           <a href="#obras" class="btn-primary inline-flex items-center justify-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
-            Ver projectos
+            Ver o que já fizemos
           </a>
-          <a href="#contacto" class="inline-flex items-center justify-center gap-1.5 text-white/85 hover:text-white text-[15px] transition-colors group py-3 xs:py-0">
-            Falar com a equipa
+          <a href="https://wa.me/258840236274?text=Ola%20MOVEZA%2C%20gostaria%20de%20falar%20sobre%20um%20projecto." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 text-white/85 hover:text-white text-[15px] transition-colors group py-3 xs:py-0">
+            Conversar sobre o meu espaço
             <span class="transition-transform group-hover:translate-x-0.5">→</span>
           </a>
         </div>
@@ -275,18 +339,17 @@
           <div class="lg:col-span-5 reveal">
             <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">01 — Quem Somos</p>
             <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
-              Uma equipa que<br>
-              pensa, produz<br>
-              e <span class="gradient-text-gold">instala.</span>
+              Ouvimos primeiro.<br>
+              Depois, <span class="gradient-text-gold">criamos.</span>
             </h2>
           </div>
 
           <div class="lg:col-span-7 reveal" style="transition-delay:.1s">
             <p class="text-[clamp(1.2rem,2vw,1.75rem)] font-normal leading-[1.4] md:leading-[1.35] tracking-apple text-ink-700 mb-6 md:mb-8 text-balance">
-              A MOVEZA une design, produção e montagem numa só equipa — eliminando intermediários e garantindo controlo total sobre cada detalhe.
+              Tudo começa com uma conversa. Queremos perceber o que precisa, como usa o espaço e aquilo que gostaria de sentir quando entrar nele.
             </p>
             <p class="text-[15px] md:text-[17px] text-ink-500 leading-[1.65] md:leading-[1.6] tracking-apple mb-10 md:mb-12 max-w-2xl">
-              Nascemos em Matola com uma convicção simples: mobiliário e interiores de qualidade não precisam ser complicados. Trabalhamos com madeira, metal e materiais mistos, acompanhando cada projecto do briefing à entrega, com transparência, prazos cumpridos e atenção obsessiva ao acabamento.
+              Somos uma equipa de Matola que desenha, produz e instala. Acompanhamos o seu projecto de perto, explicamos cada escolha e cuidamos dos detalhes até tudo estar no lugar.
             </p>
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4 md:gap-x-6 pt-8 md:pt-10 border-t border-ink-200 reveal-stagger">
@@ -318,8 +381,8 @@
         <div class="max-w-2xl mb-10 md:mb-16 reveal">
           <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">02 — Serviços</p>
           <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
-            Capacidade completa.<br>
-            <span class="gradient-text-gold">Uma única equipa.</span>
+            O que precisa,<br>
+            <span class="gradient-text-gold">feito à sua medida.</span>
           </h2>
         </div>
         <div id="serviceGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4"></div>
@@ -328,15 +391,15 @@
 
     <!-- ============ IMMERSIVE CTA ============ -->
     <section class="relative min-h-[70svh] md:min-h-[75vh] flex items-center overflow-hidden bg-ink-900 noise">
-      <img src="assets/commercial-v3.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50 md:opacity-55">
+      <img src="assets/paineis-de-tv/sala-painel-tv-branco-integrado.png" alt="Sala com painel de TV branco executado por medida" class="absolute inset-0 w-full h-full object-cover opacity-50 md:opacity-55">
       <div class="absolute inset-0 bg-gradient-to-br from-ink-900/75 via-ink-900/35 to-ink-900/65 md:from-ink-900/70 md:via-ink-900/30 md:to-ink-900/60"></div>
       <div class="relative z-10 max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 py-20 md:py-24 text-white w-full">
-        <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-white/60 mb-4 md:mb-5 reveal">Residencial · Comercial · Hotelaria</p>
+        <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-white/60 mb-4 md:mb-5 reveal">A sua ideia pode começar aqui</p>
         <h2 class="text-[clamp(1.7rem,7vw,4rem)] font-semibold leading-[1.1] md:leading-[1.05] tracking-apple-tight max-w-3xl mb-8 md:mb-10 text-balance reveal" style="transition-delay:.1s">
-          Um espaço memorável<br>começa com um <span class="gradient-text-gold">bom projecto.</span>
+          Vamos criar um espaço<br>que se pareça <span class="gradient-text-gold">consigo.</span>
         </h2>
-        <a href="#contacto" class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.15)] reveal" style="transition-delay:.2s">
-          Começar o meu projecto
+        <a href="https://wa.me/258840236274?text=Ola%20MOVEZA%2C%20gostaria%20de%20falar%20sobre%20um%20projecto." target="_blank" rel="noopener noreferrer" class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 md:py-3 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.15)] reveal" style="transition-delay:.2s">
+          Falar sobre a minha ideia
         </a>
       </div>
     </section>
@@ -344,198 +407,203 @@
     <!-- ============ NOSSAS OBRAS ============ -->
     <section id="obras" class="bg-white" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
       <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 md:gap-6 mb-10 md:mb-14 reveal">
-          <div>
-            <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">03 — Nossas Obras</p>
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-7 lg:gap-12 mb-10 md:mb-14 reveal">
+          <div class="max-w-3xl">
+            <div class="flex items-center gap-3 mb-4 md:mb-5">
+              <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400">03 — Nossas Obras</p>
+              <span class="h-px w-8 bg-gold-400/60"></span>
+              <span class="text-[11px] md:text-[12px] font-medium text-gold-500">53 projectos reais</span>
+            </div>
             <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
-              Interiores pensados<br>
-              para serem <span class="gradient-text-gold">vividos.</span>
+              Veja o que fizemos.<br>
+              <span class="gradient-text-gold">Imagine o que podemos criar consigo.</span>
             </h2>
           </div>
-          <p class="text-[15px] md:text-[17px] text-ink-500 max-w-sm leading-[1.55] tracking-apple">
-            Uma linguagem contemporânea, materiais honestos e soluções criadas para durar.
-          </p>
+          <div class="max-w-md">
+            <p class="text-[15px] md:text-[17px] text-ink-500 leading-[1.6] tracking-apple mb-5">
+              Casas reais, ideias diferentes e peças feitas para durar. Talvez o seu próximo espaço comece por aqui.
+            </p>
+            <a href="galeria.html" class="group inline-flex items-center gap-2 text-[14px] font-semibold text-ink-700 hover:text-gold-500 transition-colors">
+              Explorar galeria completa
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4 mb-10 md:mb-12">
-          <a href="galeria.html" class="group sm:col-span-2 lg:col-span-2 lg:row-span-2 relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100 aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[580px] reveal">
-            <img src="assets/interior-wide.png" alt="Residência KaTembe" class="w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]">
-            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/15 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-5 md:p-8 text-white">
-              <b class="block text-[18px] md:text-[22px] font-semibold tracking-tight mb-1">Residência KaTembe</b>
-              <span class="text-[11px] md:text-[12px] tracking-[0.02em] text-white/70 font-medium">Interiores · Residencial</span>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 md:gap-4 mb-3.5 md:mb-4 reveal-stagger">
+          <a href="galeria.html?categoria=cozinhas" class="group lg:col-span-7 relative min-h-[430px] md:min-h-[580px] rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100">
+            <img src="assets/cozinhas/cozinha-cinza-e-madeira.png" alt="Cozinha contemporânea cinza e madeira" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.035]">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-ink-900/10 to-transparent"></div>
+            <div class="absolute top-5 left-5 md:top-7 md:left-7">
+              <span class="inline-flex px-3 py-1.5 rounded-full bg-white/90 backdrop-blur text-[10px] md:text-[11px] font-semibold text-ink-700">04 projectos</span>
+            </div>
+            <div class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 md:p-8 text-white">
+              <div>
+                <span class="block text-[11px] uppercase tracking-[0.12em] text-gold-400 font-semibold mb-2">Cozinhas</span>
+                <b class="block text-[22px] md:text-[30px] font-semibold tracking-apple-tight">Cozinha Cinza e Madeira</b>
+              </div>
+              <span class="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/30 bg-white/10 backdrop-blur transition-all group-hover:bg-white group-hover:text-ink-900">→</span>
             </div>
           </a>
 
-          <a href="galeria.html" class="group relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100 aspect-[4/3] reveal">
-            <img src="assets/interior-editorial.png" alt="Casa Ponta D'Ouro" class="w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]">
-            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/15 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-white">
-              <b class="block text-[16px] md:text-[17px] font-semibold tracking-tight mb-1">Casa Ponta D'Ouro</b>
-              <span class="text-[10px] md:text-[11px] tracking-[0.02em] text-white/70 font-medium">Mobiliário · Decoração</span>
-            </div>
-          </a>
-
-          <a href="galeria.html" class="group relative rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100 aspect-[4/3] reveal">
-            <img src="assets/commercial-v3.png" alt="Hospitalidade Maputo" class="w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]">
-            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/15 to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-5 md:p-6 text-white">
-              <b class="block text-[16px] md:text-[17px] font-semibold tracking-tight mb-1">Hospitalidade Maputo</b>
-              <span class="text-[10px] md:text-[11px] tracking-[0.02em] text-white/70 font-medium">Comercial · Hotelaria</span>
-            </div>
-          </a>
+          <div class="lg:col-span-5 grid grid-cols-2 gap-3.5 md:gap-4">
+            <a href="galeria.html?categoria=paineis-tv" class="group col-span-2 relative min-h-[270px] md:min-h-[320px] rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100">
+              <img src="assets/paineis-de-tv/painel-tv-ripado-cinza.png" alt="Painel de TV ripado cinza" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.04]">
+              <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-transparent"></div>
+              <div class="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 md:p-6 text-white">
+                <div><span class="text-[10px] uppercase tracking-[0.1em] text-gold-400 font-semibold">09 projectos</span><b class="block mt-1 text-[18px] md:text-[21px] font-semibold">Painéis de TV</b></div>
+                <span class="text-xl transition-transform group-hover:translate-x-1">→</span>
+              </div>
+            </a>
+            <a href="galeria.html?categoria=roupeiros" class="group relative min-h-[250px] rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100">
+              <img src="assets/roupeiros/closet-iluminado-portas-de-vidro.png" alt="Closet iluminado com portas de vidro" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.05]">
+              <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-transparent"></div>
+              <div class="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white"><span class="text-[9px] uppercase tracking-[0.1em] text-gold-400 font-semibold">09 projectos</span><b class="block mt-1 text-[16px] md:text-[18px] font-semibold">Roupeiros</b></div>
+            </a>
+            <a href="galeria.html?categoria=aparadores" class="group relative min-h-[250px] rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100">
+              <img src="assets/aparadores/aparador-madeira-detalhes-dourados.png" alt="Aparador em madeira com detalhes dourados" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.05]">
+              <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-transparent"></div>
+              <div class="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white"><span class="text-[9px] uppercase tracking-[0.1em] text-gold-400 font-semibold">09 projectos</span><b class="block mt-1 text-[16px] md:text-[18px] font-semibold">Aparadores</b></div>
+            </a>
+          </div>
         </div>
 
-        <div class="flex justify-center reveal">
-          <a href="galeria.html" class="group inline-flex items-center gap-2 text-[16px] md:text-[17px] font-medium text-ink-700 hover:text-gold-500 active:text-gold-500 transition-colors py-3 px-2">
-            Ver mais obras
-            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-ink-700 text-white text-[11px] transition-all group-hover:bg-gold-500 group-hover:translate-x-0.5">→</span>
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4 reveal-stagger">
+          <a href="galeria.html?categoria=cabeceiras" class="group relative min-h-[250px] md:min-h-[340px] rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100">
+            <img src="assets/cabeceiras-de-cama/quarto-cabeceira-cinza-parede-integrada.png" alt="Quarto com cabeceira cinza integrada" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-[1.05]">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-4 md:p-6 text-white"><span class="text-[9px] md:text-[10px] uppercase tracking-[0.1em] text-gold-400 font-semibold">06 projectos</span><b class="block mt-1 text-[16px] md:text-[20px] font-semibold">Cabeceiras</b></div>
+          </a>
+          <a href="galeria.html?categoria=mesas-centro" class="group relative min-h-[250px] md:min-h-[340px] rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100">
+            <img src="assets/mesas-de-centro/mesa-centro-redonda-dupla.png" alt="Mesa de centro redonda dupla" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-[1.05]">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-4 md:p-6 text-white"><span class="text-[9px] md:text-[10px] uppercase tracking-[0.1em] text-gold-400 font-semibold">08 projectos</span><b class="block mt-1 text-[16px] md:text-[20px] font-semibold">Mesas de centro</b></div>
+          </a>
+          <a href="galeria.html?categoria=mesas-cabeceira" class="group col-span-2 lg:col-span-1 relative min-h-[250px] md:min-h-[340px] rounded-2xl md:rounded-3xl overflow-hidden bg-ink-100">
+            <img src="assets/mesas-de-cabeceira/mesa-cabeceira-branca-estrutura-dourada.png" alt="Mesa de cabeceira branca com estrutura dourada" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-[1.05]">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-4 md:p-6 text-white"><span class="text-[9px] md:text-[10px] uppercase tracking-[0.1em] text-gold-400 font-semibold">08 projectos</span><b class="block mt-1 text-[16px] md:text-[20px] font-semibold">Mesas de cabeceira</b></div>
           </a>
         </div>
       </div>
     </section>
-
     <!-- ============ SECTORES ============ -->
     <section class="bg-ink-100" style="padding-top: clamp(3.5rem, 6vw, 8rem); padding-bottom: clamp(3.5rem, 6vw, 8rem);">
       <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
         <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5 reveal">Onde Trabalhamos</p>
         <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 mb-10 md:mb-14 text-balance reveal" style="transition-delay:.1s">
-          Soluções para cada<br>tipo de <span class="gradient-text-gold">espaço.</span>
+          Criamos para a forma<br>como <span class="gradient-text-gold">vive e trabalha.</span>
         </h2>
         <div id="sectorList" class="border-t border-ink-300/60"></div>
       </div>
     </section>
 
     <!-- ============ TESTEMUNHOS ============ -->
-    <section id="testemunhos" class="bg-ink-700 text-white noise relative overflow-hidden" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
-      <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6 relative z-10">
-        <div class="max-w-2xl mb-10 md:mb-16 reveal">
-          <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-white/40 mb-4 md:mb-5">04 — Testemunhos</p>
-          <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-white text-balance">
-            O que dizem<br>
-            <span class="gradient-text-gold">os nossos clientes.</span>
-          </h2>
-        </div>
+    <section id="testemunhos" class="relative overflow-hidden bg-ink-900 text-white noise" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
+      <div class="absolute -top-32 right-0 w-[38rem] h-[38rem] rounded-full bg-gold-500/[0.035] blur-3xl pointer-events-none"></div>
 
-        <div class="md:hidden -mx-5 xs:-mx-6 sm:-mx-8 px-5 xs:px-6 sm:px-8 overflow-x-auto no-scrollbar snap-x snap-mandatory">
-          <div class="flex gap-3.5 pb-2" style="width: max-content;">
-            <figure class="snap-start flex-shrink-0 w-[85vw] max-w-[360px] p-6 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm reveal">
-              <div class="flex gap-0.5 mb-5 text-gold-400 text-[14px]"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-              <blockquote class="text-[15px] font-normal leading-[1.6] tracking-apple text-white/90 mb-6">
-                A MOVEZA transformou por completo a nossa cozinha. Prazos cumpridos, acabamento impecável e uma equipa que realmente ouve.
-              </blockquote>
-              <figcaption class="flex items-center gap-3 pt-5 border-t border-white/[0.08]">
-                <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">AM</div>
-                <div>
-                  <div class="font-medium text-white text-[14px] tracking-tight">Ana Macuácua</div>
-                  <div class="text-[12px] text-white/45 mt-0.5">Residência · Matola</div>
-                </div>
-              </figcaption>
-            </figure>
-            <figure class="snap-start flex-shrink-0 w-[85vw] max-w-[360px] p-6 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm reveal">
-              <div class="flex gap-0.5 mb-5 text-gold-400 text-[14px]"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-              <blockquote class="text-[15px] font-normal leading-[1.6] tracking-apple text-white/90 mb-6">
-                Equipámos 40 quartos de hotel com mobiliário por medida. Qualidade consistente e um acompanhamento exemplar.
-              </blockquote>
-              <figcaption class="flex items-center gap-3 pt-5 border-t border-white/[0.08]">
-                <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">JS</div>
-                <div>
-                  <div class="font-medium text-white text-[14px] tracking-tight">João Silva</div>
-                  <div class="text-[12px] text-white/45 mt-0.5">Hotelaria · Maputo</div>
-                </div>
-              </figcaption>
-            </figure>
-            <figure class="snap-start flex-shrink-0 w-[85vw] max-w-[360px] p-6 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm reveal">
-              <div class="flex gap-0.5 mb-5 text-gold-400 text-[14px]"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-              <blockquote class="text-[15px] font-normal leading-[1.6] tracking-apple text-white/90 mb-6">
-                Profissionalismo raro. Desenharam, produziram e instalaram o nosso escritório em tempo recorde.
-              </blockquote>
-              <figcaption class="flex items-center gap-3 pt-5 border-t border-white/[0.08]">
-                <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">CT</div>
-                <div>
-                  <div class="font-medium text-white text-[14px] tracking-tight">Carla Tembe</div>
-                  <div class="text-[12px] text-white/45 mt-0.5">Escritório · Matola</div>
-                </div>
-              </figcaption>
-            </figure>
+      <div class="relative z-10 max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
+        <div class="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end mb-12 md:mb-20 reveal">
+          <div class="lg:col-span-8">
+            <div class="flex items-center gap-3 mb-5 md:mb-7">
+              <p class="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.16em] text-white/40">04 — Testemunhos</p>
+              <span class="w-8 h-px bg-gold-400/50"></span>
+            </div>
+            <h2 class="text-[clamp(2.25rem,7vw,5.5rem)] font-medium leading-[0.98] tracking-[-0.055em] text-white text-balance">
+              Histórias de quem<br>
+              <span class="text-white/35">já criou connosco.</span>
+            </h2>
           </div>
+          <p class="lg:col-span-4 text-[14px] md:text-[15px] text-white/50 leading-[1.7] tracking-apple max-w-md">
+            No fim, o que fica não é apenas um móvel bonito. É a forma como o espaço passa a fazer parte da vida de quem o usa.
+          </p>
         </div>
 
-        <div class="hidden md:grid md:grid-cols-3 gap-4 reveal-stagger">
-          <figure class="p-8 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
-            <div class="flex gap-0.5 mb-6 text-gold-400"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <blockquote class="text-[17px] font-normal leading-[1.55] tracking-apple text-white/90 mb-8">
-              A MOVEZA transformou por completo a nossa cozinha. Prazos cumpridos, acabamento impecável e uma equipa que realmente ouve.
+        <div class="grid lg:grid-cols-12 border-t border-white/10 reveal-stagger">
+          <figure class="lg:col-span-6 flex flex-col py-8 md:py-12 lg:pr-12 border-b lg:border-b-0 lg:border-r border-white/10">
+            <div class="flex items-center justify-between gap-4 mb-10 md:mb-14">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-400">Cozinha por medida</span>
+              <span class="text-[10px] tracking-[0.12em] text-white/30" aria-label="5 de 5 estrelas">5.0 / 5</span>
+            </div>
+            <blockquote class="text-[clamp(1.55rem,3vw,2.5rem)] font-normal leading-[1.25] tracking-[-0.035em] text-white mb-10 md:mb-16">
+              “A MOVEZA transformou por completo a nossa cozinha. Cumpriram os prazos, o acabamento ficou impecável e sentimos que a equipa realmente nos ouviu.”
             </blockquote>
-            <figcaption class="flex items-center gap-3 pt-6 border-t border-white/[0.08]">
-              <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">AM</div>
-              <div>
-                <div class="font-medium text-white text-[14px] tracking-tight">Ana Macuácua</div>
-                <div class="text-[12px] text-white/45 mt-0.5">Residência · Matola</div>
-              </div>
+            <figcaption class="flex items-center gap-3">
+              <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/15 text-[11px] font-semibold text-gold-400">AM</span>
+              <span>
+                <b class="block text-[13px] font-medium text-white">Ana Macuácua</b>
+                <small class="block mt-1 text-[11px] text-white/35">Residência · Matola</small>
+              </span>
             </figcaption>
           </figure>
 
-          <figure class="p-8 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
-            <div class="flex gap-0.5 mb-6 text-gold-400"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <blockquote class="text-[17px] font-normal leading-[1.55] tracking-apple text-white/90 mb-8">
-              Equipámos 40 quartos de hotel com mobiliário por medida. Qualidade consistente e um acompanhamento exemplar do início ao fim.
+          <figure class="lg:col-span-3 flex flex-col py-8 md:py-12 lg:px-8 border-b lg:border-b-0 lg:border-r border-white/10">
+            <div class="flex items-center justify-between gap-4 mb-8">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-400">Hotelaria</span>
+              <span class="text-[10px] tracking-[0.12em] text-white/30" aria-label="5 de 5 estrelas">5.0</span>
+            </div>
+            <blockquote class="text-[18px] md:text-[20px] font-normal leading-[1.45] tracking-apple text-white/85 mb-10">
+              “Equipámos 40 quartos com mobiliário por medida. A qualidade foi consistente e sentimos acompanhamento do início ao fim.”
             </blockquote>
-            <figcaption class="flex items-center gap-3 pt-6 border-t border-white/[0.08]">
-              <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">JS</div>
-              <div>
-                <div class="font-medium text-white text-[14px] tracking-tight">João Silva</div>
-                <div class="text-[12px] text-white/45 mt-0.5">Hotelaria · Maputo</div>
-              </div>
+            <figcaption class="mt-auto pt-6 border-t border-white/[0.07]">
+              <b class="block text-[13px] font-medium text-white">João Silva</b>
+              <small class="block mt-1 text-[11px] text-white/35">Hotelaria · Maputo</small>
             </figcaption>
           </figure>
 
-          <figure class="p-8 rounded-3xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
-            <div class="flex gap-0.5 mb-6 text-gold-400"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <blockquote class="text-[17px] font-normal leading-[1.55] tracking-apple text-white/90 mb-8">
-              Profissionalismo raro. Desenharam, produziram e instalaram o nosso escritório em tempo recorde, sem surpresas no orçamento.
+          <figure class="lg:col-span-3 flex flex-col py-8 md:py-12 lg:pl-8">
+            <div class="flex items-center justify-between gap-4 mb-8">
+              <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-400">Escritório</span>
+              <span class="text-[10px] tracking-[0.12em] text-white/30" aria-label="5 de 5 estrelas">5.0</span>
+            </div>
+            <blockquote class="text-[18px] md:text-[20px] font-normal leading-[1.45] tracking-apple text-white/85 mb-10">
+              “Desenharam, produziram e instalaram o nosso escritório dentro do prazo — com profissionalismo e sem surpresas no orçamento.”
             </blockquote>
-            <figcaption class="flex items-center gap-3 pt-6 border-t border-white/[0.08]">
-              <div class="w-10 h-10 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-medium text-[13px]">CT</div>
-              <div>
-                <div class="font-medium text-white text-[14px] tracking-tight">Carla Tembe</div>
-                <div class="text-[12px] text-white/45 mt-0.5">Escritório · Matola</div>
-              </div>
+            <figcaption class="mt-auto pt-6 border-t border-white/[0.07]">
+              <b class="block text-[13px] font-medium text-white">Carla Tembe</b>
+              <small class="block mt-1 text-[11px] text-white/35">Escritório · Matola</small>
             </figcaption>
           </figure>
+        </div>
+
+        <div class="flex items-center justify-between gap-6 mt-8 md:mt-10 pt-6 border-t border-white/10 reveal">
+          <span class="text-[10px] uppercase tracking-[0.14em] text-white/30">Projectos reais · Relações duradouras</span>
+          <a href="https://wa.me/258840236274?text=Ola%20MOVEZA%2C%20gostaria%20de%20falar%20sobre%20um%20projecto." target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 text-[12px] font-medium text-white/60 hover:text-white transition-colors">
+            Conte-nos a sua ideia
+            <span class="text-gold-400 transition-transform group-hover:translate-x-1">→</span>
+          </a>
         </div>
       </div>
     </section>
-
     <!-- ============ PROCESSO ============ -->
     <section id="processo" class="bg-white" style="padding-top: var(--section-py); padding-bottom: var(--section-py);">
       <div class="max-w-[1200px] mx-auto px-5 xs:px-6 sm:px-8 lg:px-6">
         <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5 reveal">05 — Processo</p>
         <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 mb-10 md:mb-16 text-balance reveal" style="transition-delay:.1s">
-          Do conceito à instalação.<br>
-          <span class="gradient-text-gold">Sem complicações.</span>
+          Uma conversa. Quatro passos.<br>
+          <span class="gradient-text-gold">Um espaço pronto.</span>
         </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-6 reveal-stagger">
           <article>
             <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">01</b>
             <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Briefing & visita</h3>
-            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Conhecemos as suas necessidades, estilo, espaço e orçamento.</p>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Ouvimos a sua ideia, conhecemos o espaço e alinhamos o que é importante para si.</p>
           </article>
           <article>
             <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">02</b>
             <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Conceito & orçamento</h3>
-            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Desenvolvemos a solução, definimos materiais e apresentamos a proposta.</p>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Mostramos a solução, os materiais e o investimento com clareza, antes de avançarmos.</p>
           </article>
           <article>
             <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">03</b>
             <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Produção</h3>
-            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Fabricamos cada elemento com controlo de qualidade e acompanhamento.</p>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Produzimos cada peça com cuidado e mantemos consigo uma conversa aberta durante o processo.</p>
           </article>
           <article>
             <b class="block text-[13px] font-medium tracking-tight text-gold-500 mb-3 md:mb-4">04</b>
             <h3 class="text-[17px] font-semibold tracking-tight text-ink-700 mb-2">Entrega & montagem</h3>
-            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Transportamos, instalamos e entregamos o espaço pronto a utilizar.</p>
+            <p class="text-[15px] text-ink-500 leading-[1.55] tracking-apple">Montamos tudo no seu espaço e só terminamos quando cada detalhe estiver no lugar.</p>
           </article>
         </div>
       </div>
@@ -547,8 +615,8 @@
         <div>
           <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">Empresa Registada</p>
           <h2 class="text-[clamp(1.7rem,6vw,3rem)] font-semibold leading-[1.1] md:leading-[1.05] tracking-apple-tight text-ink-700 text-balance">
-            Confiança também se<br>
-            <span class="gradient-text-gold">constrói com transparência.</span>
+            Pode confiar no trabalho.<br>
+            <span class="gradient-text-gold">E em quem está por trás dele.</span>
           </h2>
         </div>
         <dl class="divide-y divide-ink-300/60">
@@ -574,13 +642,20 @@
         <div class="reveal">
           <p class="text-[12px] md:text-[13px] font-medium tracking-tight text-ink-400 mb-4 md:mb-5">Fale connosco</p>
           <h2 class="text-[clamp(1.9rem,7vw,4rem)] font-semibold leading-[1.08] md:leading-[1.05] tracking-apple-tight text-ink-700 mb-5 md:mb-6 text-balance">
-            Tem um espaço<br>para <span class="gradient-text-gold">transformar?</span>
+            Conte-nos o que<br><span class="gradient-text-gold">tem em mente.</span>
           </h2>
           <p class="text-[15px] md:text-[17px] text-ink-500 max-w-md mb-8 md:mb-10 leading-[1.6] md:leading-[1.55] tracking-apple">
-            Conte-nos a sua ideia. A nossa equipa entra em contacto para compreender o projecto e preparar os próximos passos.
+            Pode ter um desenho pronto ou apenas uma fotografia de referência. Envie-nos uma mensagem e começamos a conversa por aí.
           </p>
           <div class="flex flex-col gap-2.5">
-            <a href="tel:+258879236274" class="text-[15px] text-ink-500 hover:text-gold-500 active:text-gold-500 transition-colors tracking-apple">+258 87 923 6274</a>
+            <a href="https://wa.me/258840236274?text=Ola%20MOVEZA%2C%20gostaria%20de%20falar%20sobre%20um%20projecto." target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-between gap-4 max-w-sm rounded-2xl bg-ink-900 px-4 py-3.5 text-white transition-transform hover:-translate-y-0.5">
+              <span>
+                <small class="block text-[10px] uppercase tracking-[0.12em] text-white/45 mb-1">WhatsApp Business</small>
+                <b class="text-[15px] font-medium">+258 84 023 6274</b>
+              </span>
+              <span class="text-gold-400 transition-transform group-hover:translate-x-1">→</span>
+            </a>
+            <a href="tel:+258879236274" class="text-[15px] text-ink-500 hover:text-gold-500 active:text-gold-500 transition-colors tracking-apple">Telefone · +258 87 923 6274</a>
             <a href="mailto:geral@movezainteriores.co.mz" class="text-[15px] text-ink-500 hover:text-gold-500 active:text-gold-500 transition-colors tracking-apple break-all">geral@movezainteriores.co.mz</a>
             <span class="text-[15px] text-ink-500 mt-3 leading-[1.55] tracking-apple">
               Matola C, Q. 18, Casa n.º 30<br>Província de Maputo, Moçambique
@@ -631,7 +706,7 @@
           <strong class="text-ink-700 font-semibold tracking-tight text-[15px]">MOVEZA</strong>
         </div>
         <p class="text-[14px] leading-[1.55] max-w-sm tracking-apple">
-          Mobiliário, interiores e serviços criados à medida. Da matéria-prima ao espaço pronto.
+          Ouvimos a sua ideia. Criamos o espaço consigo.
         </p>
       </div>
 
@@ -650,7 +725,8 @@
         <h4 class="text-[13px] font-medium tracking-tight text-ink-700 mb-3.5 md:mb-4">Contacto</h4>
         <div class="flex flex-col gap-2.5 text-[14px] tracking-apple">
           <span>Matola, Província de Maputo</span>
-          <a href="tel:+258879236274" class="hover:text-ink-700 active:text-gold-500 transition-colors py-0.5">+258 87 923 6274</a>
+          <a href="https://wa.me/258840236274?text=Ola%20MOVEZA%2C%20gostaria%20de%20falar%20sobre%20um%20projecto." target="_blank" rel="noopener noreferrer" class="hover:text-ink-700 active:text-gold-500 transition-colors py-0.5">WhatsApp · +258 84 023 6274</a>
+          <a href="tel:+258879236274" class="hover:text-ink-700 active:text-gold-500 transition-colors py-0.5">Telefone · +258 87 923 6274</a>
           <a href="mailto:geral@movezainteriores.co.mz" class="hover:text-ink-700 active:text-gold-500 transition-colors py-0.5 break-all">geral@movezainteriores.co.mz</a>
         </div>
       </div>
@@ -666,7 +742,11 @@
   <div id="modalOverlay" class="fixed inset-0 z-[2000] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-ink-900/40 backdrop-blur-md opacity-0 invisible transition-all duration-300">
     <div class="relative w-full max-w-xl max-h-[92svh] sm:max-h-[88vh] overflow-y-auto bg-white rounded-t-[24px] sm:rounded-[28px] p-6 xs:p-8 sm:p-10 md:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.25)] translate-y-4 sm:translate-y-0 scale-[0.98] sm:scale-95 transition-transform duration-300 safe-bottom" id="modal">
       <div class="w-9 h-1 bg-ink-200 rounded-full mx-auto mb-5 sm:hidden"></div>
-      <button id="modalClose" class="absolute top-4 sm:top-5 right-4 sm:right-5 w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-ink-100 hover:bg-ink-200 active:bg-ink-300 flex items-center justify-center text-ink-500 hover:text-ink-700 transition-colors text-[13px]" aria-label="Fechar">✕</button>
+      <button id="modalClose" class="absolute z-10 top-4 sm:top-5 right-4 sm:right-5 w-9 h-9 sm:w-8 sm:h-8 rounded-full bg-ink-100 hover:bg-ink-200 active:bg-ink-300 flex items-center justify-center text-ink-500 hover:text-ink-700 transition-colors text-[13px]" aria-label="Fechar">✕</button>
+      <div class="relative aspect-[16/8] rounded-2xl overflow-hidden bg-ink-100 mb-6 -mx-1 sm:-mx-3 sm:-mt-3">
+        <img id="modalImage" src="" alt="" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink-900/20 to-transparent pointer-events-none"></div>
+      </div>
       <p id="modalEyebrow" class="text-[12px] font-medium tracking-tight text-gold-500 mb-3">SERVIÇO</p>
       <h3 id="modalTitle" class="text-[22px] xs:text-[24px] sm:text-[28px] font-semibold tracking-apple-tight text-ink-700 mb-3 md:mb-4 pr-10 leading-tight"></h3>
       <p id="modalDesc" class="text-[14px] md:text-[15px] text-ink-500 leading-[1.6] tracking-apple mb-5 md:mb-6"></p>
@@ -677,52 +757,38 @@
     </div>
   </div>
 
-  <!-- ============ GALLERY POPUP (DISCRETO) ============ -->
-  <div id="galleryPopup" class="gallery-popup fixed z-[1500] w-[calc(100%-1.5rem)] xs:w-[calc(100%-2rem)] sm:w-auto sm:max-w-[440px] pointer-events-none
+  <!-- ============ GALLERY POPUP ============ -->
+  <div id="galleryPopup" class="gallery-popup fixed z-[1500] w-[calc(100%-1.5rem)] xs:w-[calc(100%-2rem)] sm:w-auto sm:min-w-[420px] sm:max-w-[460px] pointer-events-none
        bottom-3 left-3 right-3 xs:bottom-4 xs:left-4 xs:right-4
-       sm:bottom-5 sm:left-1/2 sm:right-auto sm:-translate-x-1/2
-       safe-bottom" role="status" aria-live="polite">
-    <div class="relative pointer-events-auto rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] ring-1 ring-white/[0.08]">
-      <div class="absolute inset-0 bg-ink-800/95 backdrop-blur-xl"></div>
-      <div class="popup-shimmer"></div>
-
-      <div class="relative flex items-center gap-3 xs:gap-4 p-3 xs:p-3.5 pr-2.5 xs:pr-3">
-        <a href="galeria.html" class="group relative flex-shrink-0 w-12 h-12 xs:w-14 xs:h-14 rounded-xl overflow-hidden ring-1 ring-white/10">
-          <img src="assets/interior-wide.png" alt="" class="absolute inset-0 w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-tr from-gold-500/20 to-transparent"></div>
-          <div class="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-xl"></div>
+       sm:bottom-6 sm:left-1/2 sm:right-auto safe-bottom" role="status" aria-live="polite">
+    <div class="relative pointer-events-auto rounded-2xl overflow-hidden bg-[#fbfaf7]/95 backdrop-blur-xl shadow-[0_18px_55px_-22px_rgba(10,10,11,0.45)] ring-1 ring-ink-900/10">
+      <div class="flex items-center gap-3.5 p-3">
+        <a href="galeria.html" class="relative flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-ink-200">
+          <img src="assets/cozinhas/cozinha-cinza-e-madeira.png" alt="" class="absolute inset-0 w-full h-full object-cover">
         </a>
 
         <a href="galeria.html" class="group flex-1 min-w-0 text-left">
-          <div class="flex items-center gap-2 mb-0.5 xs:mb-1">
-            <span class="inline-flex items-center gap-1 text-[9px] xs:text-[10px] font-semibold tracking-[0.08em] uppercase text-gold-400">
-              <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
-              Nova galeria
-            </span>
-          </div>
-          <p class="text-[13px] xs:text-[14px] font-medium text-white tracking-tight leading-snug truncate group-hover:text-gold-300 transition-colors">
-            Veja as nossas obras
+          <span class="block text-[9px] font-semibold tracking-[0.14em] uppercase text-gold-600 mb-1">Galeria MOVEZA</span>
+          <p class="text-[14px] font-medium text-ink-700 tracking-tight leading-snug group-hover:text-gold-600 transition-colors">
+            Veja os nossos projectos
           </p>
-          <p class="hidden xs:block text-[12px] text-white/55 tracking-apple mt-0.5 truncate">
-            Projectos residenciais e comerciais
-          </p>
+          <p class="text-[11px] text-ink-400 mt-0.5">53 obras · 7 categorias</p>
         </a>
 
-        <a href="galeria.html" class="flex-shrink-0 w-8 h-8 xs:w-9 xs:h-9 rounded-full bg-white/10 hover:bg-gold-500 active:bg-gold-500 flex items-center justify-center text-white transition-all duration-300 group">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="transition-transform group-hover:translate-x-0.5">
-            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <a href="galeria.html" class="flex-shrink-0 w-9 h-9 rounded-full bg-ink-900 flex items-center justify-center text-white transition-transform hover:scale-105" aria-label="Abrir galeria">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
 
-        <button id="popupClose" class="flex-shrink-0 w-7 h-7 xs:w-6 xs:h-6 flex items-center justify-center text-white/40 hover:text-white/90 active:text-white/90 transition-colors -mr-0.5" aria-label="Fechar">
-          <svg width="12" height="12" viewBox="0 0 11 11" fill="none">
-            <path d="M1 1l9 9M10 1l-9 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <button id="popupClose" class="flex-shrink-0 w-7 h-7 flex items-center justify-center text-ink-300 hover:text-ink-700 transition-colors" aria-label="Fechar">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+            <path d="M1 1l9 9M10 1l-9 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
           </svg>
         </button>
       </div>
     </div>
   </div>
-
   <script>
     (function() {
       // ===== MOBILE MENU =====
@@ -762,26 +828,34 @@
 
       // ===== DATA =====
       const servicesData = [
-        { num:"01", title:"Mobiliário por medida", short:"Fabricação em madeira, metal e materiais mistos para espaços residenciais, comerciais e industriais.",
+        { num:"01", title:"Mobiliário por medida", short:"Tem uma ideia para um móvel? Nós tratamos do desenho, dos materiais e da produção.",
           details:["Móveis de sala, quarto, escritório e áreas comuns","Soluções em madeira maciça, folheada, MDF e metais","Acabamentos personalizados: lacados, vernizes, pinturas","Projectos para residências, lojas, escritórios e indústria"] },
-        { num:"02", title:"Cozinhas & roupeiros", short:"Cozinhas modernas e americanas, closets, roupeiros embutidos e armários personalizados.",
+        { num:"02", title:"Cozinhas & roupeiros", short:"Criamos cozinhas para o seu dia-a-dia e roupeiros que aproveitam cada centímetro.",
           details:["Cozinhas funcionais com ilhas, despenseiros e organizadores","Roupeiros embutidos, walk-in closets e soluções de arrumação","Materiais resistentes à humidade e ao calor","Design adaptado ao espaço e ao fluxo de utilização"] },
-        { num:"03", title:"Carpintaria & marcenaria", short:"Portas, janelas, divisórias, pavimentos, restauro e reparação de mobiliário.",
+        { num:"03", title:"Carpintaria & marcenaria", short:"Executamos painéis, portas, divisórias e detalhes de madeira com um acabamento cuidado.",
           details:["Portas e janelas em madeira maciça ou folheada","Divisórias, painéis e revestimentos em madeira","Pavimentos flutuantes e maciços","Restauro e reparação de móveis antigos"] },
-        { num:"04", title:"Design de interiores", short:"Conceito, decoração e consultoria para residências, escritórios, hotéis e comércio.",
+        { num:"04", title:"Design de interiores", short:"Ajudamos a tornar o espaço mais bonito, confortável e verdadeiramente seu.",
           details:["Projecto de interiores completo: 2D e 3D","Selecção de materiais, cores, iluminação e mobiliário","Consultoria de decoração e organização de espaços","Acompanhamento de obra e supervisão"] },
-        { num:"05", title:"Remodelação & gestão", short:"Planeamento, gestão e fiscalização de projectos de decoração e remodelação.",
+        { num:"05", title:"Remodelação & gestão", short:"Organizamos a remodelação do início ao fim, para que tenha menos preocupações.",
           details:["Gestão integrada de empreitadas e subcontratados","Planeamento de prazos, custos e recursos","Fiscalização de qualidade e segurança","Remodelações residenciais, comerciais e hoteleiras"] },
-        { num:"06", title:"Metalomecânica leve", short:"Móveis metálicos, estruturas leves, portões, grades, corrimãos e soluções mistas.",
+        { num:"06", title:"Metalomecânica leve", short:"Combinamos metal, madeira e vidro para criar soluções resistentes e elegantes.",
           details:["Móveis em ferro, aço inox e alumínio","Portões, grades, corrimãos e guarda-corpos","Estruturas metálicas leves para interiores e exteriores","Combinação de metal com madeira e vidro"] }
       ];
 
+      const serviceImages = [
+        { src: "assets/aparadores/aparador-madeira-detalhes-dourados.png", alt: "Aparador em madeira produzido por medida" },
+        { src: "assets/cozinhas/cozinha-cinza-e-madeira.png", alt: "Cozinha contemporânea produzida por medida" },
+        { src: "assets/paineis-de-tv/painel-tv-madeira-ripada-iluminado.png", alt: "Painel de TV em madeira ripada executado por medida" },
+        { src: "assets/paineis-de-tv/sala-painel-tv-branco-integrado.png", alt: "Sala completa com design de interiores e mobiliário integrado" },
+        { src: "assets/cozinhas/cozinha-branca-com-ilha.png", alt: "Cozinha durante a fase final de instalação" },
+        { src: "assets/mesas-de-cabeceira/mesa-cabeceira-branca-estrutura-dourada.png", alt: "Mesa de cabeceira com estrutura metálica dourada" },
+      ];
       const sectorsData = [
-        { label:"Residências", num:"01", desc:"Mobiliário por medida, cozinhas, roupeiros, carpintaria e design de interiores para casas, apartamentos e vivendas. Criamos soluções que aliam estética, funcionalidade e durabilidade para o dia-a-dia da sua família." },
-        { label:"Escritórios", num:"02", desc:"Mobiliário corporativo, divisórias, recepções, salas de reunião e soluções de arrumação. Projectamos espaços de trabalho que promovem produtividade, conforto e uma imagem profissional consistente." },
-        { label:"Hotéis & Restaurantes", num:"03", desc:"Mobiliário para quartos, lobbies, restaurantes, bares e áreas comuns. Trabalhamos com materiais resistentes e design que valoriza a experiência do hóspede, com prazos rigorosos e acabamentos de qualidade." },
-        { label:"Escolas & Hospitais", num:"04", desc:"Soluções robustas e funcionais para ambientes educativos e de saúde: secretárias, armários, bancadas, divisórias e mobiliário específico. Priorizamos segurança, higiene e durabilidade." },
-        { label:"Comércio & Indústria", num:"05", desc:"Balcões, expositores, prateleiras, mobiliário técnico e estruturas metálicas. Desenvolvemos soluções à medida para lojas, armazéns e espaços industriais, com foco na eficiência e resistência." }
+        { label:"Residências", num:"01", desc:"Da cozinha ao quarto, criamos peças que tornam a casa mais prática, confortável e sua." },
+        { label:"Escritórios", num:"02", desc:"Criamos espaços de trabalho confortáveis, organizados e alinhados com a forma como a sua equipa trabalha." },
+        { label:"Hotéis & Restaurantes", num:"03", desc:"Criamos ambientes que recebem bem, resistem ao uso diário e deixam uma boa memória em cada visita." },
+        { label:"Escolas & Hospitais", num:"04", desc:"Pensamos em soluções seguras, fáceis de manter e preparadas para acompanhar a rotina de quem cuida e aprende." },
+        { label:"Comércio & Indústria", num:"05", desc:"Ajudamos o seu negócio a funcionar melhor com mobiliário resistente, organizado e desenhado para o dia-a-dia." }
       ];
 
       // ===== RENDER SERVICES =====
@@ -850,6 +924,7 @@
       const overlay = document.getElementById('modalOverlay');
       const modal = document.getElementById('modal');
       const modalTitle = document.getElementById('modalTitle');
+      const modalImage = document.getElementById('modalImage');
       const modalDesc = document.getElementById('modalDesc');
       const modalList = document.getElementById('modalList');
       const modalEyebrow = document.getElementById('modalEyebrow');
@@ -859,6 +934,9 @@
       function openModal(i) {
         const s = servicesData[i];
         if (!s) return;
+        const serviceImage = serviceImages[i];
+        modalImage.src = serviceImage.src;
+        modalImage.alt = serviceImage.alt;
         modalEyebrow.textContent = `SERVIÇO ${s.num}`;
         modalTitle.textContent = s.title;
         modalDesc.textContent = s.short;
