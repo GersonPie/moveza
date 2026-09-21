@@ -109,8 +109,23 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    :root { --header-h: 52px; }
-    @media (max-width: 768px) { :root { --header-h: 48px; } }
+    :root { --header-h: 80px; }
+    @media (max-width: 768px) { :root { --header-h: 72px; } }
+
+    header > div:first-child { height: var(--header-h) !important; }
+    header > div:first-child > a:first-child { gap: .625rem; }
+    header > div:first-child > a:first-child span:first-child {
+      width: 3.75rem;
+      height: 3.75rem;
+    }
+    header > div:first-child > a:first-child img { object-fit: contain; }
+    header > div:first-child > a:first-child span:last-child { font-size: 1.0625rem; }
+    main { padding-top: var(--header-h) !important; }
+
+    @media (min-width: 768px) {
+      header > div:first-child > a:first-child span:first-child { width: 4.25rem; height: 4.25rem; }
+      header > div:first-child > a:first-child span:last-child { font-size: 1.25rem; }
+    }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -126,7 +141,7 @@
 
       <a href="index.html" class="flex items-center gap-2 xs:gap-2.5 group min-w-0 flex-shrink-0">
         <span class="w-7 h-7 xs:w-[30px] xs:h-[30px] md:w-8 md:h-8 rounded-[7px] overflow-hidden bg-white/5 flex-shrink-0 ring-1 ring-white/10">
-          <img src="assets/moveza-logo.png" alt="" class="w-full h-full object-cover">
+          <img src="assets/moveza-logo-official.png" alt="MOVEZA" class="w-full h-full object-cover">
         </span>
         <span class="text-[14px] xs:text-[15px] md:text-[15px] font-semibold tracking-tight text-white truncate">MOVEZA</span>
       </a>

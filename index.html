@@ -179,9 +179,24 @@
     }
     :root {
       --section-py: clamp(4rem, 8vw, 10rem);
-      --header-h: 52px;
+      --header-h: 80px;
     }
-    @media (max-width: 768px) { :root { --header-h: 48px; } }
+    @media (max-width: 768px) { :root { --header-h: 72px; } }
+
+    header > div:first-child { height: var(--header-h) !important; }
+    header > div:first-child > a:first-child { gap: .625rem; }
+    header > div:first-child > a:first-child img {
+      width: 3.75rem;
+      height: 3.75rem;
+      object-fit: contain;
+    }
+    header > div:first-child > a:first-child span:last-child { font-size: 1.0625rem; }
+    main { padding-top: var(--header-h) !important; }
+
+    @media (min-width: 768px) {
+      header > div:first-child > a:first-child img { width: 4.25rem; height: 4.25rem; }
+      header > div:first-child > a:first-child span:last-child { font-size: 1.25rem; }
+    }
 
     section[id] { scroll-margin-top: calc(var(--header-h) + 12px); }
 
@@ -199,7 +214,7 @@
 
       <a href="#inicio" class="flex items-center gap-2 ">
         <span class=" flex-shrink-0 ring-1 ring-ink-900/5">
-          <img src="assets/moveza-logo.png" alt="" class="w-[3.5rem] h-[3rem] ">
+          <img src="assets/moveza-logo-official.png" alt="MOVEZA" class="w-[3.5rem] h-[3rem] ">
         </span>
         <span class="text-[14px] xs:text-[15px] md:text-[15px] font-semibold tracking-tight text-ink-700 truncate">MOVEZA</span>
       </a>
@@ -999,7 +1014,7 @@
           const el = document.querySelector(id);
           if (!el) return;
           e.preventDefault();
-          const headerOffset = window.innerWidth < 768 ? 56 : 64;
+          const headerOffset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) + 12;
           const y = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
           window.scrollTo({ top: y, behavior: 'smooth' });
         });
